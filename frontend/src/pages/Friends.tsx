@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   DropdownMenu,
@@ -38,10 +37,10 @@ interface PendingRequest {
 }
 
 const initialFriends: Friend[] = [
-  { id: "1", name: "Luzizila Helena.", username: "@lnzila_h", status: "online", initials: "LH", color: "bg-primary/20 text-primary" },
+  { id: "1", name: "Luzizila Helena..", username: "@lnzila_h", status: "online", initials: "LH", color: "bg-primary/20 text-primary" },
   { id: "2", name: "Edmilson Alexandre", username: "@edalexan_a", status: "watching", watching: "O Rei Leão", initials: "EA", color: "bg-accent/20 text-accent" },
   { id: "3", name: "Jose Andre", username: "@jondre_a", status: "online", initials: "JA", color: "bg-primary/20 text-primary" },
-  { id: "4", name: "Gilson Bravo", username: "@gbravo_f", status: "offline", initials: "GB", color: "bg-muted text-muted-foreground" },
+  { id: "4", name: "Gilson Bravo.", username: "@gbravo_f", status: "offline", initials: "GB", color: "bg-muted text-muted-foreground" },
   { id: "5", name: "Angelo Quissanga", username: "@aquissan_q", status: "watching", watching: "Marvel Marathon", initials: "AQ", color: "bg-accent/20 text-accent" },
   { id: "6", name: "Ana Sobrinho.", username: "@asobrinh", status: "online", initials: "AS", color: "bg-primary/20 text-primary" },
   { id: "7", name: "Darilton Mario", username: "@dmario_r", status: "offline", initials: "DM", color: "bg-muted text-muted-foreground" },
@@ -49,16 +48,16 @@ const initialFriends: Friend[] = [
 ];
 
 const initialPending: PendingRequest[] = [
-  { id: "p1", name: "Tiago Matias", username: "@timatias_t", initials: "TM" },
-  { id: "p2", name: "Constancia Tati", username: "@ctati_C", initials: "CT" },
+  { id: "p1", name: "João Pedro", username: "@joao_p", initials: "JP" },
+  { id: "p2", name: "Luna Silva", username: "@luna_s", initials: "LS" },
 ];
 
 const allUsers = [
-  { name: "Liedson Habacuc", username: "@lied_h", initials: "LH" },
-  { name: "Fernanda Diando", username: "@fer_d", initials: "FD" },
-  { name: "Jormaedes Luis", username: "@jorm_l", initials: "JL" },
-  { name: "Eva Monteiro", username: "@emonteir_e", initials: "EV" },
-  { name: "Alexandre Nunes", username: "@alex_n", initials: "AN" },
+  { name: "Diego Martins", username: "@diego_m", initials: "DM" },
+  { name: "Fernanda Lima", username: "@fer_lima", initials: "FL" },
+  { name: "Gabriel Costa", username: "@gab_c", initials: "GC" },
+  { name: "Isabela Ramos", username: "@isa_r", initials: "IR" },
+  { name: "Thiago Nunes", username: "@thiago_n", initials: "TN" },
 ];
 
 const statusDot: Record<FriendStatus, string> = {
@@ -144,7 +143,7 @@ const Friends = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl ml-2 space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-display font-bold text-foreground">Friends</h1>
@@ -160,7 +159,6 @@ const Friends = () => {
           <DialogContent className="bg-card border-border">
             <DialogHeader>
               <DialogTitle className="text-foreground">Add Friend</DialogTitle>
-              <DialogDescription>O teu novo amigo</DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div className="flex items-center gap-2 bg-surface rounded-lg px-3 py-2 border border-border">
@@ -173,7 +171,7 @@ const Friends = () => {
                   autoFocus
                 />
               </div>
-              <div className="space-y-2 max-h-64 overflow-y-auto">
+              <div className="space-y-2aa max-h-64 overflow-y-auto">
                 {addSearch.length === 0 && (
                   <p className="text-sm text-muted-foreground text-center py-4">Type to search for users</p>
                 )}
@@ -321,7 +319,7 @@ const Friends = () => {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="bg-card border-border w-48">
-                    <DropdownMenuItem onClick={() => navigate(`/profile/${friend.username}`)} className="gap-2 text-foreground">
+                    <DropdownMenuItem onClick={() => navigate(`/friendsProfile/${friend.username.replace("@", "")}`)} className="gap-2 text-foreground">
                       <Eye size={14} /> View Profile
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleOpenChat(friend)} className="gap-2 text-foreground">

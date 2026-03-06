@@ -17,7 +17,7 @@ const countries = [
 ];
 
 const statesByCountry: Record<string, string[]> = {
-  Angola: ["Bengo", "Benguela", "Bié", "Cabinda", "Cunene", "Huambo", "Huíla", "Kwando Kubango", "Kwanza Norte", "Kwanza Sul", "Luanda", "Lubango", "Lunda Norte", "Lunda Sul", "Malanje", "Moxico", "Namibe", "Uíge", "Zaire"],
+  Angola: ["Bengo", "Benguela", "Bié", "Cabinda", "Cunene", "Huambo", "Huíla", "Kwando Kubango", "Kwanza Norte", "Kwanza Sul", "Luanda", "Lunda Norte", "Lunda Sul", "Malanje", "Moxico", "Namibe", "Uíge", "Zaire"],
   Brasil: ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins"],
   Portugal: ["Aveiro", "Beja", "Braga", "Bragança", "Castelo Branco", "Coimbra", "Évora", "Faro", "Guarda", "Leiria", "Lisboa", "Portalegre", "Porto", "Santarém", "Setúbal", "Viana do Castelo", "Vila Real", "Viseu"],
   "Moçambique": ["Cabo Delgado", "Gaza", "Inhambane", "Manica", "Maputo", "Nampula", "Niassa", "Sofala", "Tete", "Zambézia"],
@@ -28,13 +28,13 @@ const statesByCountry: Record<string, string[]> = {
 };
 
 const Profile = () => {
-  const [firstName, setFirstName] = useState("Luzizila");
-  const [lastName, setLastName] = useState("Nzila");
-  const [username, setUsername] = useState("lnzila_h");
-  const [email, setEmail] = useState("luzizilahelena687@gmail.com");
-  const [phone, setPhone] = useState("+244 945 558 212");
-  const [bio, setBio] = useState("Apaixonado tecnologia.");
-  const [dob, setDob] = useState<Date | undefined>(new Date(2005, 11, 17));
+  const [firstName, setFirstName] = useState("Carlos");
+  const [lastName, setLastName] = useState("Mendes");
+  const [username, setUsername] = useState("carlos_m");
+  const [email, setEmail] = useState("carlos@email.com");
+  const [phone, setPhone] = useState("+244 923 456 789");
+  const [bio, setBio] = useState("Apaixonado por cinema e tecnologia. 🎬");
+  const [dob, setDob] = useState<Date | undefined>(new Date(1998, 4, 15));
   const [country, setCountry] = useState("Angola");
   const [state, setState] = useState("Luanda");
 
@@ -48,8 +48,8 @@ const Profile = () => {
     <div className="max-w-2xl mx-auto space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-display font-bold text-foreground">My Perfil</h1>
-        <p className="text-sm text-muted-foreground mt-1">Manage your personal information</p>
+        <h1 className="text-2xl font-display font-bold text-foreground">Meu Perfil</h1>
+        <p className="text-sm text-muted-foreground mt-1">Gerencie as suas informações pessoais</p>
       </div>
 
       {/* Avatar Section */}
@@ -67,7 +67,7 @@ const Profile = () => {
         <div>
           <p className="text-foreground font-medium">{firstName} {lastName}</p>
           <p className="text-sm text-muted-foreground">@{username}</p>
-          <button className="text-xs text-primary hover:underline mt-1">Change photo</button>
+          <button className="text-xs text-primary hover:underline mt-1">Alterar foto</button>
         </div>
       </div>
 
@@ -77,16 +77,16 @@ const Profile = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label className="text-sm text-foreground flex items-center gap-2">
-              <User size={14} className="text-muted-foreground" /> Frist name
+              <User size={14} className="text-muted-foreground" /> Primeiro Nome
             </Label>
-            <Input
+             <Input
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               className="bg-card border-border text-foreground"
-              />
+            />
           </div>
           <div className="space-y-2">
-            <Label className="text-sm text-foreground">Last name</Label>
+            <Label className="text-sm text-foreground">Último Nome</Label>
             <Input
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
@@ -98,7 +98,7 @@ const Profile = () => {
         {/* Username */}
         <div className="space-y-2">
           <Label className="text-sm text-foreground flex items-center gap-2">
-            <span className="text-muted-foreground">@</span> User name
+            <span className="text-muted-foreground">@</span> Nome de Utilizador
           </Label>
           <Input
             value={username}
@@ -122,7 +122,7 @@ const Profile = () => {
           </div>
           <div className="space-y-2">
             <Label className="text-sm text-foreground flex items-center gap-2">
-              <Phone size={14} className="text-muted-foreground" /> Phone
+              <Phone size={14} className="text-muted-foreground" /> Telefone
             </Label>
             <Input
               value={phone}
@@ -135,7 +135,7 @@ const Profile = () => {
         {/* Date of Birth */}
         <div className="space-y-2">
           <Label className="text-sm text-foreground flex items-center gap-2">
-            <Calendar size={14} className="text-muted-foreground" /> Date of birth
+            <Calendar size={14} className="text-muted-foreground" /> Data de Nascimento
           </Label>
           <Popover>
             <PopoverTrigger asChild>
@@ -151,7 +151,7 @@ const Profile = () => {
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
-                <CalendarComponent
+             <CalendarComponent
                 mode="single"
                 selected={dob}
                 onSelect={setDob}
@@ -170,7 +170,7 @@ const Profile = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label className="text-sm text-foreground flex items-center gap-2">
-              <Globe size={14} className="text-muted-foreground" /> Country
+              <Globe size={14} className="text-muted-foreground" /> País
             </Label>
             <Select value={country} onValueChange={(val) => { setCountry(val); setState(""); }}>
               <SelectTrigger className="bg-card border-border text-foreground">
@@ -185,7 +185,7 @@ const Profile = () => {
           </div>
           <div className="space-y-2">
             <Label className="text-sm text-foreground flex items-center gap-2">
-              <Flag size={14} className="text-muted-foreground" /> Province
+              <Flag size={14} className="text-muted-foreground" /> Província / Estado
             </Label>
             <Select value={state} onValueChange={setState}>
               <SelectTrigger className="bg-card border-border text-foreground">
@@ -215,7 +215,7 @@ const Profile = () => {
         <div className="flex justify-end pt-2">
           <Button onClick={handleSave} className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2">
             <Save size={16} />
-            Save Changes
+            Guardar Alterações
           </Button>
         </div>
       </div>
