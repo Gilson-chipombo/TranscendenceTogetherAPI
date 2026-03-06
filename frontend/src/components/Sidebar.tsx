@@ -4,7 +4,7 @@ import { useState } from "react";
 const navItems = [
   { icon: Home, label: "Home", active: true },
   { icon: LayoutGrid, label: "Overview" },
-  { icon: Tv, label: "My channels", expandable: true },
+  { icon: Tv, label: "My Homes", expandable: true },
   { icon: Users, label: "Friends" },
   { icon: MessageCircle, label: "Messages", badge: 3 },
 ];

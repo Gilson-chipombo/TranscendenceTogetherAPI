@@ -12,7 +12,9 @@ import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import Friends from "./pages/Friends";
 import FriendProfile from "./pages/FriendProfile";
-
+import Messages from "./pages/Messages";
+import Settings from "./pages/Settings";
+import MyHomes from "./pages/MyHomes";
 
 
 const queryClient = new QueryClient();
@@ -35,6 +37,10 @@ const App = () => (
     <Route path="/home" element={<Home />} />
     <Route path="/friends" element={<AppLayout><Friends /></AppLayout>} />
     <Route path="/profile/:username" element={<AppLayout><Profile /></AppLayout>} />
+    <Route path="/profile" element={<Profile />} />
+    <Route path="/messages" element={<Messages />} />
+    <Route path="/myHomes" element={<MyHomes />} />
+    <Route path="/settings" element={<Settings />} />
     <Route path="/friendsProfile" element={<AppLayout><Friends /></AppLayout>} />
           <Route path="/friendsProfile/:username" element={<AppLayout><FriendProfile /></AppLayout>} />
           <Route path="/friensProfile" element={<AppLayout><Friends /></AppLayout>} />
