@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Home, BarChart2, Tv, Users, MessageCircle, Settings, LogOut, Search, Bell } from "lucide-react";
+import  Header  from "./Header.tsx";
 
 const navItems = [
   { icon: Home, label: "Home", path: "/" },
@@ -71,7 +72,8 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       {/* Main area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top bar */}
-        <header className="h-14 border-b border-border flex items-center justify-between px-6 shrink-0 bg-card">
+        < Header name={navItems.find((i) => i.path === pathname)?.label || "Page"} />
+        {/* <header className="h-14 border-b border-border flex items-center justify-between px-6 shrink-0 bg-card">
           <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
             {navItems.find((i) => i.path === pathname)?.label || "Page"}
           </span>
@@ -94,7 +96,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
               <span className="text-sm text-foreground">ft_user</span>
             </Link>
           </div>
-        </header>
+        </header> */}
 
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>

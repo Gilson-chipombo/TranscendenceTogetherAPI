@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
 import { Search, UserPlus, MessageCircle, MoreHorizontal, Check, X, UserX, Ban, BellOff, Eye } from "lucide-react";
 import {
   Dialog,
@@ -143,209 +145,214 @@ const Friends = () => {
   };
 
   return (
-    <div className="max-w-3xl ml-2 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-display font-bold text-foreground">Friends</h1>
-          <p className="text-sm text-muted-foreground mt-1">{onlineCount} online now</p>
-        </div>
-        <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
-          <DialogTrigger asChild>
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
-              <UserPlus size={16} />
-              Add Friend
-            </button>
-          </DialogTrigger>
-          <DialogContent className="bg-card border-border">
-            <DialogHeader>
-              <DialogTitle className="text-foreground">Add Friend</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 bg-surface rounded-lg px-3 py-2 border border-border">
-                <Search size={14} className="text-muted-foreground" />
-                <input
-                  value={addSearch}
-                  onChange={(e) => setAddSearch(e.target.value)}
-                  placeholder="Search by name or username..."
-                  className="bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground flex-1"
-                  autoFocus
-                />
-              </div>
-              <div className="space-y-2aa max-h-64 overflow-y-auto">
-                {addSearch.length === 0 && (
-                  <p className="text-sm text-muted-foreground text-center py-4">Type to search for users</p>
-                )}
-                {searchResults.length === 0 && addSearch.length > 0 && (
-                  <p className="text-sm text-muted-foreground text-center py-4">No users found</p>
-                )}
-                {searchResults.map((user) => (
-                  <div key={user.username} className="flex items-center justify-between p-3 rounded-lg hover:bg-surface transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">
-                        {user.initials}
+    <div className="flex min-h-screen bg-background">
+      <Sidebar/>
+      <div className="flex-1 flex flex-col min-h-screen">
+        <Header name="Friends" />
+        <div className="max-w-3xl ml-6 mt-6 space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-display font-bold text-foreground">Friends</h1>
+              <p className="text-sm text-muted-foreground mt-1">{onlineCount} online now</p>
+            </div>
+            <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+              <DialogTrigger asChild>
+                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
+                  <UserPlus size={16} />
+                  Add Friend
+                </button>
+              </DialogTrigger>
+              <DialogContent className="bg-card border-border">
+                <DialogHeader>
+                  <DialogTitle className="text-foreground">Add Friend</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 bg-surface rounded-lg px-3 py-2 border border-border">
+                    <Search size={14} className="text-muted-foreground" />
+                    <input
+                      value={addSearch}
+                      onChange={(e) => setAddSearch(e.target.value)}
+                      placeholder="Search by name or username..."
+                      className="bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground flex-1"
+                      autoFocus
+                    />
+                  </div>
+                  <div className="space-y-2aa max-h-64 overflow-y-auto">
+                    {addSearch.length === 0 && (
+                      <p className="text-sm text-muted-foreground text-center py-4">Type to search for users</p>
+                    )}
+                    {searchResults.length === 0 && addSearch.length > 0 && (
+                      <p className="text-sm text-muted-foreground text-center py-4">No users found</p>
+                    )}
+                    {searchResults.map((user) => (
+                      <div key={user.username} className="flex items-center justify-between p-3 rounded-lg hover:bg-surface transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">
+                            {user.initials}
+                          </div>
+                          <div>
+                            <div className="text-sm font-medium text-foreground">{user.name}</div>
+                            <div className="text-xs text-muted-foreground">{user.username}</div>
+                          </div>
+                        </div>
+                        {sentRequests.includes(user.username) ? (
+                          <span className="text-xs text-muted-foreground px-3 py-1.5 rounded-lg bg-surface">Sent</span>
+                        ) : (
+                          <button
+                            onClick={() => handleSendRequest(user)}
+                            className="text-xs px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium"
+                          >
+                            Add
+                          </button>
+                        )}
                       </div>
-                      <div>
-                        <div className="text-sm font-medium text-foreground">{user.name}</div>
-                        <div className="text-xs text-muted-foreground">{user.username}</div>
+                    ))}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          {/* Tabs + Search */}
+          <div className="flex items-center gap-3">
+            <div className="flex bg-card rounded-lg border border-border p-1">
+              {(["all", "online", "pending"] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setTab(t)}
+                  className={`px-3 py-1.5 rounded-md text-sm capitalize transition-colors ${tab === t ? "bg-surface text-foreground font-medium" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                >
+                  {t}
+                  {t === "pending" && pending.length > 0 && (
+                    <span className="ml-1.5 text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
+                      {pending.length}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+            <div className="flex-1 flex items-center gap-2 bg-card rounded-lg border border-border px-3 py-2">
+              <Search size={14} className="text-muted-foreground" />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search friends..."
+                className="bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground flex-1"
+              />
+            </div>
+          </div>
+
+          {/* Pending Requests */}
+          {tab === "pending" && (
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Pending Requests</h3>
+              {pending.length === 0 && (
+                <div className="text-center py-12 text-muted-foreground text-sm">No pending requests.</div>
+              )}
+              {pending.map((req) => (
+                <div
+                  key={req.id}
+                  className="flex items-center justify-between bg-card rounded-xl p-4 border border-border"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary text-sm font-bold">
+                      {req.initials}
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-foreground">{req.name}</div>
+                      <div className="text-xs text-muted-foreground">{req.username}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleAccept(req)}
+                      className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center text-accent hover:bg-accent/30 transition-colors"
+                    >
+                      <Check size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleReject(req)}
+                      className="w-8 h-8 rounded-lg bg-destructive/20 flex items-center justify-center text-destructive hover:bg-destructive/30 transition-colors"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Friends List */}
+          {tab !== "pending" && (
+            <div className="space-y-2">
+              {filtered.map((friend) => (
+                <div
+                  key={friend.id}
+                  onClick={() => handleOpenChat(friend)}
+                  className="flex items-center justify-between bg-card rounded-xl p-4 border border-border hover:border-primary/20 transition-colors group cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${friend.color}`}>
+                        {friend.initials}
+                      </div>
+                      <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-card ${statusDot[friend.status]}`} />
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-foreground">{friend.name}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {friend.status === "watching" ? (
+                          <span>🎬 Watching <span className="text-primary">{friend.watching}</span></span>
+                        ) : (
+                          statusLabel[friend.status]
+                        )}
                       </div>
                     </div>
-                    {sentRequests.includes(user.username) ? (
-                      <span className="text-xs text-muted-foreground px-3 py-1.5 rounded-lg bg-surface">Sent</span>
-                    ) : (
-                      <button
-                        onClick={() => handleSendRequest(user)}
-                        className="text-xs px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium"
-                      >
-                        Add
-                      </button>
-                    )}
                   </div>
-                ))}
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      {/* Tabs + Search */}
-      <div className="flex items-center gap-3">
-        <div className="flex bg-card rounded-lg border border-border p-1">
-          {(["all", "online", "pending"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-3 py-1.5 rounded-md text-sm capitalize transition-colors ${
-                tab === t ? "bg-surface text-foreground font-medium" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {t}
-              {t === "pending" && pending.length > 0 && (
-                <span className="ml-1.5 text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
-                  {pending.length}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-        <div className="flex-1 flex items-center gap-2 bg-card rounded-lg border border-border px-3 py-2">
-          <Search size={14} className="text-muted-foreground" />
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search friends..."
-            className="bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground flex-1"
-          />
-        </div>
-      </div>
-
-      {/* Pending Requests */}
-      {tab === "pending" && (
-        <div className="space-y-2">
-          <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Pending Requests</h3>
-          {pending.length === 0 && (
-            <div className="text-center py-12 text-muted-foreground text-sm">No pending requests.</div>
-          )}
-          {pending.map((req) => (
-            <div
-              key={req.id}
-              className="flex items-center justify-between bg-card rounded-xl p-4 border border-border"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary text-sm font-bold">
-                  {req.initials}
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-foreground">{req.name}</div>
-                  <div className="text-xs text-muted-foreground">{req.username}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleAccept(req)}
-                  className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center text-accent hover:bg-accent/30 transition-colors"
-                >
-                  <Check size={16} />
-                </button>
-                <button
-                  onClick={() => handleReject(req)}
-                  className="w-8 h-8 rounded-lg bg-destructive/20 flex items-center justify-center text-destructive hover:bg-destructive/30 transition-colors"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Friends List */}
-      {tab !== "pending" && (
-        <div className="space-y-2">
-          {filtered.map((friend) => (
-            <div
-              key={friend.id}
-              onClick={() => handleOpenChat(friend)}
-              className="flex items-center justify-between bg-card rounded-xl p-4 border border-border hover:border-primary/20 transition-colors group cursor-pointer"
-            >
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${friend.color}`}>
-                    {friend.initials}
-                  </div>
-                  <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-card ${statusDot[friend.status]}`} />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-foreground">{friend.name}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {friend.status === "watching" ? (
-                      <span>🎬 Watching <span className="text-primary">{friend.watching}</span></span>
-                    ) : (
-                      statusLabel[friend.status]
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity" onClick={(e) => e.stopPropagation()}>
-                <button
-                  onClick={() => handleOpenChat(friend)}
-                  className="w-8 h-8 rounded-lg bg-surface flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <MessageCircle size={16} />
-                </button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="w-8 h-8 rounded-lg bg-surface flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
-                      <MoreHorizontal size={16} />
+                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => handleOpenChat(friend)}
+                      className="w-8 h-8 rounded-lg bg-surface flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <MessageCircle size={16} />
                     </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="bg-card border-border w-48">
-                    <DropdownMenuItem onClick={() => navigate(`/friendsProfile/${friend.username.replace("@", "")}`)} className="gap-2 text-foreground">
-                      <Eye size={14} /> View Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleOpenChat(friend)} className="gap-2 text-foreground">
-                      <MessageCircle size={14} /> Send Message
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator className="bg-border" />
-                    <DropdownMenuItem onClick={() => handleMuteFriend(friend)} className="gap-2 text-foreground">
-                      <BellOff size={14} /> Mute Notifications
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleBlockFriend(friend)} className="gap-2 text-destructive">
-                      <Ban size={14} /> Block
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleRemoveFriend(friend)} className="gap-2 text-destructive">
-                      <UserX size={14} /> Remove Friend
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          ))}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="w-8 h-8 rounded-lg bg-surface flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+                          <MoreHorizontal size={16} />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="bg-card border-border w-48">
+                        <DropdownMenuItem onClick={() => navigate(`/friendsProfile/${friend.username.replace("@", "")}`)} className="gap-2 text-foreground">
+                          <Eye size={14} /> View Profile
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleOpenChat(friend)} className="gap-2 text-foreground">
+                          <MessageCircle size={14} /> Send Message
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator className="bg-border" />
+                        <DropdownMenuItem onClick={() => handleMuteFriend(friend)} className="gap-2 text-foreground">
+                          <BellOff size={14} /> Mute Notifications
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleBlockFriend(friend)} className="gap-2 text-destructive">
+                          <Ban size={14} /> Block
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleRemoveFriend(friend)} className="gap-2 text-destructive">
+                          <UserX size={14} /> Remove Friend
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              ))}
 
-          {filtered.length === 0 && (
-            <div className="text-center py-12 text-muted-foreground text-sm">No friends found.</div>
+              {filtered.length === 0 && (
+                <div className="text-center py-12 text-muted-foreground text-sm">No friends found.</div>
+              )}
+            </div>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
