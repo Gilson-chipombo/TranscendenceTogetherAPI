@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowLeft, Send } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 interface ChatMessage {
   id: string;
@@ -20,9 +21,9 @@ interface ChatContact {
 
 const initialContacts: ChatContact[] = [
   {
-    name: "Carlos Mas.",
-    username: "@carlos_m",
-    initials: "CM",
+    name: "Domingas Quissanga.",
+    username: "@dquissan_d",
+    initials: "DQ",
     lastMessage: "Vamos assistir hoje?",
     time: "2min",
     unread: 1,
@@ -33,9 +34,9 @@ const initialContacts: ChatContact[] = [
     ],
   },
   {
-    name: "Maria José",
-    username: "@maria_j",
-    initials: "MJ",
+    name: "Luzizila Helena",
+    username: "@lnzila_h",
+    initials: "LH",
     lastMessage: "O Rei Leão é incrível!",
     time: "15min",
     messages: [
@@ -45,9 +46,9 @@ const initialContacts: ChatContact[] = [
     ],
   },
   {
-    name: "Peter Parker",
-    username: "@spidey",
-    initials: "PP",
+    name: "Jose Andre",
+    username: "@jondre_a",
+    initials: "JA",
     lastMessage: "Com grandes poderes...",
     time: "1h",
     messages: [
@@ -56,21 +57,23 @@ const initialContacts: ChatContact[] = [
   },
 ];
 
-interface MessagesProps {
-  initialChatWith?: string;
-}
+interface MessagesProps {}
 
-const Messages = ({ initialChatWith }: MessagesProps) => {
+const Messages = ({}: MessagesProps) => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const chatUser = params.get("chat");
+
   const [contacts] = useState<ChatContact[]>(initialContacts);
   const [selectedContact, setSelectedContact] = useState<ChatContact | null>(
-    initialChatWith
-      ? initialContacts.find((c) => c.username === initialChatWith) || null
-      : null
+    chatUser ? initialContacts.find((c) => c.username === chatUser) || null : null
   );
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState<Record<string, ChatMessage[]>>(
     Object.fromEntries(initialContacts.map((c) => [c.username, c.messages]))
   );
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSend = () => {
     if (!newMessage.trim() || !selectedContact) return;
@@ -88,6 +91,11 @@ const Messages = ({ initialChatWith }: MessagesProps) => {
   };
 
   const messages = selectedContact ? chatMessages[selectedContact.username] || [] : [];
+
+  // Scroll automático para a última mensagem
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, selectedContact]);
 
   return (
     <div className="max-w-4xl mx-auto h-[calc(100vh-8rem)]">
@@ -163,6 +171,7 @@ const Messages = ({ initialChatWith }: MessagesProps) => {
                     </div>
                   </div>
                 ))}
+                <div ref={messagesEndRef}></div>
               </div>
 
               <div className="p-4 border-t border-border flex items-center gap-2">
@@ -171,7 +180,7 @@ const Messages = ({ initialChatWith }: MessagesProps) => {
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   placeholder="Type a message..."
-                  className="flex-1 bg-surface rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground border-none outline-none"
+                  className="flex-1 bg-surface rounded-lg px-3 py-2 text-sm text-black placeholder:text-muted-foreground border-none outline-none"
                 />
                 <button
                   onClick={handleSend}
@@ -193,4 +202,3 @@ const Messages = ({ initialChatWith }: MessagesProps) => {
 };
 
 export default Messages;
-

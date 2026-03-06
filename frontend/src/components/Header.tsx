@@ -16,7 +16,6 @@ const Header = function ({ name = "Undefined", username = "" }: ScreenName) {
           {name}
         </span>
       </div>
-
       <div className="flex items-center gap-4">
 
         <div className="relative rounded-md w-full sm:w-32 lg:w-56 sm:bg-secondary hover:bg-secondary transition-colors cursor-pointer gap-2 sm:ps-4 flex items-center justify-center">
