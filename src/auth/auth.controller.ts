@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from '../users/user.service';
 import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
 
 
 export interface LoginResponse {
@@ -14,30 +15,13 @@ export interface LoginResponse {
 export class AuthController {
     // constructor(private authService: AuthService){}
 
-    // @Post('student/login')
-    // async loginStudent(@Body() body){
-    //     const student = await this.authService.validateStudent(
-    //         body.email,
-    //         body.password,
-    //     );
+   constructor(private service: AuthService) {}
 
-    //     if (!student) 
-    //         return {"message": "Student credenciais inválidas ou estudante ainda não aprovado"};
-        
-    //     return this.authService.login(student, "Student");
-    // }
+    @Post("login")
+    login(@Body() dto: LoginDto) {
+        return this.service.validateUser(dto.email, dto.password);
+    }
 
-    // @Post('company/login')
-    // async loginCompany(@Body() body){
-    //     const company = await this.authService.validateCompany(
-    //         body.email,
-    //         body.password
-    //     )
-
-    //     if (!company)
-    //         return {"message": "Company credenciais inválidas ou empresa ainda  não aprovada    "};
-    //     return this.authService.login(company, "Company");
-    // }
 
     // @Post('admin/login')
     // async loginAdmin(@Body() body){

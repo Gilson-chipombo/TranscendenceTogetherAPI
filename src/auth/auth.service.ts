@@ -1,44 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AdminService } from '../admin/admin.service';
 import * as bcrypt from 'bcrypt';
+import { AuthRepository } from './repository/auth.repository';
 
 @Injectable()
 export class AuthService {
-    // constructor( private usersService: UsersService, 
-    //              private companyService: CompaniesService,
-    //              private jwtService: JwtService,
-    //              private adminService: AdminService
-    // ){}
+    constructor( private repository: AuthRepository, 
+                 private jwtService: JwtService,
+    ){}
 
-    // async validateStudent(email: string, pass: string){
-    //     const student = await this.usersService.findByEmail(email);
 
-    //     if (!student) return null;
+    async validateUser(email: string, password: string) {
+        const user = await this.repository.findUserByEmail(email);
 
-    //     //const isMatch = await bcrypt.compare(pass, student.password);
-        
-    //     if (student.password != pass) return null;
-    //     if (student.state != "aprovado") return null;
-    //     return student;
-    // }
+        if (!user)
+        throw new UnauthorizedException();
 
-    // async validateCompany(email: string, pass: string){
-    //     const company = await this.companyService.findByEmail(email);
+        const valid = await bcrypt.compare(password, user.password);
 
-    //     if (!company) return null;
-    //     if (company.password != pass) return null;
-    //     if (company.state != "aprovado") return null;
-    //     return company;
-    // }
+        if (!valid)
+        throw new UnauthorizedException();
 
-    // async validateAdmin(email: string, pass: string){
-    //     const admin = await this.adminService.findByEmail(email);
+        //return user;
 
-    //     if (!admin) return null;
-    //     if (admin.password != pass) return null;
-    //     return admin;
-    // }
+        const payload = {sub: user.id, email: user.email};
+        const idUser = user.id;
+        return {
+            access_token: this.jwtService.sign(payload),
+            idUser,
+        };
+
+  }
+
 
     // async login(user: any, userType: string) {
     //     const payload = {sub: user.id, email: user.email};

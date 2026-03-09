@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { AdminModule } from '../admin/admin.module';
 import { AdminService } from '../admin/admin.service';
 import { UserModule } from '../users/user.module';
+import { AuthRepository } from './repository/auth.repository';
 
 
 @Module({
@@ -18,7 +19,8 @@ import { UserModule } from '../users/user.module';
   ],
   providers: [
     AuthService,
-    AdminService
+    AdminService,
+    AuthRepository
   ],
   controllers: [AuthController]
 })
