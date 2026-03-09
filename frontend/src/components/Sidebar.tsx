@@ -25,9 +25,13 @@ export default function Sidebar({ children }: { children: ReactNode }) {
       <aside className="w-56 flex flex-col bg-card border-r border-border shrink-0">
         <div className="p-5 flex items-center gap-2">
           <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-display font-bold text-sm">CF</span>
+          <img
+            src="/favicon.ico"
+            alt="Logo"
+            className="w-6 h-6 object-contain"
+          />
           </div>
-          <span className="font-display font-bold text-foreground tracking-tight">CINEFLIX</span>
+          <span className="font-display font-bold text-foreground tracking-tight">TOGETHER</span>
         </div>
 
         <nav className="flex-1 px-3 py-2 space-y-1">

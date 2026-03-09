@@ -68,7 +68,7 @@ const Home = () => {
                     <p className="text-xs text-muted-foreground">48K seguidores</p>
                   </div>
                   <button className="ml-4 px-5 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors">
-                    Seguir
+                    Add Friend
                   </button>
                 </div>
               </div>
