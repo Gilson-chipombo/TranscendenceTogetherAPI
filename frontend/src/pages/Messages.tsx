@@ -180,7 +180,7 @@ const Messages = ({ }: MessagesProps) => {
                   </div>
 
                   <div className="p-4 border-t border-border flex items-center gap-2">
-                    <input
+                    <textarea
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleSend()}

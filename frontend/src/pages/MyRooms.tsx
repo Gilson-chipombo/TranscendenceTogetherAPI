@@ -203,7 +203,7 @@ const MyRooms = () => {
       <div className="flex-1 flex flex-col min-h-screen">
         <Header name="Rooms" />
 
-        <div className="ms-6 mt-6 space-y-10">
+        <div className="mx-6 mt-6 space-y-10">
           <div>
             <h2 className="text-2xl font-bold text-foreground">Salas disponíveis para assistir em conjunto</h2>
           </div>

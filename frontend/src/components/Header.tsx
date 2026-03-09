@@ -1,6 +1,5 @@
 import { Bell, Search } from "lucide-react";
 import NotificationsDropdown from "@/components/NotificationsBotton";
-import "./Header.css"
 
 type ScreenName = {
   name?: string;
