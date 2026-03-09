@@ -13,22 +13,25 @@ services:
       - postgres_data:/var/lib/postgresql/data
     secrets:
       - postgres_password
-
-  app:
-    build: .
-    container_name: trans_backend
-    restart: always
     ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    env_file:
-      - .env
-    volumes:
-      - .:/app
-    command: npm run start:dev
-    networks:
-      - transcendence
+      - "5432:5432"
+
+  # app:
+  #   build: .
+  #   container_name: trans_backend
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - postgres
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - .:/app
+  #   command: npm run start:migrate:prod
+  #   networks:
+  #     - transcendence
+      
 networks:
   transcendence:
     

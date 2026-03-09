@@ -1,0 +1,22 @@
+npx prisma generate
+npx prisma migrate dev
+npx prisma validate
+npx prisma format
+npm i --save class-validator class-transformer
+
+para o bcrypt 
+
+npm i bcrypt
+npm i -D @types/bcrypt
+
+para o JWT
+
+npm install jsonwebtoken 
+npm install @types/jsonwebtoken
+
+google auth
+
+npm i googleapis
+npm i google-auth-library
+
+npm install cookie-parser @types/cookie-parser passport-jwt @types/passport-jwt @nestjs/jwt

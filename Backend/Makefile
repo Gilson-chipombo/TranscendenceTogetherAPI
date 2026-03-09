@@ -7,7 +7,7 @@ ENV_FILE = .env
 all:
 	@if [ ! -f $(ENV_FILE) ]; then \
 		echo "Criando .env..."; \
-		echo "DATABASE_URL=\"postgresql://transcendence:transcendence123@localhost:54321/transcendence_db?schema=public\"" >  .env; \
+		echo "DATABASE_URL="postgresql://transcendence:transcendence4242@localhost:5432/transcendence_db\"" >  .env; \
 	fi
 
 	$(COMPOSE) -f $(COMPOSE_FILE) up -d --build
