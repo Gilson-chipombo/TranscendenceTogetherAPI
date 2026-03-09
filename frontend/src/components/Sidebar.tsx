@@ -31,7 +31,7 @@ export default function Sidebar({ children }: { children: ReactNode }) {
             className="w-6 h-6 object-contain"
           />
           </div>
-          <span className="font-display font-bold text-foreground tracking-tight">TOGETHER</span>
+          <span className="hidden sm:inline-block font-display font-bold text-foreground tracking-tight">TOGETHER</span>
         </div>
 
         <nav className="flex-1 px-3 py-2 space-y-1">
