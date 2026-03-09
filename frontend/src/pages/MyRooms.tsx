@@ -1,4 +1,6 @@
 import { Users, Clock, Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 interface Room {
   id: string;
@@ -74,7 +76,8 @@ const rooms: Room[] = [
   },
 ];
 
-const MyHomes = () => {
+const MyRooms = () => {
+  const navigate = useNavigate();
   return (
     <div className="space-y-6">
       <div>
@@ -124,7 +127,10 @@ const MyHomes = () => {
                 </span>
               </div>
 
-              <button className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 transition-colors">
+              <button
+                onClick={() => navigate(`/room/${room.id}`)}
+                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 transition-colors"
+                >
                 <Play size={14} /> Entrar na Sala
               </button>
             </div>
@@ -135,4 +141,4 @@ const MyHomes = () => {
   );
 };
 
-export default MyHomes;
+export default MyRooms;

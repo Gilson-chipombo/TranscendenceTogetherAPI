@@ -14,7 +14,8 @@ import Friends from "./pages/Friends";
 import FriendProfile from "./pages/FriendProfile";
 import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
-import MyHomes from "./pages/MyHomes";
+import MyRooms from "./pages/MyRooms";
+import Room from  "./pages/Room";
 
 
 const queryClient = new QueryClient();
@@ -38,9 +39,10 @@ const App = () => (
     <Route path="/friends" element={<Friends />} />
     <Route path="/profile/:username" element={<AppLayout><Profile /></AppLayout>} />
     <Route path="/profile" element={<Profile />} />
-    <Route path="/messages" element={<Messages />} />
-    <Route path="/myHomes" element={<MyHomes />} />
+    <Route path="/messages" element={<AppLayout><Messages /></AppLayout>} />
+    <Route path="/myrooms" element={<AppLayout><MyRooms /></AppLayout>} />
     <Route path="/settings" element={<Settings />} />
+    <Route path="/room/:id" element={<AppLayout><Room /></AppLayout>} />
     <Route path="/friendsProfile" element={<AppLayout><Friends /></AppLayout>} />
           <Route path="/friendsProfile/:username" element={<AppLayout><FriendProfile /></AppLayout>} />
           <Route path="/friensProfile" element={<AppLayout><Friends /></AppLayout>} />

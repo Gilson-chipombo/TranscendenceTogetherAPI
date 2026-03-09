@@ -98,7 +98,7 @@ const Messages = ({}: MessagesProps) => {
   }, [messages, selectedContact]);
 
   return (
-    <div className="max-w-4xl mx-auto h-[calc(100vh-8rem)]">
+    <div className="max-w-4xl ml-2 h-[calc(100vh-8rem)]">
       <div className="flex h-full bg-card rounded-xl border border-border overflow-hidden">
         {/* Contact list */}
         <div className={`w-72 border-r border-border flex flex-col shrink-0 ${selectedContact ? "hidden md:flex" : "flex"}`}>
