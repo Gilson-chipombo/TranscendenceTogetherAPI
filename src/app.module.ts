@@ -6,6 +6,7 @@ import { AdminModule } from './admin/admin.module';
 import { UserModule } from './users/user.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { ChatModule } from './chat/chat.module';
+import { FriendsModule } from './friends/friends.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { ChatModule } from './chat/chat.module';
     UserModule,
     AdminModule,
     RoomsModule,
-    ChatModule
+    ChatModule,
+    FriendsModule
   ],
   controllers: [AppController],
   providers: [AppService],
