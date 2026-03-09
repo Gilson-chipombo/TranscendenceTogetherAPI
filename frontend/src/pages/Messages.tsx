@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { ArrowLeft, Send } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
 
 interface ChatMessage {
   id: string;
@@ -57,9 +59,9 @@ const initialContacts: ChatContact[] = [
   },
 ];
 
-interface MessagesProps {}
+interface MessagesProps { }
 
-const Messages = ({}: MessagesProps) => {
+const Messages = ({ }: MessagesProps) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const chatUser = params.get("chat");
@@ -98,103 +100,108 @@ const Messages = ({}: MessagesProps) => {
   }, [messages, selectedContact]);
 
   return (
-    <div className="max-w-4xl ml-2 h-[calc(100vh-8rem)]">
-      <div className="flex h-full bg-card rounded-xl border border-border overflow-hidden">
-        {/* Contact list */}
-        <div className={`w-72 border-r border-border flex flex-col shrink-0 ${selectedContact ? "hidden md:flex" : "flex"}`}>
-          <div className="p-4 border-b border-border">
-            <h2 className="text-lg font-display font-bold text-foreground">Messages</h2>
-          </div>
-          <div className="flex-1 overflow-y-auto">
-            {contacts.map((contact) => (
-              <button
-                key={contact.username}
-                onClick={() => setSelectedContact(contact)}
-                className={`w-full flex items-center gap-3 p-3 text-left hover:bg-surface transition-colors ${
-                  selectedContact?.username === contact.username ? "bg-surface" : ""
-                }`}
-              >
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary text-sm font-bold shrink-0">
-                  {contact.initials}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-foreground truncate">{contact.name}</span>
-                    <span className="text-xs text-muted-foreground">{contact.time}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground truncate">{contact.lastMessage}</p>
-                </div>
-                {contact.unread && (
-                  <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-bold">
-                    {contact.unread}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
+    <div className="flex min-h-screen bg-background">
+      <Sidebar />
 
-        {/* Chat area */}
-        <div className={`flex-1 flex flex-col ${!selectedContact ? "hidden md:flex" : "flex"}`}>
-          {selectedContact ? (
-            <>
-              <div className="p-4 border-b border-border flex items-center gap-3">
-                <button
-                  onClick={() => setSelectedContact(null)}
-                  className="md:hidden text-muted-foreground hover:text-foreground"
-                >
-                  <ArrowLeft size={18} />
-                </button>
-                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">
-                  {selectedContact.initials}
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-foreground">{selectedContact.name}</div>
-                  <div className="text-xs text-muted-foreground">{selectedContact.username}</div>
-                </div>
+      <div className="flex-1 flex flex-col min-h-screen">
+        <Header name="Room" />
+        <div className="mt-6 ms-6 max-w-4xl ml-2 h-[calc(100vh-8rem)]">
+          <div className="flex h-full bg-card rounded-xl border border-border overflow-hidden">
+            {/* Contact list */}
+            <div className={`w-72 border-r border-border flex flex-col shrink-0 ${selectedContact ? "hidden md:flex" : "flex"}`}>
+              <div className="p-4 border-b border-border">
+                <h2 className="text-lg font-display font-bold text-foreground">Messages</h2>
               </div>
-
-              <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                {messages.map((msg) => (
-                  <div key={msg.id} className={`flex ${msg.from === "me" ? "justify-end" : "justify-start"}`}>
-                    <div
-                      className={`max-w-[70%] px-3 py-2 rounded-xl text-sm ${
-                        msg.from === "me"
-                          ? "bg-primary text-primary-foreground rounded-br-sm"
-                          : "bg-surface text-foreground rounded-bl-sm"
+              <div className="flex-1 overflow-y-auto">
+                {contacts.map((contact) => (
+                  <button
+                    key={contact.username}
+                    onClick={() => setSelectedContact(contact)}
+                    className={`w-full flex items-center gap-3 p-3 text-left hover:bg-surface transition-colors ${selectedContact?.username === contact.username ? "bg-surface" : ""
                       }`}
-                    >
-                      <p>{msg.text}</p>
-                      <span className={`text-[10px] mt-1 block ${msg.from === "me" ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
-                        {msg.time}
+                  >
+                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary text-sm font-bold shrink-0">
+                      {contact.initials}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-foreground truncate">{contact.name}</span>
+                        <span className="text-xs text-muted-foreground">{contact.time}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground truncate">{contact.lastMessage}</p>
+                    </div>
+                    {contact.unread && (
+                      <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-bold">
+                        {contact.unread}
                       </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Chat area */}
+            <div className={`flex-1 flex flex-col ${!selectedContact ? "hidden md:flex" : "flex"}`}>
+              {selectedContact ? (
+                <>
+                  <div className="p-4 border-b border-border flex items-center gap-3">
+                    <button
+                      onClick={() => setSelectedContact(null)}
+                      className="md:hidden text-muted-foreground hover:text-foreground"
+                    >
+                      <ArrowLeft size={18} />
+                    </button>
+                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">
+                      {selectedContact.initials}
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-foreground">{selectedContact.name}</div>
+                      <div className="text-xs text-muted-foreground">{selectedContact.username}</div>
                     </div>
                   </div>
-                ))}
-                <div ref={messagesEndRef}></div>
-              </div>
 
-              <div className="p-4 border-t border-border flex items-center gap-2">
-                <input
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                  placeholder="Type a message..."
-                  className="flex-1 bg-surface rounded-lg px-3 py-2 text-sm text-black placeholder:text-muted-foreground border-none outline-none"
-                />
-                <button
-                  onClick={handleSend}
-                  className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-primary-foreground hover:bg-primary/90 transition-colors"
-                >
-                  <Send size={16} />
-                </button>
-              </div>
-            </>
-          ) : (
-            <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
-              Select a conversation to start chatting
+                  <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                    {messages.map((msg) => (
+                      <div key={msg.id} className={`flex ${msg.from === "me" ? "justify-end" : "justify-start"}`}>
+                        <div
+                          className={`max-w-[70%] px-3 py-2 rounded-xl text-sm ${msg.from === "me"
+                              ? "bg-primary text-primary-foreground rounded-br-sm"
+                              : "bg-surface text-foreground rounded-bl-sm"
+                            }`}
+                        >
+                          <p>{msg.text}</p>
+                          <span className={`text-[10px] mt-1 block ${msg.from === "me" ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
+                            {msg.time}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                    <div ref={messagesEndRef}></div>
+                  </div>
+
+                  <div className="p-4 border-t border-border flex items-center gap-2">
+                    <input
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                      placeholder="Type a message..."
+                      className="flex-1 bg-surface rounded-lg px-3 py-2 text-sm text-black placeholder:text-muted-foreground border-none outline-none"
+                    />
+                    <button
+                      onClick={handleSend}
+                      className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-primary-foreground hover:bg-primary/90 transition-colors"
+                    >
+                      <Send size={16} />
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
+                  Select a conversation to start chatting
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

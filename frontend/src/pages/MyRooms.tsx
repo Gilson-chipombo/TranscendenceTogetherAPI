@@ -1,5 +1,7 @@
+import Header from "@/components/Header";
 import { Users, Clock, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
 
 
 interface Room {
@@ -79,9 +81,14 @@ const rooms: Room[] = [
 const MyRooms = () => {
   const navigate = useNavigate();
   return (
-    <div className="space-y-6">
+    <div className="flex min-h-screen bg-background">
+      <Sidebar />
+
+      <div className="flex-1 flex flex-col min-h-screen">
+        <Header name="Rooms" />
+    <div className=" ms-6 mt-6 space-y-6">
       <div>
-        <h1 className="text-2xl font-display font-bold text-foreground">MyHomes</h1>
+        <h1 className="text-2xl font-display font-bold text-foreground">My Rooms</h1>
         <p className="text-sm text-muted-foreground mt-1">Salas disponíveis para assistir em conjunto</p>
       </div>
 
@@ -136,6 +143,8 @@ const MyRooms = () => {
             </div>
           </div>
         ))}
+      </div>
+    </div>
       </div>
     </div>
   );

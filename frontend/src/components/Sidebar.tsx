@@ -4,7 +4,7 @@ import { Home, BarChart2, Tv, Users, MessageCircle, Settings, LogOut, Search, Be
 import  Header  from "./Header.tsx";
 
 const navItems = [
-  { icon: Home, label: "Home", path: "/" },
+  { icon: Home, label: "Home", path: "/home" },
   { icon: BarChart2, label: "Overview", path: "/overview" },
   { icon: Tv, label: "My Rooms", path: "/myrooms" },
   { icon: Users, label: "Friends", path: "/friends" },

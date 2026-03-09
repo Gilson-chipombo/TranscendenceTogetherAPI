@@ -37,12 +37,12 @@ const App = () => (
     <Route path="/create-account" element={<SignUp />} />
     <Route path="/home" element={<Home />} />
     <Route path="/friends" element={<Friends />} />
-    <Route path="/profile/:username" element={<AppLayout><Profile /></AppLayout>} />
+    <Route path="/profile/" element={<AppLayout><Profile /></AppLayout>} />
     <Route path="/profile" element={<Profile />} />
-    <Route path="/messages" element={<AppLayout><Messages /></AppLayout>} />
-    <Route path="/myrooms" element={<AppLayout><MyRooms /></AppLayout>} />
+    <Route path="/messages" element={<Messages />} />
+    <Route path="/myrooms" element={<MyRooms />} />
     <Route path="/settings" element={<Settings />} />
-    <Route path="/room/:id" element={<AppLayout><Room /></AppLayout>} />
+    <Route path="/room/:id" element={<Room />} />
     <Route path="/friendsProfile" element={<AppLayout><Friends /></AppLayout>} />
           <Route path="/friendsProfile/:username" element={<AppLayout><FriendProfile /></AppLayout>} />
           <Route path="/friensProfile" element={<AppLayout><Friends /></AppLayout>} />
