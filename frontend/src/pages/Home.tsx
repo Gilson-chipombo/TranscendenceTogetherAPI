@@ -1,5 +1,5 @@
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 import VideoPlayer from "@/components/VideoPlayer";
 import ViewersList from "@/components/ViewersList";
 import { ThumbsUp, Share2, Bookmark, Eye } from "lucide-react";

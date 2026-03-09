@@ -96,18 +96,17 @@ const Settings = () => {
       {/* Theme Section */}
       <SettingsSection icon={<Palette size={18} />} title="Aparência & Temas">
         <p className="text-xs text-muted-foreground mb-4">Escolha um tema predefinido ou personalize as cores</p>
-        
+
         {/* Preset Themes */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
           {themePresets.map((theme) => (
             <button
               key={theme.id}
               onClick={() => applyTheme(theme.id)}
-              className={`relative p-3 rounded-lg border transition-all text-left ${
-                activeTheme === theme.id
-                  ? "border-primary bg-primary/5"
-                  : "border-border hover:border-muted-foreground/30"
-              }`}
+              className={`relative p-3 rounded-lg border transition-all text-left ${activeTheme === theme.id
+                ? "border-primary bg-primary/5"
+                : "border-border hover:border-muted-foreground/30"
+                }`}
             >
               {activeTheme === theme.id && (
                 <span className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
@@ -132,11 +131,10 @@ const Settings = () => {
               <button
                 key={color.value}
                 onClick={() => applyCustomColor(color.value)}
-                className={`w-9 h-9 rounded-lg border-2 transition-all hover:scale-110 ${
-                  activeTheme === "custom" && customPrimary === color.value
-                    ? "border-foreground scale-110"
-                    : "border-transparent"
-                }`}
+                className={`w-9 h-9 rounded-lg border-2 transition-all hover:scale-110 ${activeTheme === "custom" && customPrimary === color.value
+                  ? "border-foreground scale-110"
+                  : "border-transparent"
+                  }`}
                 style={{ backgroundColor: color.value }}
                 title={color.label}
               />

@@ -15,7 +15,7 @@ import FriendProfile from "./pages/FriendProfile";
 import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
 import MyRooms from "./pages/MyRooms";
-import Room from  "./pages/Room";
+import Room from "./pages/Room";
 
 
 const queryClient = new QueryClient();
@@ -26,30 +26,30 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter
-      future={{
-      v7_startTransition: true,
-      v7_relativeSplatPath: true,
-    }}
-  >
-  <Routes>
-    <Route path="/" element={<LandingPage />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/create-account" element={<SignUp />} />
-    <Route path="/home" element={<Home />} />
-    <Route path="/friends" element={<Friends />} />
-    <Route path="/profile/" element={<AppLayout><Profile /></AppLayout>} />
-    <Route path="/profile" element={<Profile />} />
-    <Route path="/messages" element={<Messages />} />
-    <Route path="/myrooms" element={<MyRooms />} />
-    <Route path="/settings" element={<Settings />} />
-    <Route path="/room/:id" element={<Room />} />
-    <Route path="/friendsProfile" element={<AppLayout><Friends /></AppLayout>} />
-          <Route path="/friendsProfile/:username" element={<AppLayout><FriendProfile /></AppLayout>} />
-          <Route path="/friensProfile" element={<AppLayout><Friends /></AppLayout>} />
-          <Route path="/friensProfile/:username" element={<AppLayout><FriendProfile /></AppLayout>} />
-    <Route path="*" element={<NotFound />} />
-  </Routes>
-</BrowserRouter>
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/create-account" element={<SignUp />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/friends" element={<Friends />} />
+          {/* <Route path="/profile/" element={<AppLayout><Profile /></AppLayout>} /> */}
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/myrooms" element={<MyRooms />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/room/:id" element={<Room />} />
+          {/* <Route path="/friendsProfile" element={<Friends />} /> */}
+          <Route path="/friendsProfile/:username" element={<FriendProfile />} />
+          <Route path="/friensProfile" element={<Friends />} />
+          {/* <Route path="/friensProfile/:username" element={<AppLayout><FriendProfile /></AppLayout>} /> */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );

@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, MessageCircle, UserX, Ban, BellOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 
 interface FriendData {
   name: string;
@@ -49,79 +51,87 @@ const FriendProfile = () => {
   }
 
   return (
-   <div className="max-w-2xl space-y-6 ml-4">
-      <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm">
-        <ArrowLeft size={16} /> Voltar
-      </button>
+    <div className="flex min-h-screen bg-background">
+      <Sidebar />
 
-      <div className="bg-card rounded-xl border border-border p-6 space-y-6">
-        {/* Header */}
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xl font-bold">
-              {friend.initials}
+      <div className="flex-1 flex flex-col min-h-screen">
+        <Header name="Friend" />
+
+        <div className=" mt-6 ms-6 max-w-2xl space-y-6 ml-4">
+          <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm">
+            <ArrowLeft size={16} /> Voltar
+          </button>
+
+          <div className="bg-card rounded-xl border border-border p-6 space-y-6">
+            {/* Header */}
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xl font-bold">
+                  {friend.initials}
+                </div>
+                <span className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 border-card ${statusColors[friend.status]}`} />
+              </div>
+              <div>
+                <h1 className="text-xl font-display font-bold text-foreground">{friend.name}</h1>
+                <p className="text-sm text-muted-foreground">{friend.username}</p>
+                {friend.status === "watching" && (
+                  <p className="text-xs text-primary mt-1">🎬 A assistir {friend.watching}</p>
+                )}
+              </div>
             </div>
-            <span className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 border-card ${statusColors[friend.status]}`} />
-          </div>
-          <div>
-            <h1 className="text-xl font-display font-bold text-foreground">{friend.name}</h1>
-            <p className="text-sm text-muted-foreground">{friend.username}</p>
-            {friend.status === "watching" && (
-              <p className="text-xs text-primary mt-1">🎬 A assistir {friend.watching}</p>
-            )}
-          </div>
-        </div>
 
-        {/* Bio */}
-        <div>
-          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Bio</h3>
-          <p className="text-sm text-foreground">{friend.bio}</p>
-        </div>
+            {/* Bio */}
+            <div>
+              <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Bio</h3>
+              <p className="text-sm text-foreground">{friend.bio}</p>
+            </div>
 
-        {/* Info */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Membro desde</h3>
-            <p className="text-sm text-foreground">{friend.memberSince}</p>
-          </div>
-          <div>
-            <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Status</h3>
-            <p className="text-sm text-foreground capitalize">{friend.status}</p>
-          </div>
-        </div>
+            {/* Info */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Membro desde</h3>
+                <p className="text-sm text-foreground">{friend.memberSince}</p>
+              </div>
+              <div>
+                <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Status</h3>
+                <p className="text-sm text-foreground capitalize">{friend.status}</p>
+              </div>
+            </div>
 
-        {/* Genres */}
-        <div>
-          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">Géneros favoritos</h3>
-          <div className="flex flex-wrap gap-2">
-            {friend.favoriteGenres.map((g) => (
-              <span key={g} className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                {g}
-              </span>
-            ))}
-          </div>
-        </div>
+            {/* Genres */}
+            <div>
+              <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">Géneros favoritos</h3>
+              <div className="flex flex-wrap gap-2">
+                {friend.favoriteGenres.map((g) => (
+                  <span key={g} className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                    {g}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-3 pt-2 border-t border-border">
-          <button
-            onClick={() => navigate(`/messages?chat=${friend.username}`)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
-          >
-            <MessageCircle size={16} /> Enviar mensagem
-          </button>
-          <button
-            onClick={() => { toast({ title: "Notificações silenciadas", description: `Silenciaste ${friend.name}.` }); }}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface text-muted-foreground text-sm hover:text-foreground transition-colors border border-border"
-          >
-            <BellOff size={16} /> Silenciar
-          </button>
-          <button
-            onClick={() => { toast({ title: "Utilizador bloqueado", description: `${friend.name} foi bloqueado.`, variant: "destructive" }); navigate("/friends"); }}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-destructive text-sm hover:bg-destructive/10 transition-colors"
-          >
-            <Ban size={16} /> Bloquear
-          </button>
+            {/* Actions */}
+            <div className="flex items-center gap-3 pt-2 border-t border-border">
+              <button
+                onClick={() => navigate(`/messages?chat=${friend.username}`)}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
+                <MessageCircle size={16} /> Enviar mensagem
+              </button>
+              <button
+                onClick={() => { toast({ title: "Notificações silenciadas", description: `Silenciaste ${friend.name}.` }); }}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface text-muted-foreground text-sm hover:text-foreground transition-colors border border-border"
+              >
+                <BellOff size={16} /> Silenciar
+              </button>
+              <button
+                onClick={() => { toast({ title: "Utilizador bloqueado", description: `${friend.name} foi bloqueado.`, variant: "destructive" }); navigate("/friends"); }}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-destructive text-sm hover:bg-destructive/10 transition-colors"
+              >
+                <Ban size={16} /> Bloquear
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
