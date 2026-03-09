@@ -7,6 +7,7 @@ import { UserModule } from './users/user.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { ChatModule } from './chat/chat.module';
 import { FriendsModule } from './friends/friends.module';
+import { DirectMessageModule } from './direct-message/direct-message.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { FriendsModule } from './friends/friends.module';
     AdminModule,
     RoomsModule,
     ChatModule,
-    FriendsModule
+    FriendsModule,
+    DirectMessageModule
   ],
   controllers: [AppController],
   providers: [AppService],
