@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import MyRooms from "./pages/MyRooms";
 import Room from "./pages/Room";
 import PageError from "./pages/InBuilding";
+import InBuilding from "./pages/InBuilding";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +33,7 @@ const App = () => (
         }}
       >
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<InBuilding />} />
           <Route path="/login" element={<Login />} />
           <Route path="/overview" element={<PageError name="Overview" />} />
           <Route path="/create-account" element={<SignUp />} />

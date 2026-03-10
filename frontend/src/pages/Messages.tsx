@@ -21,6 +21,8 @@ interface ChatContact {
   messages: ChatMessage[];
 }
 
+// const [userSelected, setUserSelected] = useState<string>("null");
+
 const initialContacts: ChatContact[] = [
   {
     name: "Domingas Quissanga.",
@@ -102,24 +104,24 @@ const Messages = ({ }: MessagesProps) => {
   }, [messages, selectedContact]);
 
   return (
-    <div className="flex min-h-screen bg-background ">
+    <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar />
 
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
         <Header name="Room" />
-        <div className=" mt-6 mx-6 h-full mb-4">
-          <div className="flex h-full bg-card rounded-xl border border-border overflow-hidden">
+        <div className="px-6 pt-6 pb-4 flex-1 min-h-0 overflow-hidden">
+          <div className="flex h-[calc(100%-1rem)] bg-card rounded-xl border border-border overflow-hidden">
             {/* Contact list */}
-            <div className={`w-72 border-r border-border flex flex-col shrink-0 ${selectedContact ? "hidden md:flex" : "flex"}`}>
+            <div className={`w-72 border-r border-border flex flex-col shrink-0 overflow-hidden ${selectedContact ? "hidden md:flex" : "flex"}`}>
               <div className="p-5 border-b border-border">
                 <h2 className="text-lg font-display font-bold text-foreground">Messages</h2>
               </div>
-              <div className="flex-1 overflow-y-auto">
+              <div className="flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-transparent">
                 {contacts.map((contact) => (
                   <button
                     key={contact.username}
                     onClick={() => setSelectedContact(contact)}
-                    className={`w-full flex items-center gap-3 p-3 text-left hover:bg-surface transition-colors ${selectedContact?.username === contact.username ? "bg-surface" : ""
+                    className={`w-full flex items-center gap-3 p-3 text-left hover:bg-surface transition-colors ${selectedContact?.username === contact.username ? "bg-secondary text-primary-foreground" : ""
                       }`}
                   >
                     <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary text-sm font-bold shrink-0">
@@ -143,7 +145,7 @@ const Messages = ({ }: MessagesProps) => {
             </div>
 
             {/* Chat area */}
-            <div className={`flex-1 flex flex-col ${!selectedContact ? "hidden md:flex" : "flex"}`}>
+            <div className={`flex-1 flex flex-col min-h-0 overflow-hidden ${!selectedContact ? "hidden md:flex" : "flex"}`}>
               {selectedContact ? (
                 <>
                   <div className="p-4 border-b border-border flex items-center gap-3">
@@ -162,7 +164,7 @@ const Messages = ({ }: MessagesProps) => {
                     </div>
                   </div>
 
-                  <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-transparent">
                     {messages.map((msg) => (
                       <div key={msg.id} className={`flex ${msg.from === "me" ? "justify-end" : "justify-start"}`}>
                         <div
@@ -171,7 +173,7 @@ const Messages = ({ }: MessagesProps) => {
                             : "bg-secondary text-foreground rounded-bl-sm rounded-tl-none"
                             }`}
                         >
-                          <div className=" break-words max-w-[140px] sm:max-w-[240px] md:max-w-[10rem] lg:max-w-[20rem] xl:max-w-[35rem] flex-wrap "><p>{msg.text}</p></div>
+                          <div className="whitespace-pre-wrap break-words max-w-[140px] sm:max-w-[240px] md:max-w-[10rem] lg:max-w-[20rem] xl:max-w-[35rem] flex-wrap "><p>{msg.text}</p></div>
                           <span className={`text-[10px]  mt-1 block ${msg.from === "me" ? "text-primary-foreground/60" : "text-muted-foreground"}`}>
                             {msg.time}
                           </span>
@@ -187,11 +189,11 @@ const Messages = ({ }: MessagesProps) => {
                       onChange={(e) => {
                         setNewMessage(e.target.value);
                         const lines = e.target.value.split('\n').length;
-                        setTextareaRows(Math.min(lines, 5));
+                        setTextareaRows(Math.min(lines, 4));
                       }}
                       rows={textareaRows}
-                      placeholder="Type a message..."
-                      className="m-0 flex-1 bg-black/10 rounded-sm px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground border-none outline-none resize-none overflow-y-auto"
+                      placeholder="Type a message"
+                      className="m-0 flex-1 bg-black/10 rounded-sm px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground border-none outline-none resize-none overflow-y-auto scrollbar-thin  scrollbar-thumb-primary scrollbar-track-card"
                       style={{ lineHeight: '1.5' }}
                     />
                     <button

@@ -21,9 +21,9 @@ function LiveChat() {
                 <input
                   type="text"
                   placeholder="Enviar mensagem..."
-                  className=" bg-transparent w-full h-full px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                  className=" bg-transparent w-full h-full px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none"
                 />
-                <button className="px-2 py-2 rounded-lg text-muted-foreground text-xs font-medium hover:bg-secondary/20 transition-colors"><Send size={20} /></button>
+                <button className="px-2 py-2 rounded-lg text-primary text-xs font-medium hover:bg-secondary/20 transition-colors"><SendHorizontal  size={20} strokeWidth={3} /></button>
                 </div>
               </div>
               );
