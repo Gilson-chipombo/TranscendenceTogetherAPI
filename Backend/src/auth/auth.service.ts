@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-import { Prisma, User } from 'generated/prisma/browser';
+import { Prisma, User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service'
-import { RegisterRepository } from 'src/register/repository/register.repository';
+import { RegisterRepository } from '../register/repository/register.repository';
 import * as bcrypt from 'bcrypt';
 import { Auth } from './entities/auth.entity';
 
@@ -18,7 +18,7 @@ export class AuthService {
   
   async getlogin(createAuthDto: CreateAuthDto){
     const d = await this.registerRepository.findUserByEmail(createAuthDto.email);
-    const passwordMatch = d ? await bcrypt.compare(createAuthDto.password, d.password) : false;
+    const passwordMatch = d ? await bcrypt.compare(createAuthDto.password, d.password || 'google-oauth') : false;
     
     if ((d) && passwordMatch)    
     {

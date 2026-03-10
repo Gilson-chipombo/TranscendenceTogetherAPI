@@ -32,6 +32,7 @@ export class AuthGoogleController {
     return {
       message: 'Google login successful',
       user: result.user,
+      tokern: result.access_token,
     };
   }
 }

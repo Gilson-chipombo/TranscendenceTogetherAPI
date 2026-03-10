@@ -1,4 +1,4 @@
-# 🎨 Guia de Estilos — Tailwind CSS
+# Guia de Estilos — Tailwind CSS
 
 Este guia ensina como estilizar componentes no projeto usando **Tailwind CSS**.  
 Usa classes utilitárias directamente no `className` dos elementos JSX/TSX.
@@ -184,7 +184,7 @@ input:-webkit-autofill:active {
 }
 ```
 
-> ⚠️ Não uses `color` para mudar a cor do texto em autofill — o browser ignora.  
+> Não uses `color` para mudar a cor do texto em autofill — o browser ignora.  
 > Usa sempre `-webkit-text-fill-color`.
 
 ---
