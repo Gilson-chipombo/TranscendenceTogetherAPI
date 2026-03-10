@@ -13,7 +13,7 @@ const navItems = [
 
 const bottomItems = [
   { icon: Settings, label: "Settings", path: "/settings" },
-  { icon: LogOut, label: "Sign out", path: "/signout" },
+  { icon: LogOut, label: "Sign out", path: "/login" },
 ];
 
 export default function Sidebar({ children }: { children: ReactNode }) {

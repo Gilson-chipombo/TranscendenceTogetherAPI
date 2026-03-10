@@ -21,6 +21,8 @@ interface ChatContact {
   messages: ChatMessage[];
 }
 
+// const [userSelected, setUserSelected] = useState<string>("null");
+
 const initialContacts: ChatContact[] = [
   {
     name: "Domingas Quissanga.",
@@ -119,7 +121,7 @@ const Messages = ({ }: MessagesProps) => {
                   <button
                     key={contact.username}
                     onClick={() => setSelectedContact(contact)}
-                    className={`w-full flex items-center gap-3 p-3 text-left hover:bg-surface transition-colors ${selectedContact?.username === contact.username ? "bg-surface" : ""
+                    className={`w-full flex items-center gap-3 p-3 text-left hover:bg-surface transition-colors ${selectedContact?.username === contact.username ? "bg-secondary text-primary-foreground" : ""
                       }`}
                   >
                     <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary text-sm font-bold shrink-0">

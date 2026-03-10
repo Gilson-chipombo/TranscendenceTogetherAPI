@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import { Search, UserPlus, MessageCircle, MoreHorizontal, Check, X, UserX, Ban, BellOff, Eye } from "lucide-react";
+import { Search, UserPlus, MessageCircle, MoreHorizontal, Check, X, UserX, Ban, BellOff, Eye, Users, Wifi, Clock3 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   DropdownMenu,
@@ -74,6 +75,12 @@ const statusLabel: Record<FriendStatus, string> = {
   offline: "Offline",
 };
 
+const tabConfig = {
+  all: { label: "All", icon: Users },
+  online: { label: "Online", icon: Wifi },
+  pending: { label: "Pending", icon: Clock3 },
+} as const;
+
 const Friends = () => {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"all" | "online" | "pending">("all");
@@ -82,6 +89,8 @@ const Friends = () => {
   const [addSearch, setAddSearch] = useState("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [sentRequests, setSentRequests] = useState<string[]>([]);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [mobileSearchValue, setMobileSearchValue] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -144,22 +153,33 @@ const Friends = () => {
     navigate(`/messages?chat=${friend.username}`);
   };
 
+  const handleOpenMobileSearch = () => {
+    setMobileSearchValue(search);
+    setMobileSearchOpen(true);
+  };
+
+  const handleSubmitMobileSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearch(mobileSearchValue);
+    setMobileSearchOpen(false);
+  };
+
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar/>
+      <Sidebar />
       <div className="flex-1 flex flex-col min-h-screen">
         <Header name="Friends" />
-        <div className="max-w-3xl ml-6 mt-6 space-y-6">
+        <div className="w-full sm:w-full max-w-3xl px-4 sm:px-6 py-6 space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-display font-bold text-foreground">Friends</h1>
+              <h1 className="text-xl sm:text-2xl font-display font-bold text-foreground">Friends</h1>
               <p className="text-sm text-muted-foreground mt-1">{onlineCount} online now</p>
             </div>
             <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
               <DialogTrigger asChild>
                 <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
                   <UserPlus size={16} />
-                  Add Friend
+                  <span className="hidden sm:inline-block">Add Friend</span>
                 </button>
               </DialogTrigger>
               <DialogContent className="bg-card border-border">
@@ -214,34 +234,88 @@ const Friends = () => {
           </div>
 
           {/* Tabs + Search */}
-          <div className="flex items-center gap-3">
-            <div className="flex bg-card rounded-lg border border-border p-1">
+          <div className="w-full flex items-center justify-between gap-0 sm:gap-3">
+            <div className="flex bg-card rounded-lg border border-border p-0 sm:p-1">
               {(["all", "online", "pending"] as const).map((t) => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
-                  className={`px-3 py-1.5 rounded-md text-sm capitalize transition-colors ${tab === t ? "bg-surface text-foreground font-medium" : "text-muted-foreground hover:text-foreground"
+                  className={`px-3 py-1.5 rounded-md text-sm transition-colors inline-flex items-center gap-1.5 ${tab === t ? "bg-surface text-foreground font-medium" : "text-muted-foreground hover:text-foreground"
                     }`}
+                  aria-label={tabConfig[t].label}
                 >
-                  {t}
+                  <span className="hidden max-[350px]:inline" aria-hidden="true">
+                    {(() => {
+                      const Icon = tabConfig[t].icon;
+                      return <Icon size={16} />;
+                    })()}
+                  </span>
+                  <span className="max-[350px]:hidden">{tabConfig[t].label}</span>
                   {t === "pending" && pending.length > 0 && (
-                    <span className="ml-1.5 text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
+                    <span className="ml-0.5 sm:ml-1.5 text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
                       {pending.length}
                     </span>
                   )}
                 </button>
               ))}
             </div>
-            <div className="flex-1 flex items-center gap-2 bg-card rounded-lg border border-border px-3 py-2">
-              <Search size={14} className="text-muted-foreground" />
+            <div className="sm:w-full sm:flex-1 sm:flex items-center gap-0 hover:bg-secondary sm:gap-2 sm:bg-card rounded-lg p-2 sm:p-0 sm:justify-normal sm:border sm:border-border sm:px-3 sm:py-2">
+              <button
+                type="button"
+                onClick={handleOpenMobileSearch}
+                aria-label="Open search"
+                className="sm:hidden"
+              >
+                <Search size={24} className="text-muted-foreground" />
+              </button>
+              <Search size={18} className="hidden sm:block text-muted-foreground" />
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search friends..."
-                className="bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground flex-1"
+                className="hidden sm:inline-block bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground flex-1"
               />
             </div>
           </div>
+
+          {mobileSearchOpen && (
+            <Dialog open={mobileSearchOpen} onOpenChange={setMobileSearchOpen}>
+              <DialogContent className="bg-card border border-border sm:hidden rounded-2xl shadow-2xl max-w-sm">
+                <DialogHeader className="space-y-2">
+                  <DialogTitle className="text-xl font-semibold text-foreground">Find Friends</DialogTitle>
+                  <DialogDescription className="text-sm text-muted-foreground">
+                    Search by name or username
+                  </DialogDescription>
+                </DialogHeader>
+                <form
+                  onSubmit={handleSubmitMobileSearch}
+                  className="w-full space-y-4 pt-2"
+                >
+                  <div className="flex items-center gap-3 bg-surface rounded-xl px-4 py-3 border border-border transition-all focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/30">
+                    <Search size={20} className="text-primary shrink-0" />
+                    <input
+                      value={mobileSearchValue}
+                      onChange={(e) => setMobileSearchValue(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") {
+                          setMobileSearchOpen(false);
+                        }
+                      }}
+                      placeholder="Search friends..."
+                      className="bg-transparent border-none outline-none text-sm text-foreground placeholder:text-muted-foreground flex-1"
+                      autoFocus
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 px-4 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors"
+                  >
+                    Search
+                  </button>
+                </form>
+              </DialogContent>
+            </Dialog>
+          )}
 
           {/* Pending Requests */}
           {tab === "pending" && (
@@ -290,7 +364,7 @@ const Friends = () => {
                 <div
                   key={friend.id}
                   onClick={() => handleOpenChat(friend)}
-                  className="flex items-center justify-between bg-card rounded-xl p-4 border border-border hover:border-primary/20 transition-colors group cursor-pointer"
+                  className="flex items-center justify-between w-full bg-card rounded-xl p-4 border border-border hover:border-primary/20 transition-colors group cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <div className="relative">
