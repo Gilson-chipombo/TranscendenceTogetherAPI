@@ -10,7 +10,7 @@ import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  app.use(compression());
+  // app.use(compression()); // Disabled
   app.use(cookieParser());
   
   app.enableCors({

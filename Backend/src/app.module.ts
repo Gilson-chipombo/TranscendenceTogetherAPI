@@ -30,18 +30,19 @@ import {
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(
-        RequestIdMiddleware,
-        SecurityHeadersMiddleware,
-        ErrorHandlingMiddleware,
-        LoggerMiddleware,
-        RateLimitMiddleware,
-        SanitizationMiddleware,
-      )
-      .forRoutes({
-        path: '*',
-        method: RequestMethod.ALL,
-      });
+    // All middleware disabled
+    // consumer
+    //   .apply(
+    //     RequestIdMiddleware,
+    //     SecurityHeadersMiddleware,
+    //     ErrorHandlingMiddleware,
+    //     LoggerMiddleware,
+    //     RateLimitMiddleware,
+    //     SanitizationMiddleware,
+    //   )
+    //   .forRoutes({
+    //     path: '*',
+    //     method: RequestMethod.ALL,
+    //   });
   }
 }
