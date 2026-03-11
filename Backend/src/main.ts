@@ -6,10 +6,16 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
   
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const cors = require("cors");
+
+  app.useStaticAssets('uploads', {
+    prefix: '/uploads/',
+  });
   // app.use(compression()); // Disabled
   app.use(cookieParser());
   
@@ -31,11 +37,16 @@ async function bootstrap() {
     },
   }));
   
+  app.use(cors());
   const port = process.env.PORT || 3000;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
 }
+
+
 bootstrap().catch(err => {
   console.error('Error during application startup:', err);
   process.exit(1);
 });
+
+bootstrap();

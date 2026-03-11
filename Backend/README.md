@@ -31,11 +31,6 @@
 $ npm install
 ```
 
-## Criar um .env
-```
-  DATABASE_URL="postgresql://transcendence:transcendence123@localhost:54321/transcendence_db?schema=public"
-
-```
 
 ## Compile and run the project
 

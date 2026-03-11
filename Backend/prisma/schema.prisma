@@ -10,25 +10,72 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+
+
+  id        String   @id @default(uuid())
   name      String?
   email     String   @unique
   password  String?
-  googleID  String?
+  googleID  String? 
   fullName  String?
   birthDay  DateTime?
   country   String?
   province  String?
+
   createdAt DateTime @default(now())
   updateAt  DateTime @default(now())
+
+
+  rooms    Room[]
+  messages Message[]
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  roomId    String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+
+  room Room @relation(fields: [roomId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Room {
-  id        Int      @id @default(autoincrement())
-  name      String
-  userId    Int
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  name        String
+  hostId      String
+  inviteToken String   @unique
+  createdAt   DateTime @default(now())
+
+  host     User      @relation(fields: [hostId], references: [id])
+  messages Message[]
+}
+
+model Friendship {
+  id          String   @id @default(uuid())
+  requesterId String
+  receiverId  String
+  status      String   @default("peding")
+  createdAt   DateTime @default(now())
+}
+
+model DirectMessage {
+  id          String   @id @default(uuid())
+  senderId      String
+  receiverId  String
+  content     String
+  createdAt   DateTime @default(now())
 }

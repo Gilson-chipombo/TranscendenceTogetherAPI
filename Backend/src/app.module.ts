@@ -7,6 +7,13 @@ import { RegisterModule } from './register/register.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthGoogleModule } from './auth-google/auth-google.module';
 import { JwtAuthGuardGlobal } from './auth/guards/jwt-auth-global.guard';
+import { AdminModule } from './admin/admin.module';
+import { UserModule } from './users/user.module';
+import { RoomsModule } from './rooms/rooms.module';
+import { ChatModule } from './chat/chat.module';
+import { FriendsModule } from './friends/friends.module';
+import { DirectMessageModule } from './direct-message/direct-message.module';
+
 import {
   LoggerMiddleware,
   SanitizationMiddleware,
@@ -17,7 +24,18 @@ import {
 } from './middlewares';
 
 @Module({
-  imports: [RegisterModule, AuthModule, AuthGoogleModule],
+  imports: [
+    RegisterModule,
+    AuthModule,
+    AuthGoogleModule,
+    AuthModule,
+    UserModule,
+    AdminModule,
+    RoomsModule,
+    ChatModule,
+    FriendsModule,
+    DirectMessageModule
+  ],
   controllers: [AppController],
   providers: [
     AppService,

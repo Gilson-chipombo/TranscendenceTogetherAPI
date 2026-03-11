@@ -15,7 +15,6 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('protected')
   getProtected(@CurrentUser() user: any) {
     return {
       message: 'This is a protected route',
