@@ -21,7 +21,7 @@ export class RegisterRepository {
     console.log("Creating user with email: " + data.email);
     return this.prisma.user.create({
       data: {
-        name: data.email.split('@')[0],
+        name: data.email.split('@')[0], 
         email: data.email,
         password: hashedPassword,
       },
@@ -37,7 +37,7 @@ export class RegisterRepository {
 
   async getUserById(id: string): Promise<User | null> {
     return this.prisma.user.findUnique({
-      where: { id: Number(id) },
+      where: { id: String(id) },
     });
   }
 }
