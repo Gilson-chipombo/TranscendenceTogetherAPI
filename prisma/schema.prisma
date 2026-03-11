@@ -56,10 +56,10 @@ model Friendship {
   createdAt   DateTime @default(now())
 }
 
-model DirecteMessage {
+model DirectMessage {
   id          String   @id @default(uuid())
-  requesterId String
+  senderId      String
   receiverId  String
-  status      String
+  content     String
   createdAt   DateTime @default(now())
 }

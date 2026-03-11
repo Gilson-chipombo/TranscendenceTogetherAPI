@@ -19,7 +19,7 @@ export class FriendsController {
     async respondRequest(@Body() dto: RespondFriendRequestDto){
         return await this.service.respondRequest(
             dto.requestId,
-            dto.status
+            dto.status 
         );
     }
     @Post(":userId")

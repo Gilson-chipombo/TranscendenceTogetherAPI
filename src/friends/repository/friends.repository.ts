@@ -12,9 +12,11 @@ export class FriendsRepository {
         });
     }
 
-    async respondRequest(resquestId: string, status: string){
+    async respondRequest(requestId: string, status: string){
         return await this.prisma.friendship.update({
-            where: {id: resquestId},
+            where: {
+                id: requestId
+            },
             data: {status}
         });
     }
