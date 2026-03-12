@@ -20,3 +20,8 @@ npm i googleapis
 npm i google-auth-library
 
 npm install cookie-parser @types/cookie-parser passport-jwt @types/passport-jwt @nestjs/jwt
+
+redis
+
+npm install cacheable
+npm install @nestjs/cache-manager cache-manager cache-manager-redis-yet

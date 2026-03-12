@@ -15,7 +15,6 @@ export class RegisterRepository {
       },
     });
   }
-
   async createUser(data: CreateUserDto): Promise<User> {
     const hashedPassword = await bcrypt.hash(data.password, 10);
     console.log("Creating user with email: " + data.email);
@@ -39,5 +38,13 @@ export class RegisterRepository {
     return this.prisma.user.findUnique({
       where: { id: String(id) },
     });
+  }
+
+  async getOneUser(name: string): Promise<any>
+  {
+      const user_finded = this.prisma.user.findFirst({
+        where : {
+        name: String(name)},
+      })
   }
 }

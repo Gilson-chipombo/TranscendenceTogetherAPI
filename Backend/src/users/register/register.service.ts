@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterRepository } from './repository/register.repository';
-import { CreateUserDto } from './dto/create-user.dto';
+import { RegisterRepository } from '../repository/register.repository';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { SearchUser } from '../search/search-user.service';
 
 @Injectable()
 export class RegisterService {
@@ -38,13 +39,5 @@ export class RegisterService {
     } catch (error) {
       throw new Error('Error creating user: ' + error.message);
     }
-  }
-
-  async getAllUsers(): Promise<any> {
-    return this.registerRepository.getAllUsers();
-  }
-
-  async getUserById(id: string): Promise<any> {
-    return this.registerRepository.getUserById(id);
   }
 }

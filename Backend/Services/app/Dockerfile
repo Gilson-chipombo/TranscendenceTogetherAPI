@@ -2,12 +2,12 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY ../../package*.json ./
 
 
 RUN npm install
 
-COPY . .
+COPY ../../ .
 
 RUN npx prisma generate || true
 # RUN npx prisma migrate dev --name init --skip-seed || true

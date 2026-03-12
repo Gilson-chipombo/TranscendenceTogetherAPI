@@ -3,17 +3,17 @@ import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma/prisma.service';
-import { RegisterModule } from './register/register.module';
+import { RegisterModule } from './users/register/register.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthGoogleModule } from './auth-google/auth-google.module';
 import { JwtAuthGuardGlobal } from './auth/guards/jwt-auth-global.guard';
 import { AdminModule } from './admin/admin.module';
-import { UserModule } from './users/user.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { ChatModule } from './chat/chat.module';
 import { FriendsModule } from './friends/friends.module';
 import { DirectMessageModule } from './direct-message/direct-message.module';
-
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
 import {
   LoggerMiddleware,
   SanitizationMiddleware,
@@ -29,12 +29,24 @@ import {
     AuthModule,
     AuthGoogleModule,
     AuthModule,
-    UserModule,
     AdminModule,
     RoomsModule,
     ChatModule,
     FriendsModule,
-    DirectMessageModule
+    DirectMessageModule,
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => ({
+        store: await redisStore({
+          socket: {
+            host: process.env.HOST_REDIS,
+            port: Number(process.env.PORT_REDIS),
+          },
+          password: process.env.PASS_REDIS,
+          ttl: 600,
+        }),
+      }),
+    }),
   ],
   controllers: [AppController],
   providers: [
@@ -48,7 +60,6 @@ import {
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // All middleware disabled
     // consumer
     //   .apply(
     //     RequestIdMiddleware,

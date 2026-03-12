@@ -1,14 +1,15 @@
 import { Controller, Post, Body, Get, Res, HttpStatus, UseGuards } from '@nestjs/common';
 import type { Response } from 'express';
 import { RegisterService } from './register.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { Public } from '../auth/decorators/public.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { Public } from '../../auth/decorators/public.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../../auth/decorators/current-user.decorator';
+import { SearchUser } from '../search/search-user.service';
 
 @Controller('register')
 export class RegisterController {
-  constructor(private readonly registerService: RegisterService) {}
+  constructor(private readonly registerService: RegisterService, private readonly searchUser: SearchUser) {}
 
   @Public()
   @Post()
@@ -34,6 +35,6 @@ export class RegisterController {
 
   @Get('users')
   async getAllUsers() {
-    return this.registerService.getAllUsers();
+    return this.searchUser.getAllUsers();
   }
 }

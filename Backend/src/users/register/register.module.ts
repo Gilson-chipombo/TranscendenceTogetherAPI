@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { RegisterService } from './register.service';
 import { RegisterController } from './register.controller';
-import { RegisterRepository } from './repository/register.repository';
-import { PrismaService } from '../prisma/prisma.service';
+import { RegisterRepository } from '../repository/register.repository';
+import { PrismaService } from '../../prisma/prisma.service';
+import {SearchUser} from '../search/search-user.service'
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { PrismaService } from '../prisma/prisma.service';
     }),
   ],
   controllers: [RegisterController],
-  providers: [RegisterService, RegisterRepository, PrismaService],
-  exports: [RegisterService, RegisterRepository, PrismaService],
+  providers: [RegisterService, RegisterRepository, PrismaService, SearchUser],
+  exports: [RegisterService, RegisterRepository, PrismaService, SearchUser],
 })
 export class RegisterModule {}

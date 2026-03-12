@@ -13,13 +13,13 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
-    const { id, name, emails } = profile;
-    const user = {
-      email: emails[0].value,
-      googleID: id,
-      name: `${name.givenName || ''} ${name.familyName || ''}`.trim(),
-    };
-    done(null, user);
-  }
+  // async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
+  //   const { id, name, emails } = profile;
+  //   const user = {
+  //     email: emails[0].value,
+  //     googleID: id,
+  //     name: `${name.givenName || ''} ${name.familyName || ''}`.trim(),
+  //   };
+  //   done(null, user);
+  // }
 }

@@ -1,4 +1,21 @@
 services:
+  redis:
+    image: redis:7-alpine
+    ports: 
+      - 6379:6379
+    command: >
+      redis-server
+      --requirepass '${REDISPASS}'
+      --protected-mode yes
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+      --appendonly no
+      --save 60 1
+    networks:
+      - transcendence
+    volumes:
+      - redis_storage:/data
+
   postgres:
     image: postgres:16
     container_name: transcendence_postgres
@@ -15,9 +32,11 @@ services:
       - postgres_password
     ports:
       - "5432:5432"
-
+    
+  # redis:
+  #   image: redis
   # app:
-  #   build: .
+  #   build: ./Services/app
   #   container_name: trans_backend
   #   restart: always
   #   ports:
@@ -34,9 +53,12 @@ services:
       
 networks:
   transcendence:
+    # driver: brigde
     
 secrets:
   postgres_password:
     file: ./secrets/postgres_password
 volumes:
-  postgres_data:
+    postgres_data:
+    
+    redis_storage:
