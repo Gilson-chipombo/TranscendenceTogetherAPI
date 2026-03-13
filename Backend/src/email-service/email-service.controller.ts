@@ -8,6 +8,6 @@ export class EmailServiceController {
 
   @Get()
   findAll() {
-    return this.emailServiceService.sendEmail();
+    return this.emailServiceService.sendEmail("luzizilahelena687@gmail.com", "I LOVE YOU TOO MUCH`");
   }
 }
