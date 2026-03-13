@@ -22,6 +22,8 @@ import {
   ErrorHandlingMiddleware,
   RequestIdMiddleware,
 } from './middlewares';
+// import { EmailServiceModule } from './email-service/email-service.module';
+import { EmailServiceModule } from './email-service/email-service.module';
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import {
         }),
       }),
     }),
+    EmailServiceModule,
+    // EmailServiceModule,
   ],
   controllers: [AppController],
   providers: [

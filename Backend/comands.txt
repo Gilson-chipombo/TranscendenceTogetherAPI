@@ -25,3 +25,8 @@ redis
 
 npm install cacheable
 npm install @nestjs/cache-manager cache-manager cache-manager-redis-yet
+
+email service
+
+npm install @nestjs-modules/mailer nodemailer
+npm install -D @types/nodemailer

@@ -46,6 +46,7 @@ export class AuthService {
     }
   }
 
+  
   findAll() {
     return Auth;
   }

@@ -16,7 +16,7 @@ async function bootstrap() {
   app.useStaticAssets('uploads', {
     prefix: '/uploads/',
   });
-  // app.use(compression()); // Disabled
+  // app.use(compression());
   app.use(cookieParser());
   
   app.enableCors({
