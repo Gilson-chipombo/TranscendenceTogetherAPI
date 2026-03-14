@@ -3,12 +3,16 @@ import { JwtService } from '@nestjs/jwt';
 import { RegisterRepository } from '../repository/register.repository';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { SearchUser } from '../search/search-user.service';
+import { otpService } from '../otp/otp.service';
+import { EmailServiceService } from '../../email-service/email-service.service';
 
 @Injectable()
 export class RegisterService {
   constructor(
     private registerRepository: RegisterRepository,
+    private otpService: otpService,
     private jwtService: JwtService,
+    private emailService: EmailServiceService,
   ) {}
 
   async createUser(data: CreateUserDto): Promise<any> {
@@ -19,10 +23,10 @@ export class RegisterService {
         message: 'The email already exist',
       };
     }
-
     try {
+      const otp = await this.otpService.generateOtp();
+      this.emailService.sendEmail(data.email, otp)
       const newUser = await this.registerRepository.createUser(data);
-
       const token = this.jwtService.sign({
         id: newUser.id,
         email: newUser.email,

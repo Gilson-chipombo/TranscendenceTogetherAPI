@@ -24,6 +24,7 @@ import {
 } from './middlewares';
 // import { EmailServiceModule } from './email-service/email-service.module';
 import { EmailServiceModule } from './email-service/email-service.module';
+import { OtpModule } from './users/otp/otp.module';
 
 @Module({
   imports: [
@@ -49,7 +50,7 @@ import { EmailServiceModule } from './email-service/email-service.module';
         }),
       }),
     }),
-    EmailServiceModule,
+    EmailServiceModule, OtpModule,
     // EmailServiceModule,
   ],
   controllers: [AppController],

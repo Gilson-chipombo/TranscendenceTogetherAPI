@@ -40,11 +40,22 @@ export class RegisterRepository {
     });
   }
 
-  async getOneUser(name: string): Promise<any>
+  async getOneUserByname(name: string): Promise<any>
   {
-      const user_finded = this.prisma.user.findFirst({
+      const user_finded = await this.prisma.user.findFirst({
         where : {
         name: String(name)},
       })
+
+      if (!user_finded)
+        return null;
+      return user_finded.name;
+  }
+  async getUserByEmail(email: string): Promise<any>
+  {
+    const email_user = await this.prisma.user.findUnique({where: {email: email}});
+    if (email_user)
+      return email_user.email;
+    return null;
   }
 }

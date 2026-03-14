@@ -13,6 +13,6 @@ export class SearchUser {
         return this.repository.getUserById(id);
     }
     async getOneUser(name:string): Promise<any>{
-        return this.repository.getOneUser(name);
+        return this.repository.getOneUserByname(name);
     }
 }

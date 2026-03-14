@@ -6,18 +6,21 @@ import { AuthController } from './auth.controller';
 import { RegisterModule } from '../users/register/register.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
+import { EmailServiceModule } from '../email-service/email-service.module';
+import { EmailServiceService } from '../email-service/email-service.service';
 
 @Module({
   imports: [
     RegisterModule,
     PassportModule,
+    EmailServiceModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
       signOptions: { expiresIn: '7d' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, PrismaService],
+  providers: [AuthService, JwtStrategy, PrismaService, EmailServiceService],
   exports: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

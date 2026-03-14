@@ -5,15 +5,19 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service'
 import { RegisterRepository } from '../users/repository/register.repository';
+
+import { EmailServiceService } from '../email-service/email-service.service';
 import * as bcrypt from 'bcrypt';
 import { Auth } from './entities/auth.entity';
+import { ResetEmail } from '../users/otp/templates/reset-pw-template';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly registerRepository: RegisterRepository,
     private readonly jwtService: JwtService,
-    private prisma : PrismaService
+    private prisma : PrismaService,
+    private serviceEmail : EmailServiceService,
   ) {}
   
   async getlogin(createAuthDto: CreateAuthDto){
@@ -46,6 +50,13 @@ export class AuthService {
     }
   }
 
+  async resetEmail(email: string)
+  {
+      const find_email = this.registerRepository.getUserByEmail(email);
+      if (!find_email)
+        return null;
+      
+  }
   
   findAll() {
     return Auth;
