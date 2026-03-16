@@ -22,23 +22,26 @@ model Admin {
 }
 
 model User {
-
-
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String?
-  email     String   @unique
+  email     String    @unique
   password  String?
-  googleID  String? 
-  fullName  String?
+  googleID  String?
+  firstName String?
+  lastName  String?
   birthDay  DateTime?
   country   String?
+  photo     String?
+  phone     String?
   province  String?
+  role      String    @default("user")
+  block     Boolean   @default(false)
 
   createdAt DateTime @default(now())
   updateAt  DateTime @default(now())
 
-
   rooms    Room[]
+  config   Settings[]
   messages Message[]
 }
 
@@ -69,13 +72,27 @@ model Friendship {
   requesterId String
   receiverId  String
   status      String   @default("peding")
+  block       Boolean  @default(false)
   createdAt   DateTime @default(now())
 }
 
 model DirectMessage {
-  id          String   @id @default(uuid())
-  senderId      String
-  receiverId  String
-  content     String
-  createdAt   DateTime @default(now())
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  content    String
+  createdAt  DateTime @default(now())
+}
+
+model Settings {
+  id                String   @id @default(uuid())
+  pushNotifications Boolean? @default(true)
+  sound             Boolean  @default(true)
+  privateProfile    Boolean? @default(false)
+  showStatus        Boolean? @default(true)
+  autoReprodution   Boolean? @default(true)
+  language          String   @default("portugues")
+  userId            String
+  config            User     @relation(fields: [userId], references: [id])
+  createdAt         DateTime @default(now())
 }
