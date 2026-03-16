@@ -1,8 +1,8 @@
 services:
   redis:
     image: redis:7-alpine
-    ports: 
-      - 6379:6379
+    # ports: 
+    #   - 7000:6379
     command: >
       redis-server
       --requirepass '${REDISPASS}'
@@ -30,26 +30,24 @@ services:
       - postgres_data:/var/lib/postgresql/data
     secrets:
       - postgres_password
-    ports:
-      - "5432:5432"
+        #ports:
+      #     - "5432:5432"
     
-  # redis:
-  #   image: redis
-  # app:
-  #   build: ./Services/app
-  #   container_name: trans_backend
-  #   restart: always
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - postgres
-  #   env_file:
-  #     - .env
-  #   volumes:
-  #     - .:/app
-  #   command: npm run start:migrate:prod
-  #   networks:
-  #     - transcendence
+  app:
+    build: .
+    container_name: trans_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    # volumes:
+    #   - .:/app
+    command: npm run start:test:dev
+    networks:
+      - transcendence
       
 networks:
   transcendence:
