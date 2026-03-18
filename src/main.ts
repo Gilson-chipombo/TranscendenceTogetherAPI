@@ -39,8 +39,11 @@ async function bootstrap() {
   
   app.use(cors());
   const port = process.env.PORT || 3000;
-  await app.listen(port);
-  console.log(`Application is running on: http://localhost:${port}`);
+  const HOST = '0.0.0.0';
+  await app.listen(port, HOST), () => {
+    console.log(`Server is running on http://${HOST}:${port}`);
+  }
+  // console.log(`Application is running on: http://localhost:${port}`);
 }
 
 // bootstrap().catch(err => {
