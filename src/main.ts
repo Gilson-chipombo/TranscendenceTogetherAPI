@@ -7,11 +7,22 @@ import compression from 'compression';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 
 async function bootstrap() {
   
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const cors = require("cors");
+
+  const config = new DocumentBuilder()
+    .setTitle('Transcendence Together API')
+    .setDescription('API documentation for Transcendence Together application')
+    .setVersion('1.0')
+    .addTag('transcendence')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
 
   app.useStaticAssets('uploads', {
     prefix: '/uploads/',
@@ -26,6 +37,9 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
   });
   
+
+
+
   app.useGlobalFilters(new AllExceptionsFilter());
   
   app.useGlobalPipes(new ValidationPipe({
@@ -43,12 +57,7 @@ async function bootstrap() {
   await app.listen(port, HOST), () => {
     console.log(`Server is running on http://${HOST}:${port}`);
   }
-  // console.log(`Application is running on: http://localhost:${port}`);
 }
 
-// bootstrap().catch(err => {
-//   console.error('Error during application startup:', err);
-//   process.exit(1);
-// });
 
 bootstrap();
