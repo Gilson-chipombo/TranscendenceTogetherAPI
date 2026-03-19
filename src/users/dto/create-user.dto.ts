@@ -7,4 +7,28 @@ export class CreateUserDto {
   @IsString({ message: 'Password must be a string' })
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password: string;
+
+  @IsString()
+  name: string;
+
+  @IsString()
+  firstName: string;
+
+  @IsString()
+  lastName: string;
+
+  @IsString()
+  birthDay: string;
+
+  @IsString()
+  country: string;
+
+  @IsString()
+  photo: string;
+
+  @IsString()
+  phone: string;
+
+  @IsString()
+  province: string;
 }
