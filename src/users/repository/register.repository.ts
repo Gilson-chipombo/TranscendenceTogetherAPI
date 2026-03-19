@@ -22,6 +22,14 @@ export class RegisterRepository {
       data: {
         name: data.email.split('@')[0], 
         email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        birthDay: data.birthDay,
+        country: data.country,
+        photo: data.photo,
+        phone: data.phone,
+        province: data.province,
+        //gender: data.gender,
         password: hashedPassword,
       },
     });

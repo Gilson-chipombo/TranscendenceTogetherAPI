@@ -1,4 +1,4 @@
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { IsDate, IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail({}, { message: 'Email must be a valid email address' })
@@ -17,12 +17,14 @@ export class CreateUserDto {
   @IsString()
   lastName: string;
 
-  @IsString()
-  birthDay: string;
+  @IsOptional()
+  @IsDate()
+  birthDay?: Date;
 
   @IsString()
   country: string;
 
+  @IsOptional()
   @IsString()
   photo: string;
 
@@ -31,4 +33,9 @@ export class CreateUserDto {
 
   @IsString()
   province: string;
+  
+
+  @IsOptional()
+  @IsString()
+  gender?: string
 }

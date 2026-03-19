@@ -38,6 +38,13 @@ export class RegisterService {
           id: newUser.id,
           email: newUser.email,
           name: newUser.name,
+          firstName: newUser.firstName,
+          lastName:newUser.lastName,
+          country: newUser.country,
+          birthDay: newUser.birthDay,
+          gender: newUser.gender,
+          phone: newUser.phone,
+          province: newUser.province
         },
       };
     } catch (error) {
