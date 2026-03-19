@@ -21,6 +21,7 @@ export class CreateUserDto {
   @IsDate()
   birthDay?: Date;
 
+  @IsOptional()
   @IsString()
   country: string;
 
@@ -28,14 +29,15 @@ export class CreateUserDto {
   @IsString()
   photo: string;
 
+  @IsOptional()
   @IsString()
   phone: string;
 
+  @IsOptional()
   @IsString()
   province: string;
   
 
-  @IsOptional()
   @IsString()
   gender?: string
 }
