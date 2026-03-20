@@ -69,6 +69,7 @@ model Room {
   dataInicio  DateTime
   dataTermino DateTime?
   hostId      String
+  isPrivate   Boolean   @default(false)
   inviteToken String?   @unique
   createdAt   DateTime  @default(now())
 

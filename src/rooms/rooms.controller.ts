@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Res } from '@nestjs/common';
 import { RoomsRepository } from './repository/rooms.repository';
 import { CreateRoomDto } from './dto/create-room.dto';
 
@@ -7,8 +7,10 @@ export class RoomsController {
     constructor(private service: RoomsRepository){}
 
     @Post()
+    @HttpCode(201)
     async create(@Body() dto: CreateRoomDto){
-        return this.service.create(dto);
+        const room = this.service.create(dto);
+        return room;
     }
 
     @Get("invite/:token")
