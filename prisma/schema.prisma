@@ -21,10 +21,11 @@ model Admin {
   createdAt DateTime @default(now())
 }
 
-enum Gender{
+enum Gender {
   masculino
   feminino
 }
+
 model User {
   id        String    @id @default(uuid())
   name      String?
@@ -62,11 +63,14 @@ model Message {
 }
 
 model Room {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
+  title       String
+  dataInicio  DateTime
+  dataTermino DateTime?
   hostId      String
-  inviteToken String   @unique
-  createdAt   DateTime @default(now())
+  inviteToken String?   @unique
+  createdAt   DateTime  @default(now())
 
   host     User      @relation(fields: [hostId], references: [id])
   messages Message[]
