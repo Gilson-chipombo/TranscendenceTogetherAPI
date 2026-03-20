@@ -9,7 +9,7 @@ export class RegisterRepository {
   constructor(private prisma: PrismaService) {}
 
   async findUserByEmail(email: string): Promise<User | null> {
-    return this.prisma.user.findUnique({
+    return await this.prisma.user.findUnique({
       where: {
         email: email,
       },
@@ -20,7 +20,7 @@ export class RegisterRepository {
     console.log("Creating user with email: " + data.email);
     return this.prisma.user.create({
       data: {
-        name: data.email.split('@')[0], 
+        name: data.name, 
         email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
@@ -29,7 +29,7 @@ export class RegisterRepository {
         photo: data.photo,
         phone: data.phone,
         province: data.province,
-        //gender: data.gender,
+        gender: data.gender,
         password: hashedPassword,
       },
     });

@@ -1,4 +1,9 @@
-import { IsDate, IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsDate, IsEmail, IsEnum, IsOptional, IsString, MinLength } from 'class-validator';
+
+export enum gender{
+  MASCULINO = 'masculino',
+  FEMININO = 'feminino',
+}
 
 export class CreateUserDto {
   @IsEmail({}, { message: 'Email must be a valid email address' })
@@ -13,6 +18,7 @@ export class CreateUserDto {
 
   @IsString()
   firstName: string;
+
 
   @IsString()
   lastName: string;
@@ -37,7 +43,6 @@ export class CreateUserDto {
   @IsString()
   province: string;
   
-
-  @IsString()
-  gender?: string
+  @IsEnum(gender)
+  gender?: gender
 }
