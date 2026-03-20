@@ -46,9 +46,10 @@ model User {
   createdAt DateTime @default(now())
   updateAt  DateTime @default(now())
 
-  rooms    Room[]
-  config   Settings[]
-  messages Message[]
+  rooms      Room[]
+  config     Settings[]
+  messages   Message[]
+  roomMember RoomMember[]
 }
 
 model Message {
@@ -73,8 +74,26 @@ model Room {
   inviteToken String?   @unique
   createdAt   DateTime  @default(now())
 
-  host     User      @relation(fields: [hostId], references: [id])
-  messages Message[]
+  host       User         @relation(fields: [hostId], references: [id])
+  messages   Message[]
+  roomMember RoomMember[]
+}
+
+enum Type {
+  admin
+  guest
+}
+
+model RoomMember {
+  id     String @id @default(uuid())
+  userId String
+  roomId String
+  role   Type   @default(guest)
+
+  createdAt DateTime @default(now())
+
+  room Room @relation(fields: [roomId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Friendship {
