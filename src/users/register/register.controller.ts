@@ -5,6 +5,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { Public } from '../../auth/decorators/public.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
+import { OtpDto } from '../dto/otp.dto';
 import { SearchUser } from '../search/search-user.service';
 
 @Controller('register')
@@ -14,7 +15,20 @@ export class RegisterController {
   @Public()
   @Post()
   async signupUser(@Body() userData: CreateUserDto, @Res({ passthrough: true }) res: Response) {
-    const result = await this.registerService.createUser(userData);
+    const result = await this.registerService.verify_user(userData);
+    
+    if (result.status === 400) {
+      return res.status(HttpStatus.BAD_REQUEST).json(result);
+    }
+    return {
+      result,
+    };
+  }
+
+  @Public()
+  @Post('validate-user')
+  async validade_user(@Body() userData: OtpDto, @Res({ passthrough: true }) res: Response) {
+    const result = await this.registerService.validateOTP(userData);
     
     if (result.status === 400) {
       return res.status(HttpStatus.BAD_REQUEST).json(result);
@@ -28,8 +42,8 @@ export class RegisterController {
     });
 
     return {
+      status: 201,
       message: 'User created successfully',
-      user: result.user,
     };
   }
 

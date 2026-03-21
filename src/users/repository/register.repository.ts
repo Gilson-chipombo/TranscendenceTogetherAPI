@@ -17,8 +17,8 @@ export class RegisterRepository {
     });
   }
   async createUser(data: CreateUserDto): Promise<User> {
-    const hashedPassword = await bcrypt.hash(data.password, 10);
-    console.log("Creating user with email: " + data.email);
+    // console.log(data);
+    // const hashedPassword = await bcrypt.hash(data.password, 10);
     return this.prisma.user.create({
       data: {
         name: data.name, 
@@ -31,7 +31,7 @@ export class RegisterRepository {
         phone: data.phone,
         province: data.province,
         gender: data.gender,
-        password: hashedPassword,
+        password: data.password,
       },
     });
   }
@@ -66,11 +66,18 @@ export class RegisterRepository {
       return email_user.email;
     return null;
   }
-  async getKeyinCache(key: string): Promise<any> {
-    return await this.redis.get(key);
+  async getKeyinCache(family: string, key: string): Promise<any> {
+    const full_key = `${family}:${key}`;
+    return await this.redis.get(full_key);
   }
   async setKeyInCache(family:string, key: string, value: string): Promise<void>
   {
-    await this.redis.set(`${family}:${key}`, value, "EX", 60 * 5);
+    const full_key = `${family}:${key}`;
+    await this.redis.set(full_key, value, "EX", 60 * 5);
+  }
+  async deleteKeyInCache(family:string, key: string): Promise<void>
+  {
+    const full_key = `${family}:${key}`;
+    await this.redis.del(full_key);
   }
 }
