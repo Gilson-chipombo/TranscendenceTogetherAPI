@@ -3,10 +3,11 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { RedisService } from '../../redis/redis.service';
 
 @Injectable()
 export class RegisterRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private redis: RedisService) {}
 
   async findUserByEmail(email: string): Promise<User | null> {
     return await this.prisma.user.findUnique({
@@ -34,7 +35,6 @@ export class RegisterRepository {
       },
     });
   }
-
 
   async getAllUsers() {
     return this.prisma.user.findMany({
@@ -65,5 +65,12 @@ export class RegisterRepository {
     if (email_user)
       return email_user.email;
     return null;
+  }
+  async getKeyinCache(key: string): Promise<any> {
+    return await this.redis.get(key);
+  }
+  async setKeyInCache(family:string, key: string, value: string): Promise<void>
+  {
+    await this.redis.set(`${family}:${key}`, value, "EX", 60 * 5);
   }
 }

@@ -5,6 +5,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { SearchUser } from '../search/search-user.service';
 import { otpService } from '../otp/otp.service';
 import { EmailServiceService } from '../../email-service/email-service.service';
+import { RedisService } from '../../redis/redis.service';
 
 @Injectable()
 export class RegisterService {
@@ -13,6 +14,7 @@ export class RegisterService {
     private otpService: otpService,
     private jwtService: JwtService,
     private emailService: EmailServiceService,
+    private redis: RedisService,
   ) {}
 
   async createUser(data: CreateUserDto): Promise<any> {
@@ -26,6 +28,7 @@ export class RegisterService {
     try {
       const otp = await this.otpService.generateOtp();
       this.emailService.sendEmail(data.email, otp)
+      this.registerRepository.setKeyInCache('otp', data.email, otp);
       const newUser = await this.registerRepository.createUser(data);
       const token = this.jwtService.sign({
         id: newUser.id,

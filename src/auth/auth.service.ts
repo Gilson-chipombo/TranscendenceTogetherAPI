@@ -16,13 +16,13 @@ export class AuthService {
   constructor(
     private readonly registerRepository: RegisterRepository,
     private readonly jwtService: JwtService,
-    private prisma : PrismaService,
-    private serviceEmail : EmailServiceService,
+    // private prisma : PrismaService,
+    // private serviceEmail : EmailServiceService,
   ) {}
   
   async getlogin(createAuthDto: CreateAuthDto){
     const d = await this.registerRepository.findUserByEmail(createAuthDto.email);
-    const passwordMatch = d ? await bcrypt.compare(createAuthDto.password, d.password || 'google-oauth') : false;
+    const passwordMatch = d ? await bcrypt.compare(createAuthDto.password, d.password || 'google-auth') : false;
     
     if ((d) && passwordMatch)    
     {
@@ -55,7 +55,6 @@ export class AuthService {
       const find_email = this.registerRepository.getUserByEmail(email);
       if (!find_email)
         return null;
-      
   }
   
   findAll() {

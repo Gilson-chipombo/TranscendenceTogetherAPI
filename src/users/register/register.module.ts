@@ -9,6 +9,7 @@ import { OtpModule } from '../otp/otp.module';
 import { otpService } from '../otp/otp.service';
 import { EmailServiceService } from '../../email-service/email-service.service';
 import { EmailServiceModule } from '../../email-service/email-service.module';
+import { RedisService } from '../../redis/redis.service';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { EmailServiceModule } from '../../email-service/email-service.module';
     OtpModule, EmailServiceModule,
   ],
   controllers: [RegisterController],
-  providers: [RegisterService, RegisterRepository, PrismaService, SearchUser, otpService, EmailServiceService],
-  exports: [RegisterService, RegisterRepository, PrismaService, SearchUser],
+  providers: [RegisterService, RegisterRepository, PrismaService, SearchUser, otpService, EmailServiceService, RedisService],
+  exports: [RegisterService, RegisterRepository, PrismaService, SearchUser, RedisService],
 })
 export class RegisterModule {}

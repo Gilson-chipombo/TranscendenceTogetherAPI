@@ -12,8 +12,8 @@ import { RoomsModule } from './rooms/rooms.module';
 import { ChatModule } from './chat/chat.module';
 import { FriendsModule } from './friends/friends.module';
 import { DirectMessageModule } from './direct-message/direct-message.module';
-// import { CacheModule } from '@nestjs/cache-manager';
-// import { redisStore } from 'cache-manager-redis-yet';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
 import {
   LoggerMiddleware,
   SanitizationMiddleware,
@@ -37,19 +37,19 @@ import { OtpModule } from './users/otp/otp.module';
     ChatModule,
     FriendsModule,
     DirectMessageModule,
-    // CacheModule.registerAsync({
-    //   isGlobal: true,
-    //   useFactory: async () => ({
-    //     store: await redisStore({
-    //       socket: {
-    //         host: process.env.HOST_REDIS,
-    //         port: Number(process.env.PORT_REDIS),
-    //       },
-    //       password: process.env.PASS_REDIS,
-    //       ttl: 600,
-    //     }),
-    //   }),
-    // }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => ({
+        store: await redisStore({
+          socket: {
+            host: process.env.HOST_REDIS_LOCAL,
+            port: Number(process.env.PORT_REDIS),
+          },
+          password: process.env.PASS_REDIS,
+          ttl: 600,
+        }),
+      }),
+    }),
     EmailServiceModule, OtpModule,
     // EmailServiceModule,
   ],

@@ -1,8 +1,8 @@
 services:
   redis:
     image: redis:7-alpine
-    # ports: 
-    #   - 7000:6379
+    ports: 
+      - 6379:6379
     command: >
       redis-server
       --requirepass '${REDISPASS}'
@@ -16,38 +16,38 @@ services:
     volumes:
       - redis_storage:/data
 
-  postgres:
-    image: postgres:16
-    container_name: transcendence_postgres
-    restart: always
-    environment:
-      POSTGRES_USER: transcendence
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-      POSTGRES_DB: transcendence_db
-    networks:
-      - transcendence
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    secrets:
-      - postgres_password
+  # postgres:
+  #   image: postgres:16
+  #   container_name: transcendence_postgres
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: transcendence
+  #     POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+  #     POSTGRES_DB: transcendence_db
+  #   networks:
+  #     - transcendence
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   secrets:
+  #     - postgres_password
         #ports:
       #     - "5432:5432"
     
-  app:
-    build: .
-    container_name: trans_backend
-    restart: always
-    ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    env_file:
-      - .env
-    # volumes:
-    #   - .:/app
-    command: npm run start:test:dev
-    networks:
-      - transcendence
+  # app:
+  #   build: .
+  #   container_name: trans_backend
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - postgres
+  #   env_file:
+  #     - .env
+  #   # volumes:
+  #   #   - .:/app
+  #   command: npm run start:test:dev
+  #   networks:
+  #     - transcendence
       
 networks:
   transcendence:
