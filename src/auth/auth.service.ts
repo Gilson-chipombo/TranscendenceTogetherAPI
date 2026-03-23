@@ -10,14 +10,18 @@ import { EmailServiceService } from '../email-service/email-service.service';
 import * as bcrypt from 'bcrypt';
 import { Auth } from './entities/auth.entity';
 import { ResetEmail } from '../users/otp/templates/reset-pw-template';
+import { otpService } from '../users/otp/otp.service';
+import { UpdateUserDto } from '../users/dto/update-user.dto';
+import {v4 as uuidv4} from 'uuid'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly registerRepository: RegisterRepository,
     private readonly jwtService: JwtService,
+    private readonly otp: otpService,
     // private prisma : PrismaService,
-    // private serviceEmail : EmailServiceService,
+    private email : EmailServiceService,
   ) {}
   
   async getlogin(createAuthDto: CreateAuthDto){
@@ -54,9 +58,57 @@ export class AuthService {
   {
       const find_email = this.registerRepository.getUserByEmail(email);
       if (!find_email)
-        return null;
+        return { 
+                status: 401,
+                message: "email not founded"
+      };
+      const my_otp = this.otp.generateOtp();
+      this.email.sendEmail(email, my_otp);
+      const my_uuid = uuidv4();
+      this.registerRepository.setKeyInCache('reset', my_uuid, JSON.stringify({email, my_otp}));
+      return {
+              status: 200,
+              temporary_id: my_uuid
+      };
   }
-  
+  async verify_otpToEmail(family:string, key:string, otp:string)
+  {
+      const data = await this.registerRepository.getKeyinCache(family, key);
+      if (data)
+      {
+        const parse = await JSON.parse(data);
+        if (data.my_opt == otp)
+        {
+            this.registerRepository.deleteKeyInCache(family, key);
+            const new_uuid = uuidv4();
+            this.registerRepository.setKeyInCache(family, new_uuid, data.email);
+            return { 
+                    status: 200,
+                    message: "OTP has been validate ok",
+                    temporary_id: new_uuid,
+            }
+        }
+        else
+          return {
+                  status: 400,
+                  message: "inválid OTP"
+          }
+      }
+      else
+        return {
+                status: 400,
+                message: "OTP is expires",        
+        }
+  }
+  async resetPassWord(family:string, key:string, data_dto: UpdateUserDto): Promise<any>
+  {
+      const data = this.registerRepository.getKeyinCache(family, key);
+      if (data)
+      {
+        const hash_password = await bcrypt.hash(data_dto.password, 10);
+        this.registerRepository.setPassWord(data_dto.email, hash_password);
+      }
+  }
   findAll() {
     return Auth;
   }

@@ -4,6 +4,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { RedisService } from '../../redis/redis.service';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
 export class RegisterRepository {
@@ -18,7 +19,7 @@ export class RegisterRepository {
   }
   async createUser(data: CreateUserDto): Promise<User> {
     // console.log(data);
-    // const hashedPassword = await bcrypt.hash(data.password, 10);
+    const hashedPassword = await bcrypt.hash(data.password, 10);
     return this.prisma.user.create({
       data: {
         name: data.name, 
@@ -31,7 +32,7 @@ export class RegisterRepository {
         phone: data.phone,
         province: data.province,
         gender: data.gender,
-        password: data.password,
+        password: hashedPassword,
       },
     });
   }
@@ -79,5 +80,15 @@ export class RegisterRepository {
   {
     const full_key = `${family}:${key}`;
     await this.redis.del(full_key);
+  }
+
+  async setPassWord(email:string, new_pw:string)
+  {
+      this.prisma.user.update({
+        where: {email :email},
+        data: {
+          password: new_pw,
+        }
+      })
   }
 }
