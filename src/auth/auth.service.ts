@@ -35,22 +35,18 @@ export class AuthService {
       console.log("Login successful for email: " + createAuthDto.email);
       const payload = {
         id: d.id,
-        email: d.email
+        email: d.email,
+        role: d.role,
       }
       const token = this.jwtService.sign(payload);
       return {
         access_token: token,
-        user: {
-          id: d.id,
-          email: d.email,
-          name: d.name,
-        }
       };
     }
     else
     {
       return {
-        statusCode: 400,
+        status: 400,
         message: "email or password incorrect",
         };
     }

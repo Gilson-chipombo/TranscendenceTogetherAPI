@@ -17,7 +17,7 @@ export class AuthController {
   async login(@Body() createAuthDto: CreateAuthDto, @Res({ passthrough: true }) res: Response) {
     const result = await this.authService.getlogin(createAuthDto);
     
-    if (result.statusCode === 400) {
+    if (result.status === 400) {
       return res.status(HttpStatus.BAD_REQUEST).json(result);
     }
 
@@ -30,8 +30,8 @@ export class AuthController {
 
     return {
       status: 200,
-      message: 'Login successful',
-      user: result.user,
+      message: 'Login successful'
+      // user: result.user,
     };
   }
   @Public()

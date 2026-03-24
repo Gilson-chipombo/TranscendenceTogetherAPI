@@ -79,7 +79,7 @@ export class RegisterService {
       // });
       return {
         status: 201,
-        tmporary_id: tmp_uuid,
+        temporary_id: tmp_uuid,
       }
     } catch (error) {
       throw new Error('Error creating user: ' + error.message);
