@@ -74,7 +74,7 @@ export class RegisterRepository {
   async setKeyInCache(family:string, key: string, value: string): Promise<void>
   {
     const full_key = `${family}:${key}`;
-    await this.redis.set(full_key, value, "EX", 60 * 5);
+    await this.redis.set(full_key, value, "EX", 60 * 60 * 24);
   }
   async deleteKeyInCache(family:string, key: string): Promise<void>
   {

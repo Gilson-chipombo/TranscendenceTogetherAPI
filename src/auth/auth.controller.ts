@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, Req } from '@nestjs/common';
 import type { Response } from 'express';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { UpdateUserDto } from '../users/dto/update-user.dto';
 import { Public } from './decorators/public.decorator';
+import { ResetAuthDto } from './dto/reset-auth.dto';
+import { SetNewPassWordDto } from './dto/reset-auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -26,9 +29,31 @@ export class AuthController {
     });
 
     return {
+      status: 200,
       message: 'Login successful',
       user: result.user,
     };
+  }
+  @Public()
+  @Post('forgot-password')
+  async sendToCheckEmail(@Body() data_email: any)
+  {
+    return await this.authService.resetEmail(data_email.email);
+  }
+  @Public()
+  @Post('verify-otp')
+  async verify_OTP(@Body() data: ResetAuthDto)
+  {
+    // console.log(req.headers);
+    // console.log(req.body)
+    return await this.authService.verify_otpToEmail('reset',data);
+  }
+
+  @Public()
+  @Post('reset-password')
+  async resetPassord(@Body() data:SetNewPassWordDto)
+  {
+      return await this.authService.resetPassWord('reset', data);
   }
 
   @Public()
