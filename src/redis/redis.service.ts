@@ -6,12 +6,7 @@ export class RedisService extends Redis implements OnModuleInit, OnModuleDestroy
   private readonly logger = new Logger(RedisService.name);
 
   constructor() {
-    super(process.env.REDIS_URL, {
-      tls: {
-        rejectUnauthorized: false,
-      },
-      maxRetriesPerRequest: 3,
-    });
+    super(process.env.REDIS_URL);
   }
 
   async onModuleInit() {
