@@ -5,6 +5,7 @@ import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { RedisService } from '../../redis/redis.service';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { InitUserDto } from '../dto/create-user.dto';
 
 @Injectable()
 export class RegisterRepository {
@@ -18,21 +19,19 @@ export class RegisterRepository {
     });
   }
   async createUser(data: CreateUserDto): Promise<User> {
-    // console.log(data);
     const hashedPassword = await bcrypt.hash(data.password, 10);
     return this.prisma.user.create({
       data: {
-        name: data.name, 
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        birthDay: data.birthDay,
-        country: data.country,
-        photo: data.photo,
-        phone: data.phone,
-        province: data.province,
-        gender: data.gender,
-        password: hashedPassword,
+          email: data.email,
+          name: data.name,
+          firstName: data.firstName,
+          lastName:data.lastName,
+          country: data.country,
+          birthDay: data.birthDay,
+          gender: data.gender,
+          phone: data.phone,
+          province: data.province,
+          password: hashedPassword,
       },
     });
   }
@@ -44,7 +43,7 @@ export class RegisterRepository {
   }
 
   async getUserById(id: string): Promise<User | null> {
-    return this.prisma.user.findUnique({
+    return await this.prisma.user.findUnique({
       where: { id: String(id) },
     });
   }
@@ -64,9 +63,24 @@ export class RegisterRepository {
   {
     const email_user = await this.prisma.user.findUnique({where: {email: email}});
     if (email_user)
-      return email_user;
+      return email_user.email;
     return null;
   }
+
+  async updateUser(data: UpdateUserDto, email: string): Promise<any>
+  {
+    const {password, ...updateData} = data;
+    const upDateInput: Prisma.UserUpdateInput = { ...updateData };
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      upDateInput.password = hashedPassword;
+    }
+    return await this.prisma.user.update({
+      where: { email: email },
+      data: upDateInput,
+    });
+  }
+
   async getKeyinCache(family: string, key: string): Promise<any> {
     const full_key = `${family}:${key}`;
     return await this.redis.get(full_key);
@@ -84,7 +98,7 @@ export class RegisterRepository {
 
   async setPassWord(email:string, new_pw:string)
   {
-     return await this.prisma.user.update({
+      return await this.prisma.user.update({
         where: {email :email},
         data: {
           password: new_pw,

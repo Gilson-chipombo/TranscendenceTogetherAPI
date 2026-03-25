@@ -7,7 +7,10 @@ import { otpService } from '../otp/otp.service';
 import { EmailServiceService } from '../../email-service/email-service.service';
 import { RedisService } from '../../redis/redis.service';
 import { OtpDto } from '../dto/otp.dto';
+import { InitUserDto } from '../dto/create-user.dto';
 import {v4 as uuidv4} from 'uuid'
+import { UpdateAuthDto } from '../../auth/dto/update-auth.dto';
+import { openAsBlob } from 'fs';
 
 @Injectable()
 export class RegisterService {
@@ -20,6 +23,8 @@ export class RegisterService {
   ) {}
 
   async createUser(data: CreateUserDto): Promise<any> {
+    
+    // console.log(data);
     try {
       const newUser = await this.registerRepository.createUser((data));
       const token = this.jwtService.sign({
@@ -47,7 +52,7 @@ export class RegisterService {
     }
   }
 
-  async verify_user(data: CreateUserDto): Promise<any> {
+  async verify_user(data: InitUserDto): Promise<any> {
     const existingUser = await this.registerRepository.findUserByEmail(data.email);
     if (existingUser) {
       return {
@@ -56,14 +61,15 @@ export class RegisterService {
       };
     }
     try {
-      const otp = await this.otpService.generateOtp();
-      this.emailService.sendEmail(data.email, otp)
+      const otp = this.otpService.generateOtp();
+      console.log(otp);
+      await this.emailService.sendEmail(data.email, otp)
       const tmp_uuid = uuidv4();
-  
-     await this.registerRepository.setKeyInCache('signup', tmp_uuid, JSON.stringify({data, otp: otp}));
+      await this.registerRepository.setKeyInCache('signup', tmp_uuid, JSON.stringify({data, otp: otp}));
       return {
         status: 201,
         uuid: tmp_uuid,
+        otp: otp,
       }
     } catch (error) {
       throw new Error('Error creating user: ' + error.message);
@@ -78,8 +84,12 @@ export class RegisterService {
       const otp = parse.otp;
       if (data_validade.otp === otp)
       {
-        this.registerRepository.deleteKeyInCache('signup', data_validade.uuid);
-        return this.createUser(userData);
+        await this.registerRepository.deleteKeyInCache('signup', data_validade.uuid);
+        const uuid = uuidv4();
+        await this.registerRepository.setKeyInCache('signup', uuid, JSON.stringify(userData));
+        return {
+            uuid: uuid,
+        };
       }
       else
         return {status: 400, message: "invalid OTP"};
@@ -87,4 +97,30 @@ export class RegisterService {
   else
     return {status: 400, message: "Error in UUID"}
   }
+
+
+  async fillotherFieldsTonext(data: CreateUserDto)
+  {
+    const tmp_data = await this.registerRepository.getKeyinCache('signup', data.uuid);
+    console.log(tmp_data);
+    if (tmp_data)
+    {
+      const parse = JSON.parse(tmp_data);
+      data.email = parse.email;
+      data.password = parse.password;
+      console.log(data);
+      return await this.createUser(data);
+    }
+    return { 
+          status: 401,
+          message: 'uuid not Founded',
+    }
+  }
+
+  async updateDataUser(data: UpdateAuthDto, email: string): Promise<any>
+  {
+    const user = await this.registerRepository.updateUser(data, email);
+  }
 }
+
+

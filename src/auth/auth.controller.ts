@@ -29,7 +29,7 @@ export class AuthController {
     });
 
     return {
-      status: res.status,
+      status: 201,
       message: 'Login successful',
       response: {
         access_token: result.access_token,

@@ -1,11 +1,31 @@
-import { IsDate, IsEmail, IsEnum, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/mapped-types';
 export enum gender{
   MASCULINO = 'masculino',
   FEMININO = 'feminino',
 }
 
-export class CreateUserDto {
+export class InitUserDto{
+  @ApiProperty({
+    description: 'The email for the user',
+    example: 'exemplo.@gmal.com'
+  })
+  @IsString()
+  @IsNotEmpty()
+    email: string;
+
+   @ApiProperty({
+    description: 'The email of the user',
+    example: 'My_password-1234'
+  })
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(8)
+    password: string;
+}
+
+export class CreateUserDto extends PartialType(InitUserDto){
   @ApiProperty({
     description: 'The name of the user',
     example: 'Gilson-Chipombo',
@@ -51,6 +71,9 @@ export class CreateUserDto {
   @IsString()
   country: string;
 
+  @IsString()
+  @IsNotEmpty()
+    uuid:string
 
   @ApiProperty({
     description: 'The photo of the user',
@@ -83,12 +106,4 @@ export class CreateUserDto {
   @IsOptional()
   @IsEnum(gender)
   gender?: gender
-
-  @ApiProperty({
-    description: 'The password of the user',
-    example: 'password123',
-  })  
-  @IsString({ message: 'Password must be a string' })
-  @MinLength(6, { message: 'Password must be at least 6 characters long' })
-  password: string;
 }
