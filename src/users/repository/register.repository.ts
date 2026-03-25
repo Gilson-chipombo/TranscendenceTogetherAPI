@@ -64,7 +64,7 @@ export class RegisterRepository {
   {
     const email_user = await this.prisma.user.findUnique({where: {email: email}});
     if (email_user)
-      return email_user.email;
+      return email_user;
     return null;
   }
   async getKeyinCache(family: string, key: string): Promise<any> {
@@ -84,7 +84,7 @@ export class RegisterRepository {
 
   async setPassWord(email:string, new_pw:string)
   {
-      this.prisma.user.update({
+     return await this.prisma.user.update({
         where: {email :email},
         data: {
           password: new_pw,

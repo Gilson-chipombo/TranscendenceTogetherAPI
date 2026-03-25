@@ -66,20 +66,23 @@ export class AuthService {
       this.registerRepository.setKeyInCache('reset', my_uuid, JSON.stringify({email:email, my_otp:my_otp}));
       return {
               status: 200,
-              temporary_id: my_uuid,
+              uuid: my_uuid,
+              otp: my_otp,
       };
   }
   async verify_otpToEmail(family:string, dataDto: ResetAuthDto)
   {
-      const data = await this.registerRepository.getKeyinCache(family, dataDto.uuid);
+    const data = await this.registerRepository.getKeyinCache(family, dataDto.uuid);
+      
       if (data)
       {
+        console.log(data);
         const parse = await JSON.parse(data);
         if (parse.my_otp == dataDto.otp)
         {
             this.registerRepository.deleteKeyInCache(family, dataDto.uuid);
             const new_uuid = uuidv4();
-            this.registerRepository.setKeyInCache(family, new_uuid, data.email);
+            this.registerRepository.setKeyInCache(family, new_uuid, JSON.stringify({email: parse.email}));
             return { 
                     status: 200,
                     message: "OTP has been validate ok",
@@ -95,7 +98,7 @@ export class AuthService {
       else
         return {
                 status: 400,
-                message: "OTP is expires",        
+                message: "inválid OTP",        
         }
   }
   async resetPassWord(family:string, data_dto: SetNewPassWordDto): Promise<any>
@@ -104,9 +107,15 @@ export class AuthService {
       console.log(data_dto.uuid);
       if (data)
       {
+        const parse = await JSON.parse(data);
         const hash_password = await bcrypt.hash(data_dto.password, 10);
-        this.registerRepository.setPassWord(data, hash_password);
-        console.log(hash_password);
+        const modifiedUser = await this.registerRepository.setPassWord(parse.email, hash_password);
+        if (!modifiedUser)
+        return {
+          status: 400,
+          message: "Failed to modify password"
+        };
+        await this.registerRepository.deleteKeyInCache(family, data_dto.uuid);
         return {
           status: 201,
           message: "The password was modified sucessfull",

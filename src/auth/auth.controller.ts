@@ -30,8 +30,10 @@ export class AuthController {
 
     return {
       status: 200,
-      message: 'Login successful'
-      // user: result.user,
+      message: 'Login successful',
+      response: {
+        access_token: result.access_token,
+      }
     };
   }
   @Public()
