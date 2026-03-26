@@ -96,7 +96,7 @@ export class RegisterController {
   }
   // @Public()
   @Get('users')
-  async getAllUsers(@CurrentUser() user: any) {
+  async getAllUsers() {
     // console.log(user);
     return this.searchUser.getAllUsers();
   }

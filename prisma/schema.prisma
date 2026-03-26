@@ -115,6 +115,7 @@ model DirectMessage {
 
 model Settings {
   id                String   @id @default(uuid())
+  color             String[] 
   pushNotifications Boolean? @default(true)
   sound             Boolean  @default(true)
   privateProfile    Boolean? @default(false)
