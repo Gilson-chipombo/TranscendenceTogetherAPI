@@ -9,6 +9,8 @@ import { OtpDto } from '../dto/otp.dto';
 import { SearchUser } from '../search/search-user.service';
 import { InitUserDto } from '../dto/create-user.dto';
 import { use } from 'passport';
+import { UpdateAuthDto } from '../../auth/dto/update-auth.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('register')
 export class RegisterController {
@@ -77,9 +79,25 @@ export class RegisterController {
       response: result,
     };
   }
-  // @Post('updateUser')
-  // @Get('users')
-  // async getAllUsers() {
-  //   return this.searchUser.getAllUsers();
-  // }
+
+  // @UseGuards(AuthGuard('jwt'))
+  @Public()
+  @Post('updateUser')
+  async updateUser(@CurrentUser() user: any, @Body() data: UpdateAuthDto)
+  {
+    if (user)
+    {
+      return this.registerService.updateDataUser(data, user.email);
+    }
+    return {
+      status: 400,
+      message: 'user not found',
+    }
+  }
+  // @Public()
+  @Get('users')
+  async getAllUsers(@CurrentUser() user: any) {
+    // console.log(user);
+    return this.searchUser.getAllUsers();
+  }
 }

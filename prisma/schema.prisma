@@ -120,7 +120,7 @@ model Settings {
   privateProfile    Boolean? @default(false)
   showStatus        Boolean? @default(true)
   autoReprodution   Boolean? @default(true)
-  language          String   @default("portugues")
+  language          String?   @default("portugues")
   userId            String
   config            User     @relation(fields: [userId], references: [id])
   createdAt         DateTime @default(now())

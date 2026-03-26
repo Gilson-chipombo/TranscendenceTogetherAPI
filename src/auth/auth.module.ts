@@ -18,7 +18,7 @@ import { OtpModule } from '../users/otp/otp.module';
     EmailServiceModule,
     OtpModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'your-secret-key',
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '7d' },
     }),
   ],
