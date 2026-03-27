@@ -20,7 +20,7 @@ export class EmailServiceService {
     try {
       const html_message =  generateOtpEmail;
       await this.transporter.sendMail({
-        from: `"No Reply" <${process.env.EMAIL_USER}>`,
+        from: `"TOGETHER" <${process.env.EMAIL_USER}>`,
         to: email,
         subject: 'Your OTP Code',
         html: html_message(otp, email)
