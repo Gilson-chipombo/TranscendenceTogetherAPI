@@ -7,6 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
   providers: [DirectMessageService, DmGateway, DmRepository, PrismaService],
-  controllers: [DirectMessageController]
+  controllers: [DirectMessageController],
 })
 export class DirectMessageModule {}
+
