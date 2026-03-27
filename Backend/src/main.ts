@@ -7,6 +7,7 @@ import compression from 'compression';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   
@@ -38,9 +39,33 @@ async function bootstrap() {
   }));
   
   app.use(cors());
+  
+  // Swagger Configuration
+  const config = new DocumentBuilder()
+    .setTitle('Together API')
+    .setDescription('API documentation for Together - A real-time communication platform')
+    .setVersion('1.0.0')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'access_token'
+    )
+    .addTag('Chat', 'Real-time messaging and room messages')
+    .addTag('Rooms', 'Room management and invitations')
+    .addTag('Auth', 'Authentication endpoints')
+    .build();
+  
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayOperationId: true,
+    },
+  });
+  
   const port = process.env.PORT || 3000;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
+  console.log(`Swagger documentation available at: http://localhost:${port}/api/docs`);
 }
 
 // bootstrap().catch(err => {

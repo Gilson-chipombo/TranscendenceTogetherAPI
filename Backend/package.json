@@ -32,6 +32,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/platform-socket.io": "^11.1.16",
+    "@nestjs/swagger": "^11.2.6",
     "@nestjs/websockets": "^11.1.16",
     "@prisma/adapter-mariadb": "^7.4.0",
     "@prisma/adapter-pg": "^7.4.2",
@@ -62,6 +63,7 @@
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^13.0.0",
     "vim": "^0.1.0"
   },
