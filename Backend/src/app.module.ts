@@ -12,6 +12,7 @@ import { RoomsModule } from './rooms/rooms.module';
 import { ChatModule } from './chat/chat.module';
 import { FriendsModule } from './friends/friends.module';
 import { DirectMessageModule } from './direct-message/direct-message.module';
+import { TransmissionModule } from './transmission/transmission.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
 import {
@@ -37,6 +38,7 @@ import { OtpModule } from './users/otp/otp.module';
     ChatModule,
     FriendsModule,
     DirectMessageModule,
+    TransmissionModule,
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: async () => ({
