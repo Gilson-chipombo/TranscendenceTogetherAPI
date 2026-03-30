@@ -24,8 +24,16 @@ export class RoomsRepository {
             const room = await this.prisma.room.create({
                 data: {
                     name: data.name,
-                    hostId: hostId,
+                    title: data.title,
+                    dataInicio: data.dataInicio,
+                    dataTermino: data.dataTermino,
+                    isPrivate: data.isPrivate ?? false,
                     inviteToken: inviteToken,
+                    host: {
+                        connect: {
+                            id: hostId,
+                        }
+                    }
                 },
                 include: {
                     host: {

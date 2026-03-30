@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, Req } from '@nestjs/common';
 import type { Response } from 'express';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { UpdateUserDto } from '../users/dto/update-user.dto';
 import { Public } from './decorators/public.decorator';
+import { ResetAuthDto } from './dto/reset-auth.dto';
+import { SetNewPassWordDto } from './dto/reset-auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,7 +17,7 @@ export class AuthController {
   async login(@Body() createAuthDto: CreateAuthDto, @Res({ passthrough: true }) res: Response) {
     const result = await this.authService.getlogin(createAuthDto);
     
-    if (result.statusCode === 400) {
+    if (result.status === 400) {
       return res.status(HttpStatus.BAD_REQUEST).json(result);
     }
 
@@ -26,9 +29,33 @@ export class AuthController {
     });
 
     return {
+      status: 201,
       message: 'Login successful',
-      user: result.user,
+      response: {
+        access_token: result.access_token,
+      }
     };
+  }
+  @Public()
+  @Post('forgot-password')
+  async sendToCheckEmail(@Body() data_email: any)
+  {
+    return await this.authService.resetEmail(data_email.email);
+  }
+  @Public()
+  @Post('verify-otp')
+  async verify_OTP(@Body() data: ResetAuthDto)
+  {
+    // console.log(req.headers);
+    // console.log(req.body)
+    return await this.authService.verify_otpToEmail('reset',data);
+  }
+
+  @Public()
+  @Post('reset-password')
+  async resetPassord(@Body() data:SetNewPassWordDto)
+  {
+      return await this.authService.resetPassWord('reset', data);
   }
 
   @Public()

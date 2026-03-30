@@ -3,13 +3,16 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { RedisService } from '../../redis/redis.service';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { InitUserDto } from '../dto/create-user.dto';
 
 @Injectable()
 export class RegisterRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private redis: RedisService) {}
 
   async findUserByEmail(email: string): Promise<User | null> {
-    return this.prisma.user.findUnique({
+    return await this.prisma.user.findUnique({
       where: {
         email: email,
       },
@@ -17,16 +20,21 @@ export class RegisterRepository {
   }
   async createUser(data: CreateUserDto): Promise<User> {
     const hashedPassword = await bcrypt.hash(data.password, 10);
-    console.log("Creating user with email: " + data.email);
     return this.prisma.user.create({
       data: {
-        name: data.email.split('@')[0], 
-        email: data.email,
-        password: hashedPassword,
+          email: data.email,
+          name: data.name,
+          firstName: data.firstName,
+          lastName:data.lastName,
+          country: data.country,
+          birthDay: data.birthDay,
+          gender: data.gender,
+          phone: data.phone,
+          province: data.province,
+          password: hashedPassword,
       },
     });
   }
-
 
   async getAllUsers() {
     return this.prisma.user.findMany({
@@ -35,7 +43,7 @@ export class RegisterRepository {
   }
 
   async getUserById(id: string): Promise<User | null> {
-    return this.prisma.user.findUnique({
+    return await this.prisma.user.findUnique({
       where: { id: String(id) },
     });
   }
@@ -57,5 +65,44 @@ export class RegisterRepository {
     if (email_user)
       return email_user.email;
     return null;
+  }
+
+  async updateUser(data: UpdateUserDto, email: string): Promise<any>
+  {
+    const {password, ...updateData} = data;
+    const upDateInput: Prisma.UserUpdateInput = { ...updateData };
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      upDateInput.password = hashedPassword;
+    }
+    return await this.prisma.user.update({
+      where: { email: email },
+      data: upDateInput,
+    });
+  }
+
+  async getKeyinCache(family: string, key: string): Promise<any> {
+    const full_key = `${family}:${key}`;
+    return await this.redis.get(full_key);
+  }
+  async setKeyInCache(family:string, key: string, value: string): Promise<void>
+  {
+    const full_key = `${family}:${key}`;
+    await this.redis.set(full_key, value, "EX", 60 * 60 * 24);
+  }
+  async deleteKeyInCache(family:string, key: string): Promise<void>
+  {
+    const full_key = `${family}:${key}`;
+    await this.redis.del(full_key);
+  }
+
+  async setPassWord(email:string, new_pw:string)
+  {
+      return await this.prisma.user.update({
+        where: {email :email},
+        data: {
+          password: new_pw,
+        }
+      })
   }
 }

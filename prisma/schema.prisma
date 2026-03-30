@@ -21,6 +21,11 @@ model Admin {
   createdAt DateTime @default(now())
 }
 
+enum Gender {
+  masculino
+  feminino
+}
+
 model User {
   id        String    @id @default(uuid())
   name      String?
@@ -29,20 +34,22 @@ model User {
   googleID  String?
   firstName String?
   lastName  String?
-  birthDay  DateTime?
+  birthDay  DateTime? @db.Date
   country   String?
   photo     String?
   phone     String?
   province  String?
+  gender    Gender?
   role      String    @default("user")
   block     Boolean   @default(false)
 
   createdAt DateTime @default(now())
   updateAt  DateTime @default(now())
 
-  rooms    Room[]
-  config   Settings[]
-  messages Message[]
+  rooms      Room[]
+  config     Settings[]
+  messages   Message[]
+  roomMember RoomMember[]
 }
 
 model Message {
@@ -57,14 +64,36 @@ model Message {
 }
 
 model Room {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
+  title       String
+  dataInicio  DateTime
+  dataTermino DateTime?
   hostId      String
-  inviteToken String   @unique
-  createdAt   DateTime @default(now())
+  isPrivate   Boolean   @default(false)
+  inviteToken String?   @unique
+  createdAt   DateTime  @default(now())
 
-  host     User      @relation(fields: [hostId], references: [id])
-  messages Message[]
+  host       User         @relation(fields: [hostId], references: [id])
+  messages   Message[]
+  roomMember RoomMember[]
+}
+
+enum Type {
+  admin
+  guest
+}
+
+model RoomMember {
+  id     String @id @default(uuid())
+  userId String
+  roomId String
+  role   Type   @default(guest)
+
+  createdAt DateTime @default(now())
+
+  room Room @relation(fields: [roomId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Friendship {
@@ -86,12 +115,13 @@ model DirectMessage {
 
 model Settings {
   id                String   @id @default(uuid())
+  color             String[] 
   pushNotifications Boolean? @default(true)
   sound             Boolean  @default(true)
   privateProfile    Boolean? @default(false)
   showStatus        Boolean? @default(true)
   autoReprodution   Boolean? @default(true)
-  language          String   @default("portugues")
+  language          String?   @default("portugues")
   userId            String
   config            User     @relation(fields: [userId], references: [id])
   createdAt         DateTime @default(now())

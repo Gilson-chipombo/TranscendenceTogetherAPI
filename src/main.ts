@@ -10,7 +10,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const cors = require("cors");
 
@@ -21,7 +20,7 @@ async function bootstrap() {
   app.use(cookieParser());
   
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3001',
+    origin: '*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
@@ -68,9 +67,5 @@ async function bootstrap() {
   console.log(`Swagger documentation available at: http://localhost:${port}/api/docs`);
 }
 
-// bootstrap().catch(err => {
-//   console.error('Error during application startup:', err);
-//   process.exit(1);
-// });
 
 bootstrap();

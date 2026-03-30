@@ -16,27 +16,25 @@ services:
     volumes:
       - redis_storage:/data
 
-  postgres:
-    image: postgres:16
-    container_name: transcendence_postgres
-    restart: always
-    environment:
-      POSTGRES_USER: transcendence
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-      POSTGRES_DB: transcendence_db
-    networks:
-      - transcendence
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    secrets:
-      - postgres_password
-    ports:
-      - "5432:5432"
+  # postgres:
+  #   image: postgres:16
+  #   container_name: transcendence_postgres
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: transcendence
+  #     POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+  #     POSTGRES_DB: transcendence_db
+  #   networks:
+  #     - transcendence
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   secrets:
+  #     - postgres_password
+        #ports:
+      #     - "5432:5432"
     
-  # redis:
-  #   image: redis
   # app:
-  #   build: ./Services/app
+  #   build: .
   #   container_name: trans_backend
   #   restart: always
   #   ports:
@@ -45,9 +43,9 @@ services:
   #     - postgres
   #   env_file:
   #     - .env
-  #   volumes:
-  #     - .:/app
-  #   command: npm run start:migrate:prod
+  #   # volumes:
+  #   #   - .:/app
+  #   command: npm run start:test:dev
   #   networks:
   #     - transcendence
       

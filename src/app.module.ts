@@ -26,6 +26,7 @@ import {
 // import { EmailServiceModule } from './email-service/email-service.module';
 import { EmailServiceModule } from './email-service/email-service.module';
 import { OtpModule } from './users/otp/otp.module';
+import { RedisService } from './redis/redis.service';
 
 @Module({
   imports: [
@@ -38,26 +39,26 @@ import { OtpModule } from './users/otp/otp.module';
     ChatModule,
     FriendsModule,
     DirectMessageModule,
-    TransmissionModule,
-    CacheModule.registerAsync({
-      isGlobal: true,
-      useFactory: async () => ({
-        store: await redisStore({
-          socket: {
-            host: process.env.HOST_REDIS,
-            port: Number(process.env.PORT_REDIS),
-          },
-          password: process.env.PASS_REDIS,
-          ttl: 600,
-        }),
-      }),
-    }),
+    // CacheModule.registerAsync({
+    //   isGlobal: true,
+    //   useFactory: async () => ({
+    //     store: await redisStore({
+    //       socket: {
+    //         host: process.env.HOST_REDIS_LOCAL,
+    //         port: Number(process.env.PORT_REDIS),
+    //       },
+    //       password: process.env.PASS_REDIS,
+    //       ttl: 600,
+    //     }),
+    //   }),
+    // }),
     EmailServiceModule, OtpModule,
     // EmailServiceModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
+    RedisService,
     PrismaService,
     {
       provide: APP_GUARD,

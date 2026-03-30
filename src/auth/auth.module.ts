@@ -8,19 +8,22 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailServiceModule } from '../email-service/email-service.module';
 import { EmailServiceService } from '../email-service/email-service.service';
+import { otpService } from '../users/otp/otp.service';
+import { OtpModule } from '../users/otp/otp.module';
 
 @Module({
   imports: [
     RegisterModule,
     PassportModule,
     EmailServiceModule,
+    OtpModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'your-secret-key',
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '7d' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, PrismaService, EmailServiceService],
+  providers: [AuthService, JwtStrategy, PrismaService, EmailServiceService, otpService],
   exports: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

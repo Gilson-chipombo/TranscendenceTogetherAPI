@@ -21,6 +21,7 @@ export class AuthGoogleService {
     });
 
     return {
+      status: 201,
       access_token: token,
       user: {
         id: user.id,
