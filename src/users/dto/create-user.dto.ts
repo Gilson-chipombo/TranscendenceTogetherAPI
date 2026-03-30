@@ -26,6 +26,8 @@ export class InitUserDto{
 }
 
 export class CreateUserDto extends PartialType(InitUserDto){
+  
+  
   @ApiProperty({
     description: 'The name of the user',
     example: 'Gilson-Chipombo',
@@ -47,6 +49,13 @@ export class CreateUserDto extends PartialType(InitUserDto){
   })
   @IsString()
   lastName: string;
+
+  @ApiProperty({
+    description: 'The last name of the user',
+    example: 'Andre',
+  })
+  @IsString()
+  password: string;
 
   @ApiProperty({
     description: 'The email of the user',
