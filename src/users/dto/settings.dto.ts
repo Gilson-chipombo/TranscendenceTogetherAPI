@@ -1,4 +1,4 @@
-import { IsBoolean, } from "class-validator";
+import { IsBoolean,IsJSON} from "class-validator";
 
 export class SettingsDto{
     @IsBoolean()
@@ -8,5 +8,7 @@ export class SettingsDto{
         showStatus?: boolean;
         autoReprodution?: boolean;
         language?: string;
+    @IsJSON()
+        color: JSON;
         // userId?: string;
 }
