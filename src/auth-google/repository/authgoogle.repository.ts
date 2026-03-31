@@ -33,7 +33,7 @@ export class AuthGoogleRepository {
       data: {
         email,
         name,
-        password: 'google-oauth',
+        // password: ' ',
       },
     });
   }

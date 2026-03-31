@@ -12,7 +12,6 @@ export class SettingsController {
 
     @Get()
     async getSettings(@CurrentUser() user: any){
-        // console.log(user);
         const result = await this.settings.getSettings(user.id);
         if (!result)
         {
