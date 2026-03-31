@@ -30,3 +30,13 @@ email service
 
 npm install @nestjs-modules/mailer nodemailer
 npm install -D @types/nodemailer
+
+{
+  "default": {
+    "background": "#131418",
+    "card": "#1F2229",
+    "primary": "#F9A82F",
+    "accent": "#33CC33",
+    "foreground": "#E9F1F2"
+  }
+}

@@ -27,6 +27,9 @@ import {
 import { EmailServiceModule } from './email-service/email-service.module';
 import { OtpModule } from './users/otp/otp.module';
 import { RedisService } from './redis/redis.service';
+import { SettingsService } from './settings/settings.service';
+import { SettingsController } from './settings/settings.controller';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -52,10 +55,10 @@ import { RedisService } from './redis/redis.service';
     //     }),
     //   }),
     // }),
-    EmailServiceModule, OtpModule,
+    EmailServiceModule, OtpModule, SettingsModule,
     // EmailServiceModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, SettingsController],
   providers: [
     AppService,
     RedisService,
@@ -64,6 +67,7 @@ import { RedisService } from './redis/redis.service';
       provide: APP_GUARD,
       useClass: JwtAuthGuardGlobal,
     },
+    SettingsService,
   ],
 })
 export class AppModule implements NestModule {

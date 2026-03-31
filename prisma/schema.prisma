@@ -115,14 +115,14 @@ model DirectMessage {
 
 model Settings {
   id                String   @id @default(uuid())
-  color             String[] 
+  color             Json?
   pushNotifications Boolean? @default(true)
   sound             Boolean  @default(true)
   privateProfile    Boolean? @default(false)
   showStatus        Boolean? @default(true)
   autoReprodution   Boolean? @default(true)
   language          String?   @default("portugues")
-  userId            String
+  userId            String @unique
   config            User     @relation(fields: [userId], references: [id])
   createdAt         DateTime @default(now())
 }

@@ -30,6 +30,7 @@ export class AuthGoogleController {
     });
 
     return {
+      status: 201,
       message: 'Google login successful',
       user: result.user,
       token: result.access_token,
