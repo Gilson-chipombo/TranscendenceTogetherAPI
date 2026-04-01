@@ -4,9 +4,9 @@ import { PrismaService } from '../../prisma/prisma.service';
 
 
 export enum Gender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-  OTHER = 'OTHER'
+  MALE = 'musculine',
+  FEMALE = 'femenino',
+  OTHER = 'other'
 }
 
 @Injectable()

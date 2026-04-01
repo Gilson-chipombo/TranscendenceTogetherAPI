@@ -151,6 +151,7 @@ export class RegisterRepository {
 
   async deleteRefreshToken(refresh_token: string)
   {
+    // const tokenInCache = bcrypt.compare(refresh_token, 10);
     return await this.redis.del("refreshToken:" + refresh_token);
   }
 

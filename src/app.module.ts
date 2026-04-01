@@ -36,7 +36,8 @@ import { CloudinaryModule } from '@scwar/nestjs-cloudinary';
 // import { UploadController } from './upload/upload.controller';
 import { RefreshTokenController } from './refresh-token/refresh-token.controller';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
-
+import { RefreshTokenService } from './refresh-token/refresh-token.service';
+import { JwtService } from '@nestjs/jwt';
 @Module({
   imports: [
     RegisterModule,
@@ -75,6 +76,8 @@ import { RefreshTokenModule } from './refresh-token/refresh-token.module';
     AppService,
     RedisService,
     PrismaService,
+    RefreshTokenService,
+    JwtService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuardGlobal,

@@ -27,13 +27,11 @@ export class AuthGoogleService {
       id: user.id,
       type: 'refresh',
     }, { expiresIn: '7d' });
-    await this.registerRepository.setKeyInCache('refresh_token', refreshToken, JSON.stringify({userId: user.id}));
-
-    const token_cripted = await bcrypt.hash(refreshToken, 10);
+    await this.registerRepository.registerRefreshToken(refreshToken, JSON.stringify({userId: user.id}));
     return {
       status: 201,
       access_token: token,
-      refresh_token: token_cripted,
+      refresh_token: refreshToken,
       user: {
         id: user.id,
         email: user.email,
