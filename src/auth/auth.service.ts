@@ -127,7 +127,9 @@ export class AuthService {
       }
   }
 
-      
+  async getProfile(userId: string): Promise<User | null> {
+    return await this.registerRepository.getUserById(userId);
+  }
   findAll() {
     return Auth;
   }

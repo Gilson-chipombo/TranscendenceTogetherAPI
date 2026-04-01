@@ -46,8 +46,6 @@ export class AuthController {
   @Post('verify-otp')
   async verify_OTP(@Body() data: ResetAuthDto)
   {
-    // console.log(req.headers);
-    // console.log(req.body)
     return await this.authService.verify_otpToEmail('reset',data);
   }
 
@@ -62,7 +60,10 @@ export class AuthController {
   @Get('logout')
   async logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('access_token');
-    return { message: 'Logout successful' };
+    return { 
+      status: 200,
+      message: 'Logout successful',
+    };
   }
 
   @Get()
@@ -71,8 +72,8 @@ export class AuthController {
   }
 
   @Get('id/:id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
+  getProfile(@Param('id') id: string) {
+    return this.authService.getProfile(id);
   }
 
   @Patch('id/:id')

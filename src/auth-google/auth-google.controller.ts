@@ -19,10 +19,9 @@ export class AuthGoogleController {
   @Public()
   @Get('callback')
   @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@Req() req: any, @Res() res: Response) {
-    const result = await this.authGoogleService.loginWithGoogle(req.user);
-    console.log('Google login result:', result);
-    res.cookie('access_token', result.access_token, {
+    async googleAuthRedirect(@Req() req: any, @Res() res: Response) {
+      const result = await this.authGoogleService.loginWithGoogle(req.user);
+      res.cookie('access_token', result.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

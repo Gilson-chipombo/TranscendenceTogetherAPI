@@ -30,6 +30,10 @@ import { RedisService } from './redis/redis.service';
 import { SettingsService } from './settings/settings.service';
 import { SettingsController } from './settings/settings.controller';
 import { SettingsModule } from './settings/settings.module';
+import { CloudinaryModule } from '@scwar/nestjs-cloudinary';
+// import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { UploadService } from './upload/upload.service';
+import { UploadController } from './upload/upload.controller';
 
 @Module({
   imports: [
@@ -55,10 +59,16 @@ import { SettingsModule } from './settings/settings.module';
     //     }),
     //   }),
     // }),
+    CloudinaryModule.forRoot({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+      
+    }),
     EmailServiceModule, OtpModule, SettingsModule,
     // EmailServiceModule,
   ],
-  controllers: [AppController, SettingsController],
+  controllers: [AppController, SettingsController, UploadController],
   providers: [
     AppService,
     RedisService,
@@ -68,6 +78,7 @@ import { SettingsModule } from './settings/settings.module';
       useClass: JwtAuthGuardGlobal,
     },
     SettingsService,
+    UploadService,
   ],
 })
 export class AppModule implements NestModule {

@@ -42,9 +42,12 @@ export class RegisterRepository {
     });
   }
 
-  async getUserById(id: string): Promise<User | null> {
+  async getUserById(id: string): Promise<any> {
     return await this.prisma.user.findUnique({
       where: { id: String(id) },
+      select: {
+        password: false,
+      }
     });
   }
 
