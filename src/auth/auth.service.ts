@@ -134,7 +134,7 @@ export class AuthService {
       }
   }
 
-  async getProfile(userId: string): Promise<User | null> {
+  async getProfile(userId: string): Promise<any> {
     return await this.registerRepository.getUserById(userId);
   }
   findAll(current_user: string) {

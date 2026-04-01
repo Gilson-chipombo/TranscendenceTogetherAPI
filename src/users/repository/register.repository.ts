@@ -51,8 +51,29 @@ export class RegisterRepository {
     return await this.prisma.user.findUnique({
       where: { id: id },
       select: {
-        password: false,
-      }
+        id: true,
+       name   : true,
+       email    : true,
+       password   : false,
+       googleID   : false,
+       firstName    : true,
+       lastName   : true,
+       birthDay   : true,
+       country    : true,
+       photo    : true,
+       phone    : true,
+       province   : true,
+       gender   : true,
+       role   : true,
+       block    : true,
+       createdAt    : true,
+       updateAt   : true,
+       rooms    : false,
+       config   : true,
+       messages   : false,
+       roomMember   : false,
+       _count: false,
+      },
     });
   }
 
