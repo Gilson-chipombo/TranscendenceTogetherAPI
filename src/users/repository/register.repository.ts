@@ -36,15 +36,20 @@ export class RegisterRepository {
     });
   }
 
-  async getAllUsers() {
+  async getAllUsers(currentUser: string) {
     return this.prisma.user.findMany({
-      select: { name: true },
+      where:{
+          id: {
+              not: currentUser, 
+          }
+      },
+      select: { name: true, id: true },
     });
   }
 
   async getUserById(id: string): Promise<any> {
     return await this.prisma.user.findUnique({
-      where: { id: String(id) },
+      where: { id: id },
       select: {
         password: false,
       }
@@ -91,7 +96,7 @@ export class RegisterRepository {
   async setKeyInCache(family:string, key: string, value: string): Promise<void>
   {
     const full_key = `${family}:${key}`;
-    await this.redis.set(full_key, value, "EX", 60 * 60 * 24);
+    await this.redis.set(full_key, value, "EX", 60 * 60 * 5);
   }
   async deleteKeyInCache(family:string, key: string): Promise<void>
   {
@@ -107,5 +112,29 @@ export class RegisterRepository {
           password: new_pw,
         }
       })
+  }
+
+  async registerRefreshToken(id:string, refresh_token: string) {
+    
+      const res = await this.redis.set("refreshToken:" + refresh_token, id, "EX", 60 * 60 * 24 * 7);
+      if (res)
+        return {
+            status: 201,
+            message: 'refresh token created sucessful'
+        }
+      return {
+            status: 500,
+            message: 'Error in create refresh token',
+      }
+  }
+
+  async deleteRefreshToken(refresh_token: string)
+  {
+    return await this.redis.del("refreshToken:" + refresh_token);
+  }
+
+  async updateRefreshToken(refresh_token: string, new_refresh_token: string, id: string) {
+    this.deleteRefreshToken(refresh_token);
+    return await this.registerRefreshToken(id, new_refresh_token);
   }
 }

@@ -7,6 +7,7 @@ import { UpdateUserDto } from '../users/dto/update-user.dto';
 import { Public } from './decorators/public.decorator';
 import { ResetAuthDto } from './dto/reset-auth.dto';
 import { SetNewPassWordDto } from './dto/reset-auth.dto';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -66,23 +67,29 @@ export class AuthController {
     };
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
-  }
-
   @Get('id/:id')
-  getProfile(@Param('id') id: string) {
-    return this.authService.getProfile(id);
+  async findOne(@Param('id') id: string) {
+    return this.authService.findOne(id);
   }
 
-  @Patch('id/:id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
+  @Get('profile')
+  getProfile(@CurrentUser() user: any) {
+    return this.authService.getProfile(user.id);
   }
 
-  @Delete('id/:id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @Get('users')
+  async getAllUsers(@CurrentUser() user: any) {
+    // console.log(user);
+    return await this.authService.findAll(String(user.id));
   }
+
+  // @Patch('id/:id')
+  // update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
+  //   return this.authService.update(+id, updateAuthDto);
+  // }
+
+  // @Delete('id/:id')
+  // remove(@Param('id') id: string) {
+  //   return this.authService.remove(+id);
+  // }
 }

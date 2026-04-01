@@ -34,6 +34,8 @@ import { CloudinaryModule } from '@scwar/nestjs-cloudinary';
 // import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { UploadService } from './upload/upload.service';
 import { UploadController } from './upload/upload.controller';
+import { RefreshTokenController } from './refresh-token/refresh-token.controller';
+import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 
 @Module({
   imports: [
@@ -65,10 +67,10 @@ import { UploadController } from './upload/upload.controller';
       api_secret: process.env.CLOUDINARY_API_SECRET,
       
     }),
-    EmailServiceModule, OtpModule, SettingsModule,
+    EmailServiceModule, OtpModule, SettingsModule, RefreshTokenModule,
     // EmailServiceModule,
   ],
-  controllers: [AppController, SettingsController, UploadController],
+  controllers: [AppController, SettingsController, UploadController, RefreshTokenController],
   providers: [
     AppService,
     RedisService,

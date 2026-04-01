@@ -15,6 +15,7 @@ import { UpdateUserDto } from '../users/dto/update-user.dto';
 import { ResetAuthDto } from './dto/reset-auth.dto';
 import { SetNewPassWordDto } from './dto/reset-auth.dto';
 import {v4 as uuidv4} from 'uuid'
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Injectable()
 export class AuthService {
@@ -130,12 +131,12 @@ export class AuthService {
   async getProfile(userId: string): Promise<User | null> {
     return await this.registerRepository.getUserById(userId);
   }
-  findAll() {
-    return Auth;
+  findAll(current_user: string) {
+    return this.registerRepository.getAllUsers(current_user);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
+  findOne(id: string) {
+    return this.registerRepository.getUserById(id);
   }
 
   update(id: number, updateAuthDto: UpdateAuthDto) {

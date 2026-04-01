@@ -2,7 +2,6 @@ import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterRepository } from '../repository/register.repository';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { SearchUser } from '../search/search-user.service';
 import { otpService } from '../otp/otp.service';
 import { EmailServiceService } from '../../email-service/email-service.service';
 import { RedisService } from '../../redis/redis.service';

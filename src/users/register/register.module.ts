@@ -4,7 +4,6 @@ import { RegisterService } from './register.service';
 import { RegisterController } from './register.controller';
 import { RegisterRepository } from '../repository/register.repository';
 import { PrismaService } from '../../prisma/prisma.service';
-import {SearchUser} from '../search/search-user.service'
 import { OtpModule } from '../otp/otp.module';
 import { otpService } from '../otp/otp.service';
 import { EmailServiceService } from '../../email-service/email-service.service';
@@ -20,7 +19,7 @@ import { RedisService } from '../../redis/redis.service';
     OtpModule, EmailServiceModule,
   ],
   controllers: [RegisterController],
-  providers: [RegisterService, RegisterRepository, PrismaService, SearchUser, otpService, EmailServiceService, RedisService],
-  exports: [RegisterService, RegisterRepository, PrismaService, SearchUser, RedisService],
+  providers: [RegisterService, RegisterRepository, PrismaService, otpService, EmailServiceService, RedisService],
+  exports: [RegisterService, RegisterRepository, PrismaService, RedisService],
 })
 export class RegisterModule {}

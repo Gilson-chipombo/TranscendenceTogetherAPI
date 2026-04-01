@@ -6,7 +6,6 @@ import { Public } from '../../auth/decorators/public.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
 import { OtpDto } from '../dto/otp.dto';
-import { SearchUser } from '../search/search-user.service';
 import { InitUserDto } from '../dto/create-user.dto';
 import { use } from 'passport';
 import { UpdateAuthDto } from '../../auth/dto/update-auth.dto';
@@ -14,7 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Controller('register')
 export class RegisterController {
-  constructor(private readonly registerService: RegisterService, private readonly searchUser: SearchUser) {}
+  constructor(private readonly registerService: RegisterService) {}
 
   @Public()
   @Post()
@@ -95,9 +94,9 @@ export class RegisterController {
     }
   }
   // @Public()
-  @Get('users')
-  async getAllUsers() {
-    // console.log(user);
-    return this.searchUser.getAllUsers();
-  }
+  // @Get('users')
+  // async getAllUsers() {
+  //   // console.log(user);
+  //   return this.searchUser.getAllUsers();
+  // }
 }

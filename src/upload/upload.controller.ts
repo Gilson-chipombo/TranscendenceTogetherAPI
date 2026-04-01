@@ -12,8 +12,6 @@ export class UploadController {
         description: "to upload file",
     })
     async UploadFiles(@UploadedFiles() file: Express.Multer.File){
-        return await this.upload.uploadImage(file);
+        return await this.upload.uploadImage(file)
     }
-
-
 }
