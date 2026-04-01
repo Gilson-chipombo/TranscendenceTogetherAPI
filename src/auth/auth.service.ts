@@ -15,7 +15,6 @@ import { UpdateUserDto } from '../users/dto/update-user.dto';
 import { ResetAuthDto } from './dto/reset-auth.dto';
 import { SetNewPassWordDto } from './dto/reset-auth.dto';
 import {v4 as uuidv4} from 'uuid'
-import { CurrentUser } from './decorators/current-user.decorator';
 
 @Injectable()
 export class AuthService {
@@ -36,12 +35,19 @@ export class AuthService {
       console.log("Login successful for email: " + createAuthDto.email);
       const payload = {
         id: d.id,
-        email: d.email,
         role: d.role,
       }
-      const token = this.jwtService.sign(payload);
+      const payload_refresh = {
+        id: d.id,
+        role: d.role,
+        type: 'refresh',
+      }
+      const refreshToken = this.jwtService.sign(payload_refresh, { expiresIn: '7d' });
+      const token = this.jwtService.sign(payload, { expiresIn: '15m' });
+      await this.registerRepository.setKeyInCache('refresh_token', refreshToken, JSON.stringify({userId: d.id}));
       return {
         access_token: token,
+        refresh_token: refreshToken,
       };
     }
     else
