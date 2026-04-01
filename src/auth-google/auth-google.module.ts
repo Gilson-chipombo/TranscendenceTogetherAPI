@@ -5,7 +5,9 @@ import { AuthGoogleService } from './auth-google.service';
 import { AuthGoogleController } from './auth-google.controller';
 import { GoogleStrategy } from './repository/auth-google.strategy';
 import { AuthGoogleRepository } from './repository/authgoogle.repository';
+import { RegisterRepository } from '../users/repository/register.repository';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 
 @Module({
   imports: [
@@ -16,6 +18,7 @@ import { PrismaService } from '../prisma/prisma.service';
     }),
   ],
   controllers: [AuthGoogleController],
-  providers: [AuthGoogleService, GoogleStrategy, AuthGoogleRepository, PrismaService],
+  providers: [AuthGoogleService, GoogleStrategy, AuthGoogleRepository, PrismaService, RegisterRepository, RedisService],
+  // exports: [RegisterRepository],
 })
 export class AuthGoogleModule {}

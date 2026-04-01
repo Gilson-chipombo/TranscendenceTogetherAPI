@@ -8,9 +8,11 @@ export class AuthGoogleRepository {
 
   async upsertGoogleUser(profile: {
     email: string;
-    name: string;
+    // name: string;
+    firstName?: string;
+    lastName?: string;
   }): Promise<User> {
-    const { email, name } = profile;
+    const { email, firstName, lastName } = profile;
 
     if (!email) {
       throw new BadRequestException('Google account did not return an email');
@@ -24,7 +26,9 @@ export class AuthGoogleRepository {
       return this.prisma.user.update({
         where: { id: existingUser.id },
         data: {
-          name,
+          // name,
+          firstName,
+          lastName,
         },
       });
     }
@@ -32,7 +36,9 @@ export class AuthGoogleRepository {
     return this.prisma.user.create({
       data: {
         email,
-        name,
+        // name,
+        firstName,
+        lastName,
         // password: ' ',
       },
     });

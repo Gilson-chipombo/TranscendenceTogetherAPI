@@ -27,6 +27,12 @@ export class AuthGoogleController {
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+    res.cookie('refresh_token', result.refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     const redirectUrl = `${process.env.FRONTEND_URL}#access_token=${result.access_token}`;
     return res.redirect(redirectUrl);
   }
