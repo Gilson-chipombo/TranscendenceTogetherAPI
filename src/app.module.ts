@@ -32,8 +32,8 @@ import { SettingsController } from './settings/settings.controller';
 import { SettingsModule } from './settings/settings.module';
 import { CloudinaryModule } from '@scwar/nestjs-cloudinary';
 // import { CloudinaryModule } from './cloudinary/cloudinary.module';
-import { UploadService } from './upload/upload.service';
-import { UploadController } from './upload/upload.controller';
+// import { UploadService } from './upload/upload.service';
+// import { UploadController } from './upload/upload.controller';
 import { RefreshTokenController } from './refresh-token/refresh-token.controller';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 
@@ -70,7 +70,7 @@ import { RefreshTokenModule } from './refresh-token/refresh-token.module';
     EmailServiceModule, OtpModule, SettingsModule, RefreshTokenModule,
     // EmailServiceModule,
   ],
-  controllers: [AppController, SettingsController, UploadController, RefreshTokenController],
+  controllers: [AppController, SettingsController, RefreshTokenController],
   providers: [
     AppService,
     RedisService,
@@ -80,7 +80,6 @@ import { RefreshTokenModule } from './refresh-token/refresh-token.module';
       useClass: JwtAuthGuardGlobal,
     },
     SettingsService,
-    UploadService,
   ],
 })
 export class AppModule implements NestModule {
