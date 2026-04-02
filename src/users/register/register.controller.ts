@@ -10,6 +10,7 @@ import { InitUserDto } from '../dto/create-user.dto';
 import { use } from 'passport';
 import { UpdateAuthDto } from '../../auth/dto/update-auth.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Controller('register')
 export class RegisterController {
@@ -80,9 +81,9 @@ export class RegisterController {
   }
 
   // @UseGuards(AuthGuard('jwt'))
-  @Public()
+  // @Public()
   @Post('updateUser')
-  async updateUser(@CurrentUser() user: any, @Body() data: UpdateAuthDto)
+  async updateUser(@CurrentUser() user: any, @Body() data: UpdateUserDto)
   {
     if (user)
     {
