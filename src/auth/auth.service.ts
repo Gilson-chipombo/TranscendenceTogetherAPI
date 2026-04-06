@@ -134,6 +134,11 @@ export class AuthService {
       }
   }
 
+  async removeRefreshToken(token: string)
+  {
+      await this.registerRepository.deleteRefreshToken(token);
+  }
+
   async getProfile(userId: string): Promise<any> {
     return await this.registerRepository.getUserById(userId);
   }

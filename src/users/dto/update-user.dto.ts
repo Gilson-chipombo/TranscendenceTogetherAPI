@@ -1,7 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateUserDto } from './create-user.dto';
-import { IsDateString, IsEmail, IsOptional, IsString, MinLength, isDateString } from 'class-validator';
+import { IsDate, IsDateString, IsEmail, IsOptional, IsString, MinLength, isDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
     @ApiProperty({
@@ -42,8 +43,9 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
         example: '1990-01-01',
     })
     @IsOptional()
-    @IsDateString({}, { message: 'Birthdate must be a valid date string' })
-    birthdate?: string;
+    @Type(() => Date)
+    @IsDate({ message: 'Birthdate must be a valid date string' })
+    birthDay?: Date;
 
      @ApiProperty({
         description: 'The googleID of the user',
@@ -85,5 +87,9 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     @IsOptional()
     @IsString({ message: 'Country must be a string' })
     phone?: string;
+
+    @IsOptional()
+    @IsString({ message:'Bio of the user'})
+    bio?: string;
 
 }

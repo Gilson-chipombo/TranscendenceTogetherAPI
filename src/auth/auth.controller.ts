@@ -29,12 +29,16 @@ export class AuthController {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
+    res.cookie('refresh_token', result.refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     return {
       status: 201,
       message: 'Login successful',
-      response: {
-        access_token: result.access_token,
-      }
     };
   }
   @Public()
@@ -57,10 +61,15 @@ export class AuthController {
       return await this.authService.resetPassWord('reset', data);
   }
 
-  @Public()
   @Get('logout')
   async logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('access_token');
+    const refreshToken = res.cookie['refresh_token'];
+    if (refreshToken)
+    {
+      
+    }
+    res.clearCookie('refresh_token');
     return { 
       status: 200,
       message: 'Logout successful',

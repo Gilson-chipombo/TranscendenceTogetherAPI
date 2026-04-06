@@ -40,6 +40,7 @@ model User {
   phone     String?
   province  String?
   gender    Gender?
+  bio       String?
   role      String    @default("user")
   block     Boolean   @default(false)
 

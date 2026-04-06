@@ -98,18 +98,28 @@ export class RegisterRepository {
 
   async updateUser(data: UpdateUserDto, email: string): Promise<any>
   {
-    const {password, ...updateData} = data;
-    const upDateInput: Prisma.UserUpdateInput = { ...updateData };
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      upDateInput.password = hashedPassword;
-    }
-    return await this.prisma.user.update({
-      where: { email: email },
-      data: upDateInput,
+    try{
+      const {password, ...updateData} = data;
+      const upDateInput: Prisma.UserUpdateInput = { ...updateData };
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        upDateInput.password = hashedPassword;
+      }
+     await this.prisma.user.update({
+        where: { email: email },
+        data: upDateInput,
     });
+    return {
+          status: 201,
+          message: 'User updated successfully'
+    }
+  } catch (error) {
+    return {
+          status: 500,
+          message: 'Error updating user: ' + error.message,
+      }
+    }
   }
-
   async getKeyinCache(family: string, key: string): Promise<any> {
     const full_key = `${family}:${key}`;
     return await this.redis.get(full_key);

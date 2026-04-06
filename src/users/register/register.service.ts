@@ -118,7 +118,7 @@ export class RegisterService {
 
   async updateDataUser(data: UpdateAuthDto, email: string): Promise<any>
   {
-    const user = await this.registerRepository.updateUser(data, email);
+   return await this.registerRepository.updateUser(data, email);
   }
 }
 
