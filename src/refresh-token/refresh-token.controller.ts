@@ -21,7 +21,12 @@ export class RefreshTokenController {
             sameSite: 'lax',
             maxAge: 7 * 24 * 60 * 60 * 1000,
         })
-
+        res.cookie('refresh_token', result.refresh_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        })
         return {
             status: 201,
             message: 'create new acess-token sucessfull',
