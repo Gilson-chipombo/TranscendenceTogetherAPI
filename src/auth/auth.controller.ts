@@ -39,7 +39,7 @@ export class AuthController {
     return {
       status: 201,
       message: 'Login successful',
-      response: res,
+      response: result,
     };
   }
   @Public()
