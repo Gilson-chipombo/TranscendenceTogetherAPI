@@ -29,7 +29,7 @@ export class RegisterController {
       message: result.message,
       response: {
         uuid: result.uuid,
-        otp: result.otp,
+        // otp: result.otp,
       }
     };
   }
@@ -86,6 +86,13 @@ export class RegisterController {
       message: 'User created successfully',
       response: result,
     };
+  }
+
+  @Public()
+  @Post('resend-otp')
+  async resendOTP(@Body() data: any)
+  {
+      return await this.registerService.resendOTP(data);
   }
 
   // @UseGuards(AuthGuard('jwt'))

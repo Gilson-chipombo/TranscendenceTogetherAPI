@@ -152,7 +152,6 @@ export class RegisterService {
         message: 'OTP resent successfully',
         response: {
           uuid: new_uuid,
-          otp: otp,
         }
       }
     }
@@ -167,5 +166,3 @@ export class RegisterService {
    return await this.registerRepository.updateUser(data, email);
   }
 }
-
-

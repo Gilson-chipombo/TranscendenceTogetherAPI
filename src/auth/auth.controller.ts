@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, Req } from '@nestjs/common';
-import type { Response } from 'express';
+import { response, type Response } from 'express';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
@@ -39,6 +39,7 @@ export class AuthController {
     return {
       status: 201,
       message: 'Login successful',
+      response: res,
     };
   }
   @Public()
