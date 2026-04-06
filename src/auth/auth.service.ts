@@ -32,7 +32,7 @@ export class AuthService {
     
     if ((d) && passwordMatch)    
     {
-      console.log("Login successful for email: " + createAuthDto.email);
+      // console.log("Login successful for email: " + createAuthDto.email);
       const payload = {
         id: d.id,
         role: d.role,

@@ -72,7 +72,15 @@ export class RegisterController {
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-
+    res.cookie('refresh_token', result.refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    if (result.status === 500) return {
+      result,
+    }
     return {
       status: 201,
       message: 'User created successfully',

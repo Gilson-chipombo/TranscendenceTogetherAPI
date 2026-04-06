@@ -9,7 +9,7 @@ import { OtpDto } from '../dto/otp.dto';
 import { InitUserDto } from '../dto/create-user.dto';
 import {v4 as uuidv4} from 'uuid'
 import { UpdateAuthDto } from '../../auth/dto/update-auth.dto';
-import { openAsBlob } from 'fs';
+import { access, openAsBlob } from 'fs';
 
 @Injectable()
 export class RegisterService {
@@ -107,12 +107,58 @@ export class RegisterService {
       const parse = JSON.parse(tmp_data);
       data.email = parse.email;
       data.password = parse.password;
-      console.log(data);
-      return await this.createUser(data);
+      // console.log(data);
+      const user =  await this.createUser(data);
+      if (user)
+      {
+        const pyload = {
+          id: user.id,
+          role: user.role,
+        }
+        const pyload_refresh_token = {
+          id: user.id,
+          role: user.role,
+          type: "refresh",
+        }
+        const token  = this.jwtService.sign(pyload, {expiresIn: "15m"});
+        const refresh_token = this.jwtService.sign(pyload_refresh_token, {expiresIn: '7d'});
+        return {
+            id: user.id,
+            access_token : token,
+            refresh_token: refresh_token,
+        }
+      }
     }
     return { 
-          status: 401,
-          message: 'uuid not Founded',
+          status: 400,
+          message: 'Invalid UUID, please retry the process',
+    }
+  }
+
+  async resendOTP(uuid: string): Promise<any>
+  {
+    const data = await this.registerRepository.getKeyinCache('signup', uuid);
+    if (data)
+    {
+      const parse = JSON.parse(data);
+      const userData = parse.data;
+      const otp = this.otpService.generateOtp();
+      await this.emailService.sendEmail(userData.email, otp);
+      const new_uuid = uuidv4();
+      await this.registerRepository.deleteKeyInCache('signup', uuid);
+      await this.registerRepository.setKeyInCache('signup', new_uuid, JSON.stringify({data: userData, otp: otp}));
+      return {
+        status: 201,
+        message: 'OTP resent successfully',
+        response: {
+          uuid: new_uuid,
+          otp: otp,
+        }
+      }
+    }
+    return {
+      status: 400,
+      message: 'Invalid UUID',
     }
   }
 
