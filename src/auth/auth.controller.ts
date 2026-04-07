@@ -76,6 +76,10 @@ export class AuthController {
         res.status(HttpStatus.BAD_REQUEST).json(response);
         return ;
       }
+      return {
+        status: 200,
+        message: 'Password reset successfully',
+  }
   }
 
   @Get('logout')
