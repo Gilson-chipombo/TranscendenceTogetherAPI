@@ -147,7 +147,8 @@ export class RegisterRepository {
 
   async registerRefreshToken(id:string, refresh_token: string) {
     
-      const res = await this.redis.set("refresh_token:" + refresh_token, id, "EX", 60 * 60 * 24 * 7);
+      const token_crypted = await bcrypt.hash(refresh_token, 10);
+      const res = await this.redis.set("refresh_token:" + token_crypted, id, "EX", 60 * 60 * 24 * 7);
       if (res)
         return {
             status: 201,
@@ -162,7 +163,9 @@ export class RegisterRepository {
   async deleteRefreshToken(refresh_token: string)
   {
     // const tokenInCache = bcrypt.compare(refresh_token, 10);
-    return await this.redis.del("refresh_token:" + refresh_token);
+
+    const token_crypted = await bcrypt.hash(refresh_token, 10);
+    return await this.redis.del("refresh_token:" + token_crypted);
   }
 
   async updateRefreshToken(refresh_token: string, new_refresh_token: string, id: string) {

@@ -3,6 +3,7 @@ import { RegisterRepository } from '../users/repository/register.repository';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from '../auth/auth.service';
+import * as bcrypt from 'bcrypt';
 import { CreateAuthDto } from '../auth/dto/create-auth.dto';
 
 @Injectable()
@@ -11,15 +12,14 @@ export class RefreshTokenService {
     async refreshToken(data: RefreshTokenDto){
 
 
-        const key = await this.registerRepository.getKeyinCache('refresh_token', data.refresh_token);
+        const token_crypted = await bcrypt.hash(data.refresh_token, 10);
+        const key = await this.registerRepository.getKeyinCache('refresh_token', token_crypted);
         if (!key)
         {
           return {
-            status: 500,
-            // message: 'Bad refresh token',
+            status: 500
           }
         }
-
         const user = this.jwtService.verify(data.refresh_token, {secret: process.env.REFRESH_TOKEN});
         if (user)
         {
@@ -28,8 +28,7 @@ export class RefreshTokenService {
           return {
               access_token: data_new_login.access_token,
               refresh_token: data_new_login.refresh_token,
-        }
-        
+              }
         }
     }
 }

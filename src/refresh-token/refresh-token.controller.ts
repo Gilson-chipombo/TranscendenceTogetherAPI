@@ -4,6 +4,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { response, Response } from 'express';
 import { Public } from '../auth/decorators/public.decorator';
+import { HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 // import { }
 
@@ -32,10 +33,7 @@ export class RefreshTokenController {
         })
         if (result.status === 500)
         {
-            return {
-                status: 500,
-                message: 'refresh token failed',
-            }
+            return res.status(HttpStatus.BAD_REQUEST).json({status: 400, message: 'Invalid refresh token'});
         }
         return {
             status: 201,
