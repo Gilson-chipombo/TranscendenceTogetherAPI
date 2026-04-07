@@ -51,9 +51,19 @@ export class AuthController {
   }
   @Public()
   @Post('verify-otp')
-  async verify_OTP(@Body() data: ResetAuthDto)
+  async verify_OTP(@Body() data: ResetAuthDto, @Res({ passthrough: true }) res: Response)
   {
-    return await this.authService.verify_otpToEmail('reset',data);
+    const response = await this.authService.verify_otpToEmail('reset',data);
+    if (response.status === 400)
+    {
+      res.status(HttpStatus.BAD_REQUEST).json(response);
+      return ;
+    }
+    return {
+      status: 200,
+      message: 'OTP verified successfully',
+      response: response.Response,
+    }
   }
 
   @Public()
@@ -63,7 +73,7 @@ export class AuthController {
       const response =  await this.authService.resetPassWord('reset', data);
       if (response.status === 400)
       {
-        res.status(HttpStatus.BAD_REQUEST).json({status: 400, message: 'Invalid UUID'});
+        res.status(HttpStatus.BAD_REQUEST).json(response);
         return ;
       }
   }

@@ -51,6 +51,7 @@ model User {
   config     Settings[]
   messages   Message[]
   roomMember RoomMember[]
+  friends    Friendship[]
 }
 
 model Message {
