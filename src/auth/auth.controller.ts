@@ -8,6 +8,7 @@ import { Public } from './decorators/public.decorator';
 import { ResetAuthDto } from './dto/reset-auth.dto';
 import { SetNewPassWordDto } from './dto/reset-auth.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
+import { PassThrough } from 'node:stream';
 
 @Controller('auth')
 export class AuthController {
@@ -57,9 +58,14 @@ export class AuthController {
 
   @Public()
   @Post('reset-password')
-  async resetPassord(@Body() data:SetNewPassWordDto)
+  async resetPassord(@Body() data:SetNewPassWordDto, @Res( {passthrough: true} ) res: any)
   {
-      return await this.authService.resetPassWord('reset', data);
+      const response =  await this.authService.resetPassWord('reset', data);
+      if (response.status === 400)
+      {
+        res.status(HttpStatus.BAD_REQUEST).json({status: 400, message: 'Invalid UUID'});
+        return ;
+      }
   }
 
   @Get('logout')

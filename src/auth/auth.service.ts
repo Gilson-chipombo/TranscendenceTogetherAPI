@@ -78,8 +78,9 @@ export class AuthService {
       this.registerRepository.setKeyInCache('reset', my_uuid, JSON.stringify({email:email, my_otp:my_otp}));
       return {
               status: 200,
-              uuid: my_uuid,
-              otp: my_otp,
+              message: "OTP has been send to your email",
+              response: { uuid: my_uuid },
+              // otp: my_otp,
       };
   }
   async verify_otpToEmail(family:string, dataDto: ResetAuthDto)
@@ -98,7 +99,9 @@ export class AuthService {
             return { 
                     status: 200,
                     message: "OTP has been validate ok",
-                    uuid: new_uuid,
+                    Response: { 
+                      uuid: new_uuid 
+                    }
             }
         }
         else
@@ -116,7 +119,7 @@ export class AuthService {
   async resetPassWord(family:string, data_dto: SetNewPassWordDto): Promise<any>
   {
       const data = await this.registerRepository.getKeyinCache(family, data_dto.uuid);
-      console.log(data_dto.uuid);
+      // console.log(data_dto.uuid);
       if (data)
       {
         const parse = await JSON.parse(data);
@@ -135,7 +138,8 @@ export class AuthService {
       }
       
       return {
-        status: 201,
+        status: 400,
+        message: "Invalid UUID"
       }
   }
 
