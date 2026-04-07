@@ -12,10 +12,11 @@ export class RefreshTokenService {
     async refreshToken(data: RefreshTokenDto){
 
 
-        const token_crypted = await bcrypt.hash(data.refresh_token, 10);
-        const key = await this.registerRepository.getKeyinCache('refresh_token', token_crypted);
+        // const token_crypted = await bcrypt.hash(data.refresh_token, 10);
+        const key = await this.registerRepository.getKeyinCache('refresh_token', data.refresh_token);
         if (!key)
         {
+          console.log("Invalid refresh token: " + data.refresh_token);
           return {
             status: 500
           }

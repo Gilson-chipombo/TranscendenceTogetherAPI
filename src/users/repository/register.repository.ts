@@ -147,8 +147,8 @@ export class RegisterRepository {
 
   async registerRefreshToken(id:string, refresh_token: string) {
     
-      const token_crypted = await bcrypt.hash(refresh_token, 10);
-      const res = await this.redis.set("refresh_token:" + token_crypted, id, "EX", 60 * 60 * 24 * 7);
+      // const token_crypted = await bcrypt.hash(refresh_token, 10);
+      const res = await this.redis.set("refresh_token:" + refresh_token, id, "EX", 60 * 60 * 24 * 7);
       if (res)
         return {
             status: 201,

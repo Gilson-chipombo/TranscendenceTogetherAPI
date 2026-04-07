@@ -159,7 +159,8 @@ export class AuthService {
       const refreshToken = this.jwtService.sign(payload_refresh, {secret: process.env.REFRESH_TOKEN, expiresIn: '7d' });
       const token = this.jwtService.sign(payload, { expiresIn: '15m' });
       const token_crypted = await bcrypt.hash(refreshToken, 10);
-      await this.registerRepository.setKeyInCache('refresh_token', token_crypted, JSON.stringify({userId: data.id}));
+      // await this.registerRepository.setKeyInCache('refresh_token', token_crypted, JSON.stringify({userId: data.id}));
+      await this.registerRepository.registerRefreshToken(data.id, refreshToken);
       return {
         access_token: token,
         refresh_token: refreshToken,
