@@ -33,22 +33,27 @@ export class AuthService {
     if ((d) && passwordMatch)    
     {
       // console.log("Login successful for email: " + createAuthDto.email);
-      const payload = {
-        id: d.id,
-        role: d.role,
-      }
-      const payload_refresh = {
-        id: d.id,
-        role: d.role,
-        type: 'refresh',
-      }
-      const refreshToken = this.jwtService.sign(payload_refresh, {secret: process.env.REFRESH_TOKEN, expiresIn: '7d' });
-      const token = this.jwtService.sign(payload, { expiresIn: '15m' });
-      await this.registerRepository.setKeyInCache('refresh_token', refreshToken, JSON.stringify({userId: d.id}));
+      // const payload = {
+      //   id: d.id,
+      //   role: d.role,
+      // }
+      // const payload_refresh = {
+      //   id: d.id,
+      //   role: d.role,
+      //   type: 'refresh',
+      // }
+      // const refreshToken = this.jwtService.sign(payload_refresh, {secret: process.env.REFRESH_TOKEN, expiresIn: '7d' });
+      // const token = this.jwtService.sign(payload, { expiresIn: '15m' });
+      // await this.registerRepository.setKeyInCache('refresh_token', refreshToken, JSON.stringify({userId: d.id}));
+      // return {
+      //   access_token: token,
+      //   refresh_token: refreshToken,
+      // };
+      const d_response = await this.generateJwt(d);
       return {
-        access_token: token,
-        refresh_token: refreshToken,
-      };
+          access_token:  d_response.access_token,
+          refresh_token: d_response.refresh_token,
+      }
     }
     else
     {
@@ -137,6 +142,26 @@ export class AuthService {
   async removeRefreshToken(token: string)
   {
       await this.registerRepository.deleteRefreshToken(token);
+  }
+
+  async generateJwt(data: any)
+  {
+    const payload = {
+        id: data.id,
+        role: data.role,
+      }
+      const payload_refresh = {
+        id: data.id,
+        role: data.role,
+        type: 'refresh',
+      }
+      const refreshToken = this.jwtService.sign(payload_refresh, {secret: process.env.REFRESH_TOKEN, expiresIn: '7d' });
+      const token = this.jwtService.sign(payload, { expiresIn: '15m' });
+      await this.registerRepository.setKeyInCache('refresh_token', refreshToken, JSON.stringify({userId: data.id}));
+      return {
+        access_token: token,
+        refresh_token: refreshToken,
+      };
   }
 
   async getProfile(userId: string): Promise<any> {

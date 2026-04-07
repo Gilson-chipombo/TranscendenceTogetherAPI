@@ -4,6 +4,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { response, Response } from 'express';
 import { Public } from '../auth/decorators/public.decorator';
+import { JwtService } from '@nestjs/jwt';
 // import { }
 
 @Controller('refresh-token')
@@ -14,9 +15,10 @@ export class RefreshTokenController {
     @Post()
     async refreshToken(@Body() data: RefreshTokenDto, @Res({passthrough: true}) res: Response)
     {
-        
         const result = await this.tokenService.refreshToken(data);
-        res.cookie('acess-token', result.acess_token, {
+        res.clearCookie('access_token');
+        res.clearCookie('refresh_token');
+        res.cookie('access_token', result.access_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
