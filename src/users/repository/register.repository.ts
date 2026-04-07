@@ -164,8 +164,8 @@ export class RegisterRepository {
   {
     // const tokenInCache = bcrypt.compare(refresh_token, 10);
 
-    const token_crypted = await bcrypt.hash(refresh_token, 10);
-    return await this.redis.del("refresh_token:" + token_crypted);
+    // const token_crypted = await bcrypt.hash(refresh_token, 10);
+    return await this.redis.del("refresh_token:" + refresh_token);
   }
 
   async updateRefreshToken(refresh_token: string, new_refresh_token: string, id: string) {
