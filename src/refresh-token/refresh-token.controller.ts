@@ -12,8 +12,9 @@ export class RefreshTokenController {
 
     @Public()
     @Post()
-    async refreshToken(@CurrentUser() user: any, @Body() data: RefreshTokenDto, @Res({passthrough: true}) res: Response)
+    async refreshToken(@Body() data: RefreshTokenDto, @Res({passthrough: true}) res: Response)
     {
+        
         const result = await this.tokenService.refreshToken(data);
         res.cookie('acess-token', result.acess_token, {
             httpOnly: true,

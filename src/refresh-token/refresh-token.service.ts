@@ -8,7 +8,7 @@ export class RefreshTokenService {
     constructor(private readonly registerRepository: RegisterRepository, private jwtService: JwtService){}
     async refreshToken(data: RefreshTokenDto){
 
-      const data_tmp = await this.jwtService.verify(data.refresh_token);
+      const data_tmp = await this.jwtService.verify(data.refresh_token, {secret: process.env.JWT_SECRET});
       if(!data_tmp || data_tmp.type !== 'refresh')
       {
         throw new Error('Invalid refresh token');
@@ -28,8 +28,8 @@ export class RefreshTokenService {
         role: data_user.role,
         type: 'access',
       }
-        const new_Refresh_token = this.jwtService.sign(payload_refresh, {expiresIn: '7d'})
-        const new_token = this.jwtService.sign(payload_token, {expiresIn: '15m'})
+        const new_Refresh_token = this.jwtService.sign(payload_refresh, {secret: process.env.JWT_SECRET, expiresIn: '7d'})
+        const new_token = this.jwtService.sign(payload_token, {secret: process.env.JWT_SECRET, expiresIn: '15m'})
         await this.registerRepository.updateRefreshToken(data.refresh_token, new_Refresh_token, data_user.id);
         return {
             acess_token: new_token,
