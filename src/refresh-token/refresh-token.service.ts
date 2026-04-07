@@ -15,8 +15,8 @@ export class RefreshTokenService {
         if (!key)
         {
           return {
-            status: 501,
-            message: 'Bad refresh token',
+            status: 500,
+            // message: 'Bad refresh token',
           }
         }
 

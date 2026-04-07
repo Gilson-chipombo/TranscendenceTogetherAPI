@@ -30,6 +30,13 @@ export class RefreshTokenController {
             sameSite: 'lax',
             maxAge: 7 * 24 * 60 * 60 * 1000,
         })
+        if (result.status === 500)
+        {
+            return {
+                status: 500,
+                message: 'refresh token failed',
+            }
+        }
         return {
             status: 201,
             message: 'create new acess-token sucessfull',
