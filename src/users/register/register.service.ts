@@ -28,11 +28,20 @@ export class RegisterService {
       const newUser = await this.registerRepository.createUser((data));
       const token = this.jwtService.sign({
         id: newUser.id,
-        email: newUser.email,
-      });
+        role: newUser.role,
+        type: 'access'
+      }, {secret: process.env.JWT_SECRET, expiresIn: '15m'}
+      );
+
+      const refreshToken = this.jwtService.sign({
+        id: newUser.id,
+        role: newUser.role,
+        type: 'refresh',
+      }, {secret: process.env.REFRESH_TOKEN, expiresIn: '7d'});
 
       return {
         access_token: token,
+        refresh_token: refreshToken,
         user: {
           id: newUser.id,
           email: newUser.email,
@@ -120,8 +129,8 @@ export class RegisterService {
           role: user.role,
           type: "refresh",
         }
-        const token  = this.jwtService.sign(pyload, {expiresIn: "15m"});
-        const refresh_token = this.jwtService.sign(pyload_refresh_token, {expiresIn: '7d'});
+        const token  = this.jwtService.sign(pyload, {secret: process.env.JWT_SECRET, expiresIn: "15m"});
+        const refresh_token = this.jwtService.sign(pyload_refresh_token, {secret: process.env.REFRESH_TOKEN, expiresIn: '7d'});
         return {
             id: user.id,
             access_token : token,

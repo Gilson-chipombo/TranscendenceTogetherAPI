@@ -25,8 +25,9 @@ export class AuthGoogleService {
     });
     const refreshToken = this.jwtService.sign({
       id: user.id,
+      role: user.role,
       type: 'refresh',
-    }, { expiresIn: '7d' });
+    }, {secret: process.env.REFRESH_TOKEN, expiresIn: '7d'});
     await this.registerRepository.registerRefreshToken(refreshToken, JSON.stringify({userId: user.id}));
     return {
       status: 201,

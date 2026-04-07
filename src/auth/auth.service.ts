@@ -42,7 +42,7 @@ export class AuthService {
         role: d.role,
         type: 'refresh',
       }
-      const refreshToken = this.jwtService.sign(payload_refresh, { expiresIn: '7d' });
+      const refreshToken = this.jwtService.sign(payload_refresh, {secret: process.env.REFRESH_TOKEN, expiresIn: '7d' });
       const token = this.jwtService.sign(payload, { expiresIn: '15m' });
       await this.registerRepository.setKeyInCache('refresh_token', refreshToken, JSON.stringify({userId: d.id}));
       return {
