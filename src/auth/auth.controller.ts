@@ -110,7 +110,12 @@ export class AuthController {
   @Get('users')
   async getAllUsers(@CurrentUser() user: any) {
     // console.log(user);
-    return await this.authService.findAll(String(user.id));
+    const data = await this.authService.findAll(String(user.id));
+    return {
+      status: 200,
+      message: 'Get all users successfully',
+      response: data,
+    }
   }
 
   // @Patch('id/:id')
