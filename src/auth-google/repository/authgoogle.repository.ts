@@ -44,8 +44,7 @@ export class AuthGoogleRepository {
     }
 
 
-    await this.settingsService.createSettings(existingUser.id);
-    return this.prisma.user.create({
+    const result = await this.prisma.user.create({
       data: {
         email,
         name: email.split('@')[0],
@@ -55,5 +54,7 @@ export class AuthGoogleRepository {
         gender: gender ? Gender[gender.toUpperCase()] : null,
       },
     });
+    await this.settingsService.createSettings(result.id);
+    return result;
   }
 }
