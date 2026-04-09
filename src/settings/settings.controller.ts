@@ -1,4 +1,4 @@
-import {  } from '@nestjs/common';
+import { Req, Res } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { Get, Post, Body, Controller } from '@nestjs/common';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
@@ -11,7 +11,7 @@ export class SettingsController {
     constructor(private readonly settings: SettingsService){}
 
     @Get()
-    async getSettings(@CurrentUser() user: any){
+    async getSettings(@CurrentUser() user: any, @Res({passthrough: true}) req: any){
         const result = await this.settings.getSettings(user.id);
         if (!result)
         {
