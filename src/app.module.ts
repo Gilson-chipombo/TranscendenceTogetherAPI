@@ -38,6 +38,10 @@ import { RefreshTokenController } from './refresh-token/refresh-token.controller
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
 import { JwtService } from '@nestjs/jwt';
+import { UpdateService } from './update/update.service';
+import { UpdateController } from './update/update.controller';
+import { UpdateModule } from './update/update.module';
+import { ClaudinaryService } from './update/claudinary/claudinary.service';
 @Module({
   imports: [
     RegisterModule,
@@ -62,27 +66,28 @@ import { JwtService } from '@nestjs/jwt';
     //     }),
     //   }),
     // }),
-    CloudinaryModule.forRoot({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-      
-    }),
-    EmailServiceModule, OtpModule, SettingsModule, RefreshTokenModule,
+    // CloudinaryModule.forRoot({
+    //   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    //   api_key: process.env.CLOUDINARY_API_KEY,
+    //   api_secret: process.env.CLOUDINARY_API_SECRET,
+    // }),
+    EmailServiceModule, OtpModule, SettingsModule, RefreshTokenModule, UpdateModule,
     // EmailServiceModule,
   ],
-  controllers: [AppController, SettingsController, RefreshTokenController],
+  controllers: [AppController, SettingsController, RefreshTokenController, UpdateController],
   providers: [
     AppService,
     RedisService,
     PrismaService,
     RefreshTokenService,
     JwtService,
+    ClaudinaryService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuardGlobal,
     },
     SettingsService,
+    UpdateService,
   ],
 })
 export class AppModule implements NestModule {
