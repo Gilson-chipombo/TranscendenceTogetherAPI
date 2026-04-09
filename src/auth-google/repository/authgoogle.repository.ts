@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
+import { SettingsService } from '../../settings/settings.service';
 
 
 export enum Gender {
@@ -11,7 +12,7 @@ export enum Gender {
 
 @Injectable()
 export class AuthGoogleRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly settingsService: SettingsService) {}
 
   async upsertGoogleUser(profile: {
     email: string;
@@ -42,6 +43,8 @@ export class AuthGoogleRepository {
       }
     }
 
+
+    await this.settingsService.createSettings(existingUser.id);
     return this.prisma.user.create({
       data: {
         email,
