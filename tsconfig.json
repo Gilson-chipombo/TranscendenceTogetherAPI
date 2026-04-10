@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "types" : ["node", "multer", "express"],
     "moduleResolution": "node",
     "target": "ES2020",
     "outDir": "./dist",
