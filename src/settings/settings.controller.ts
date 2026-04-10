@@ -1,4 +1,4 @@
-import {  } from '@nestjs/common';
+import { Req, Res } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { Get, Post, Body, Controller } from '@nestjs/common';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
@@ -11,12 +11,13 @@ export class SettingsController {
     constructor(private readonly settings: SettingsService){}
 
     @Get()
-    async getSettings(@CurrentUser() user: any){
+    async getSettings(@CurrentUser() user: any, @Res({passthrough: true}) res: any){
         const result = await this.settings.getSettings(user.id);
         if (!result)
         {
             const create_settings = await this.settings.createSettings(user.id);
             if (!create_settings){
+                res.httpStatus(400);
                 return {
                         status: 400,
                         message: "Error in creation of the settings",

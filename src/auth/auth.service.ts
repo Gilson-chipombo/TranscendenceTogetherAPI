@@ -178,8 +178,8 @@ export class AuthService {
     return this.registerRepository.getAllUsers(current_user);
   }
 
-  findOne(id: string) {
-    return this.registerRepository.getUserById(id);
+  async findOne(id: string) {
+    return await this.registerRepository.getUserById(id);
   }
 
   update(id: number, updateAuthDto: UpdateAuthDto) {

@@ -9,6 +9,7 @@ import { OtpDto } from '../dto/otp.dto';
 import { InitUserDto } from '../dto/create-user.dto';
 import {v4 as uuidv4} from 'uuid'
 import { UpdateAuthDto } from '../../auth/dto/update-auth.dto';
+import { SettingsService } from '../../settings/settings.service';
 import { access, openAsBlob } from 'fs';
 
 @Injectable()
@@ -19,6 +20,8 @@ export class RegisterService {
     private jwtService: JwtService,
     private emailService: EmailServiceService,
     private redis: RedisService,
+    private settingsService: SettingsService,
+
   ) {}
 
   async createUser(data: CreateUserDto): Promise<any> {
@@ -38,7 +41,7 @@ export class RegisterService {
         role: newUser.role,
         type: 'refresh',
       }, {secret: process.env.REFRESH_TOKEN, expiresIn: '7d'});
-
+      this.settingsService.createSettings(newUser.id);
       return {
         access_token: token,
         refresh_token: refreshToken,

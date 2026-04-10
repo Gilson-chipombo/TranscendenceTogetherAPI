@@ -25,7 +25,7 @@ export class SettingsRepository {
                 color: settingsDto.color ? JSON.stringify(settingsDto.color) : undefined,
              },
             create: {
-                userId,
+                userId: userId,
                 sound: settingsDto.sound,
                 privateProfile: settingsDto.privateProfile,
                 showStatus: settingsDto.showStatus,
@@ -40,7 +40,7 @@ export class SettingsRepository {
     async createSettings(userId: string): Promise<any>{
         return await this.prisma.settings.create({
             data: {
-                userId,
+                userId: userId,
                 sound: true,
                 privateProfile: false,
                 showStatus: true,

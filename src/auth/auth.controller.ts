@@ -99,18 +99,24 @@ export class AuthController {
 
   @Get('id/:id')
   async findOne(@Param('id') id: string) {
-    return this.authService.findOne(id);
+    console.log(id.substring(3, id.length));
+    return await this.authService.findOne(id);
   }
 
   @Get('profile')
-  getProfile(@CurrentUser() user: any) {
-    return this.authService.getProfile(user.id);
+  async getProfile(@CurrentUser() user: any) {
+    return await this.authService.getProfile(user.id);
   }
 
   @Get('users')
   async getAllUsers(@CurrentUser() user: any) {
     // console.log(user);
-    return await this.authService.findAll(String(user.id));
+    const data = await this.authService.findAll(String(user.id));
+    return {
+      status: 200,
+      message: 'Get all users successfully',
+      response: data,
+    }
   }
 
   // @Patch('id/:id')

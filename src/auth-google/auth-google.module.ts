@@ -8,17 +8,23 @@ import { AuthGoogleRepository } from './repository/authgoogle.repository';
 import { RegisterRepository } from '../users/repository/register.repository';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
+import { SettingsService } from '../settings/settings.service';
+import { RegisterModule } from '../users/register/register.module';
+import { SettingsModule } from '../settings/settings.module';
 
 @Module({
   imports: [
     PassportModule,
+    RegisterModule,
+    SettingsModule,
+
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
       signOptions: { expiresIn: '7d' },
     }),
   ],
   controllers: [AuthGoogleController],
-  providers: [AuthGoogleService, GoogleStrategy, AuthGoogleRepository, PrismaService, RegisterRepository, RedisService],
+  providers: [AuthGoogleService, GoogleStrategy, AuthGoogleRepository, PrismaService, RegisterRepository, RedisService, SettingsService],
   // exports: [RegisterRepository],
 })
 export class AuthGoogleModule {}
