@@ -66,19 +66,19 @@ model Message {
 }
 
 model Room {
-  id          String    @id @default(uuid())
+  id          String       @id @default(uuid())
   name        String
   title       String
   dataInicio  DateTime
   dataTermino DateTime?
   hostId      String
-  isPrivate   Boolean   @default(false)
-  inviteToken String?   @unique
-  createdAt   DateTime  @default(now())
-
-  host       User         @relation(fields: [hostId], references: [id])
-  messages   Message[]
-  roomMember RoomMember[]
+  isPrivate   Boolean      @default(false)
+  inviteToken String?      @unique
+  createdAt   DateTime     @default(now())
+  poster      String?
+  host        User         @relation(fields: [hostId], references: [id])
+  messages    Message[]
+  roomMember  RoomMember[]
 }
 
 enum Type {
@@ -105,6 +105,8 @@ model Friendship {
   status      String   @default("peding")
   block       Boolean  @default(false)
   createdAt   DateTime @default(now())
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model DirectMessage {
@@ -123,8 +125,8 @@ model Settings {
   privateProfile    Boolean? @default(false)
   showStatus        Boolean? @default(true)
   autoReprodution   Boolean? @default(true)
-  language          String?   @default("portugues")
-  userId            String @unique
+  language          String?  @default("portugues")
+  userId            String   @unique
   config            User     @relation(fields: [userId], references: [id])
   createdAt         DateTime @default(now())
 }

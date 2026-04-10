@@ -9,12 +9,13 @@ export class ClaudinaryService {
       const dataUri = `data:${file.mimetype};base64,${base64Image}`;
     try {
         if (var_envCloudFlare){
-            upload.config({claudinary_url: process.env.CLOUDINARY_URL});
+            upload.config({cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+              api_key: process.env.CLOUDINARY_API_KEY, api_secret: process.env.CLOUDINARY_API_SECRET});
             const result = await upload.uploader.upload(dataUri, {
-                folder: "together",
+                folder: "uploads",
                 resource_type: "auto",
                 overwrite: true,
-                public_id: "base64_image"
+                // public_id: "base64_image"
             });
             return result.secure_url;
         }

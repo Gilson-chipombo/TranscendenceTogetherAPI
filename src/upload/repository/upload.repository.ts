@@ -32,4 +32,33 @@ export class UploadRepository {
         }
     }
   }
+
+  async uploadFileRoom(userId: string, fileUrl: string) {
+    try{
+        const result  = await this.prisma.room.update({
+                where: { id: userId },
+                data: { 
+                    poster: fileUrl,
+                 }
+        })
+        if (result) {
+            return {
+                status: 201,
+                message: "file uploaded successfully",
+                response: result,
+            }
+        }
+        return {
+            status: 500,
+            message: "can not upload file",
+        }
+    } catch(error)
+    {
+        console.error('Error in uploadFileRoom:', error);
+        return {
+            status: 500,
+            message: "Internal server error",
+        }
+    }
+  }
 }

@@ -38,10 +38,10 @@ import { RefreshTokenController } from './refresh-token/refresh-token.controller
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
 import { JwtService } from '@nestjs/jwt';
-import { UpdateService } from './update/update.service';
-import { UpdateController } from './update/update.controller';
-import { UpdateModule } from './update/update.module';
-import { ClaudinaryService } from './update/claudinary/claudinary.service';
+import { UpdateService } from './upload/update.service';
+import { UpdateController } from './upload/update.controller';
+import { UpdateModule } from './upload/update.module';
+import { ClaudinaryService } from './upload/claudinary/claudinary.service';
 @Module({
   imports: [
     RegisterModule,
