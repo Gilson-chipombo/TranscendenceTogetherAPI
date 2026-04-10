@@ -225,6 +225,82 @@ export class FriendsRepository {
     }
 
     /**
+     * Get user statistics (friends, blocked, pending, rooms)
+     * @param userId User ID
+     * @returns Object with counts
+     */
+    async getStats(userId: string): Promise<{
+        totalFriends: number;
+        totalBlocked: number;
+        totalPending: number;
+        totalPublicRooms: number;
+        totalPrivateRooms: number;
+    }> {
+        try {
+            this.logger.debug(`Fetching statistics for user ${userId}`);
+
+            // Count accepted friends
+            const totalFriends = await this.prisma.friendship.count({
+                where: {
+                    status: 'accepted',
+                    block: false,
+                    OR: [
+                        { requesterId: userId },
+                        { receiverId: userId },
+                    ],
+                },
+            });
+
+            // Count blocked friends
+            const totalBlocked = await this.prisma.friendship.count({
+                where: {
+                    status: 'accepted',
+                    block: true,
+                    OR: [
+                        { requesterId: userId },
+                        { receiverId: userId },
+                    ],
+                },
+            });
+
+            // Count pending friend requests for this user (as receiver)
+            const totalPending = await this.prisma.friendship.count({
+                where: {
+                    receiverId: userId,
+                    status: 'pending',
+                },
+            });
+
+            // Count public rooms created by user
+            const totalPublicRooms = await this.prisma.room.count({
+                where: {
+                    hostId: userId,
+                    isPrivate: false,
+                },
+            });
+
+            // Count private rooms created by user
+            const totalPrivateRooms = await this.prisma.room.count({
+                where: {
+                    hostId: userId,
+                    isPrivate: true,
+                },
+            });
+
+            return {
+                totalFriends,
+                totalBlocked,
+                totalPending,
+                totalPublicRooms,
+                totalPrivateRooms,
+            };
+        } catch (error) {
+            this.logger.error(`Database error fetching statistics: ${error.message}`);
+            throw new InternalServerErrorException('Failed to fetch statistics');
+        }
+    }
+
+    /**
      * Remove a friend (delete friendship)
      * @param friendshipId ID of the friendship
      * @param userId ID of user performing deletion (must be part of friendship)

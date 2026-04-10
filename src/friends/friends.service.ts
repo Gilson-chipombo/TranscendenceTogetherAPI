@@ -133,6 +133,33 @@ export class FriendsService {
     }
 
     /**
+     * Get user friend statistics
+     * @param userId ID of the user
+     * @returns Statistics object with counts
+     */
+    async getStats(userId: string): Promise<{
+        totalFriends: number;
+        totalBlocked: number;
+        totalPending: number;
+        totalPublicRooms: number;
+        totalPrivateRooms: number;
+    }> {
+        if (!userId || typeof userId !== 'string') {
+            throw new BadRequestException('User ID is invalid');
+        }
+
+        try {
+            this.logger.debug(`Fetching statistics for user ${userId}`);
+            const stats = await this.repository.getStats(userId);
+            this.logger.debug(`Statistics fetched for user ${userId}`);
+            return stats;
+        } catch (error) {
+            this.logger.error(`Error fetching statistics: ${error.message}`);
+            throw new InternalServerErrorException('Failed to fetch statistics');
+        }
+    }
+
+    /**
      * Remove a friend (delete friendship)
      * @param friendshipId ID of the friendship to remove
      * @param userId ID of the user requesting removal

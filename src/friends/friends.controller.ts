@@ -61,6 +61,14 @@ export class FriendsController {
         }
     }
 
+
+
+
+
+
+
+
+
     @ApiOperation({
         summary: 'Respond to a friend request',
         description: 'Accept or reject a pending friend request. Only the receiver can respond.',
@@ -88,6 +96,9 @@ export class FriendsController {
         status: 404,
         description: 'Friend request not found',
     })
+
+
+
     @Post('respond')
     async respondRequest(
         @Body() dto: RespondFriendRequestDto,
@@ -105,6 +116,22 @@ export class FriendsController {
             throw error;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @ApiOperation({
         summary: 'Get all friends',
@@ -131,6 +158,10 @@ export class FriendsController {
         status: 401,
         description: 'Unauthorized - JWT token required',
     })
+
+
+
+
     @Get()
     async getFriends(@CurrentUser() user: any): Promise<any[]> {
         if (!user || !user.id) {
@@ -142,6 +173,88 @@ export class FriendsController {
             return await this.service.getFriends(user.id);
         } catch (error) {
             this.logger.error(`Error fetching friends: ${error.message}`);
+            throw error;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @ApiOperation({
+        summary: 'Get pending friend requests',
+        description: 'Retrieve all pending friend requests received by the authenticated user.',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Pending requests retrieved successfully',
+        schema: {
+            example: [
+                {
+                    requestId: '550e8400-e29b-41d4-a716-446655440000',
+                    requester: {
+                        id: 'user-123',
+                        name: 'João',
+                        email: 'joao@example.com',
+                        photo: 'https://example.com/photo.jpg',
+                    },
+                    requestedAt: '2026-03-27T10:30:45.000Z',
+                },
+            ],
+        },
+    })
+
+
+
+
+
+    @ApiOperation({
+        summary: 'Get friend statistics',
+        description: 'Get statistics about friends, blocked friends, pending requests, and created rooms.',
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Statistics retrieved successfully',
+        schema: {
+            example: {
+                totalFriends: 15,
+                totalBlocked: 2,
+                totalPending: 3,
+                totalPublicRooms: 5,
+                totalPrivateRooms: 2,
+            },
+        },
+    })
+    @ApiResponse({
+        status: 401,
+        description: 'Unauthorized - JWT token required',
+    })
+    @Get('stats')
+    async getStats(@CurrentUser() user: any): Promise<{
+        totalFriends: number;
+        totalBlocked: number;
+        totalPending: number;
+        totalPublicRooms: number;
+        totalPrivateRooms: number;
+    }> {
+        if (!user || !user.id) {
+            throw new BadRequestException('User not authenticated');
+        }
+
+        try {
+            this.logger.debug(`Fetching statistics for user ${user.id}`);
+            return await this.service.getStats(user.id);
+        } catch (error) {
+            this.logger.error(`Error fetching statistics: ${error.message}`);
             throw error;
         }
     }
@@ -183,6 +296,34 @@ export class FriendsController {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @ApiOperation({
         summary: 'Remove a friend',
         description: 'Remove a friend (delete a friendship). Either party can remove the friendship.',
@@ -204,6 +345,10 @@ export class FriendsController {
         status: 404,
         description: 'Friendship not found',
     })
+
+
+
+
     @Delete(':friendshipId')
     async removeFriend(
         @Param('friendshipId') friendshipId: string,
