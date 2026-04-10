@@ -1,10 +1,13 @@
-import { Controller } from '@nestjs/common';
-import { Post, Res, Req, Get, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Res, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadedFile } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { UpdateService } from './update.service';
-import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation, ApiBody, ApiProperty} from '@nestjs/swagger';
+import {
+    UploadFileBodyDto,
+    UploadSuccessResponseDto,
+    UploadErrorResponseDto,
+} from './dto/upload.dto';
 
 
 @ApiTags('upload')
@@ -15,16 +18,21 @@ export class UpdateController {
 
     @UseInterceptors(FileInterceptor('file'))
     @Post('profile')
-    @ApiResponse({ status: 201, description: 'File uploaded successfully' })
-    @ApiResponse({ status: 400, description: 'Bad request' })
-    @ApiResponse({ status: 500, description: 'Internal server error' })
     @ApiOperation({ summary: 'Upload a file to profile' })
-    @ApiBody({ description: 'File to upload' })
-    @ApiProperty({ type: 'string', format: 'binary' })
-    async uploadFileProfile(@UploadedFile() File : any, @CurrentUser() user: any, @Res({passthrough: true}) res: any) {
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({ type: UploadFileBodyDto })
+    @ApiResponse({
+        status: 201,
+        description: 'File uploaded successfully',
+        type: UploadSuccessResponseDto,
+    })
+    @ApiResponse({ status: 400, description: 'Bad request', type: UploadErrorResponseDto })
+    @ApiResponse({ status: 401, description: 'Unauthorized', type: UploadErrorResponseDto })
+    @ApiResponse({ status: 500, description: 'Internal server error', type: UploadErrorResponseDto })
+    async uploadFileProfile(@UploadedFile() file: Express.Multer.File, @CurrentUser() user: any, @Res({passthrough: true}) res: any) {
        try{
-        const result = await this.updateService.uploadFileProfile(user.id, File);
-        res.status(result.status).json(result);
+        const result = await this.updateService.uploadFileProfile(user.id, file);
+        // res.status(result.status).json(result);
         return result;
        } catch (error) {
             console.error('Error in uploadFileProfile:', error);
@@ -37,15 +45,20 @@ export class UpdateController {
     
     @UseInterceptors(FileInterceptor('file'))
     @Post('room')
-    @ApiResponse({ status: 201, description: 'File uploaded successfully' })
-    @ApiResponse({ status: 400, description: 'Bad request' })
-    @ApiResponse({ status: 500, description: 'Internal server error' })
     @ApiOperation({ summary: 'Upload a file to room' })
-    @ApiBody({ description: 'File to upload' })
-    @ApiProperty({ type: 'string', format: 'binary' })
-    async uploadFileRoom(@UploadedFile() File : any, @CurrentUser() user: any, @Res({passthrough: true}) res: any) {
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({ type: UploadFileBodyDto })
+    @ApiResponse({
+        status: 201,
+        description: 'File uploaded successfully',
+        type: UploadSuccessResponseDto,
+    })
+    @ApiResponse({ status: 400, description: 'Bad request', type: UploadErrorResponseDto })
+    @ApiResponse({ status: 401, description: 'Unauthorized', type: UploadErrorResponseDto })
+    @ApiResponse({ status: 500, description: 'Internal server error', type: UploadErrorResponseDto })
+    async uploadFileRoom(@UploadedFile() file: Express.Multer.File, @CurrentUser() user: any, @Res({passthrough: true}) res: any) {
         try{
-            const result = await this.updateService.uploadFileRoom(user.id, File);
+            const result = await this.updateService.uploadFileRoom(user.id, file);
             res.status(result.status).json(result);
             return result;
         } catch (error) {

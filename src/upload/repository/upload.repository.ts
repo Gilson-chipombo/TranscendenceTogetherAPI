@@ -33,10 +33,10 @@ export class UploadRepository {
     }
   }
 
-  async uploadFileRoom(userId: string, fileUrl: string) {
+  async uploadFileRoom(roomId: string, fileUrl: string) {
     try{
         const result  = await this.prisma.room.update({
-                where: { id: userId },
+                where: { id: roomId },
                 data: { 
                     poster: fileUrl,
                  }
