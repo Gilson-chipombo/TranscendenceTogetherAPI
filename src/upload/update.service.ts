@@ -9,45 +9,51 @@ export class UpdateService {
     private readonly uploadRepository: UploadRepository
   ) {}
 
-  async uploadFileProfile(userId: string, file: Express.Multer.File) {
+  async uploadFileProfile(userId: string, file: any) {
     try {
-        const data_url = await this.claudinaryService.uploadImage(file);
-        const fileUrl = await this.uploadRepository.uploadFile(userId, data_url);
-        console.log('File URL:', data_url);
-        return {
-            status: 201,
-            message: "file uploaded successfully",
-            response: {
-                url:fileUrl,
-            }
+      const data_url = await this.claudinaryService.uploadImage(file);
+      const fileUrl = await this.uploadRepository.uploadFile(userId, data_url);
+
+      console.log('File URL:', data_url);
+
+      return {
+        status: 201,
+        message: "file uploaded successfully",
+        response: {
+          url: fileUrl,
         }
+      };
     } catch (error) {
-        console.error('Error in uploadFile:', error);
-        return {
-            status: 500,
-            message: "Internal server error",
-        }
+      console.error('Error in uploadFileProfile:', error);
+
+      return {
+        status: 500,
+        message: "Internal server error",
+      };
     }
   }
 
-  async uploadFileRoom(userId :string, file: Express.Multer.File) {
-        try {
-        const data_url = await this.claudinaryService.uploadImage(file);
-        const fileUrl = await this.uploadRepository.uploadFileRoom(userId, data_url);
-        console.log('File URL:', data_url);
-        return {
-            status: 201,
-            message: "file uploaded successfully",
-            response: {
-                url:fileUrl,
-            }
+  async uploadFileRoom(userId: string, file: any) {
+    try {
+      const data_url = await this.claudinaryService.uploadImage(file);
+      const fileUrl = await this.uploadRepository.uploadFileRoom(userId, data_url);
+
+      console.log('File URL:', data_url);
+
+      return {
+        status: 201,
+        message: "file uploaded successfully",
+        response: {
+          url: fileUrl,
         }
+      };
     } catch (error) {
-            console.error('Error in uploadFileRoom:', error);
-            return {
-                status: 500,
-                message: "Internal server error",
-            }
-        }
+      console.error('Error in uploadFileRoom:', error);
+
+      return {
+        status: 500,
+        message: "Internal server error",
+      };
+    }
   }
 }
